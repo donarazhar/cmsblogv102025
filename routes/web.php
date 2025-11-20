@@ -1,9 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\GalleryAlbumController;
+use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\Admin\ProgramController;
+use App\Http\Controllers\Admin\SliderController;  // ✅ PASTIKAN ADA INI
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\LandingController;
+use Illuminate\Support\Facades\Route;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -46,10 +52,10 @@ Route::post('/contact', [LandingController::class, 'contactSubmit'])->name('cont
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-    
+
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.post');
-    
+
     Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
     Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->name('password.email');
 });
@@ -62,14 +68,30 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    
+
     // Admin Routes
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        
-        // TODO: Add more admin routes here
-        // Route::resource('posts', PostController::class);
-        // Route::resource('categories', CategoryController::class);
-        // etc...
+
+        // Sliders CRUD
+        Route::resource('sliders', SliderController::class);
+        Route::post('sliders/{slider}/toggle', [SliderController::class, 'toggleStatus'])->name('sliders.toggle');
+        Route::post('sliders/update-order', [SliderController::class, 'updateOrder'])->name('sliders.update-order');
+
+        // Programs
+        Route::resource('programs', ProgramController::class);
+        Route::post('programs/{program}/toggle', [ProgramController::class, 'toggleStatus'])->name('programs.toggle');
+        Route::post('programs/{program}/toggle-featured', [ProgramController::class, 'toggleFeatured'])->name('programs.toggle-featured');
+
+        // Gallery Albums
+        Route::prefix('gallery')->name('gallery.')->group(function () {
+            Route::resource('albums', GalleryAlbumController::class);
+            Route::post('albums/{album}/toggle', [GalleryAlbumController::class, 'toggleStatus'])->name('albums.toggle');
+
+            // Gallery Photos
+            Route::resource('photos', GalleryController::class);
+            Route::post('photos/{photo}/toggle', [GalleryController::class, 'toggleStatus'])->name('photos.toggle');
+            Route::post('photos/bulk-upload', [GalleryController::class, 'bulkUpload'])->name('photos.bulk-upload');
+        });
     });
 });

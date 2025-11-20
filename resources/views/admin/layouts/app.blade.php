@@ -110,23 +110,60 @@
             padding: 20px 0;
         }
 
+        /* Menu Section with Accordion */
         .menu-section {
-            margin-bottom: 25px;
+            margin-bottom: 5px;
+        }
+
+        .menu-section-header {
+            padding: 12px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .menu-section-header:hover {
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .menu-section-title {
-            padding: 0 20px;
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            opacity: 0.6;
+            opacity: 0.8;
             font-weight: 600;
-            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .menu-section-icon {
+            font-size: 0.7rem;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-section.collapsed .menu-section-icon {
+            transform: rotate(-90deg);
+        }
+
+        .menu-section-content {
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            opacity: 1;
+        }
+
+        .menu-section.collapsed .menu-section-content {
+            max-height: 0;
+            opacity: 0;
         }
 
         .menu-item {
             display: block;
-            padding: 12px 20px;
+            padding: 12px 20px 12px 35px;
             color: white;
             text-decoration: none;
             transition: all 0.3s ease;
@@ -135,7 +172,7 @@
 
         .menu-item:hover {
             background: rgba(255, 255, 255, 0.1);
-            padding-left: 25px;
+            padding-left: 40px;
         }
 
         .menu-item.active {
@@ -144,7 +181,7 @@
         }
 
         .menu-item i {
-            width: 25px;
+            width: 20px;
             margin-right: 12px;
             text-align: center;
         }
@@ -154,14 +191,100 @@
             background: var(--danger);
             padding: 2px 8px;
             border-radius: 10px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
+        }
+
+        /* Dashboard Menu (tidak ada accordion) */
+        .menu-dashboard {
+            padding: 12px 20px;
+            display: block;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .menu-dashboard:hover {
+            background: rgba(255, 255, 255, 0.1);
+            padding-left: 25px;
+        }
+
+        .menu-dashboard.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-left: 4px solid white;
+        }
+
+        .menu-dashboard i {
+            width: 25px;
+            margin-right: 12px;
+            text-align: center;
+        }
+
+        /* Mobile Overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 10px;
+            background: var(--light);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger:hover {
+            background: var(--primary);
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--dark);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger:hover span {
+            background: white;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
         }
 
         /* Main Content */
         .main-content {
             margin-left: var(--sidebar-width);
             min-height: 100vh;
+            transition: margin-left 0.3s ease;
         }
 
         /* Header */
@@ -364,6 +487,16 @@
         }
 
         /* Responsive */
+        @media (max-width: 1024px) {
+            .header-search {
+                display: none;
+            }
+
+            .profile-info {
+                display: none;
+            }
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
@@ -377,8 +510,25 @@
                 margin-left: 0;
             }
 
-            .header-search {
-                display: none;
+            .hamburger {
+                display: flex;
+            }
+
+            .header {
+                padding: 0 15px;
+            }
+
+            .header-title {
+                font-size: 1.2rem;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+
+            .header-notification {
+                width: 35px;
+                height: 35px;
             }
         }
     </style>
@@ -387,8 +537,11 @@
 </head>
 
 <body>
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- Sidebar -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="sidebar-logo">
                 <i class="fas fa-mosque"></i>
@@ -400,100 +553,146 @@
         </div>
 
         <nav class="sidebar-menu">
-            <div class="menu-section">
-                <div class="menu-section-title">Main Menu</div>
-                <a href="{{ route('admin.dashboard') }}"
-                    class="menu-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                    <i class="fas fa-home"></i>
-                    <span>Dashboard</span>
-                </a>
+            <!-- Dashboard (No Accordion) -->
+            <a href="{{ route('admin.dashboard') }}"
+                class="menu-dashboard {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <!-- Content Section -->
+            <div class="menu-section" data-section="content">
+                <div class="menu-section-header">
+                    <div class="menu-section-title">
+                        <i class="fas fa-newspaper"></i>
+                        Content
+                    </div>
+                    <i class="fas fa-chevron-down menu-section-icon"></i>
+                </div>
+                <div class="menu-section-content">
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Posts</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-folder"></i>
+                        <span>Categories</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-tags"></i>
+                        <span>Tags</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-comments"></i>
+                        <span>Comments</span>
+                        <span class="menu-badge">5</span>
+                    </a>
+                </div>
             </div>
 
-            <div class="menu-section">
-                <div class="menu-section-title">Content</div>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-newspaper"></i>
-                    <span>Posts</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-folder"></i>
-                    <span>Categories</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-tags"></i>
-                    <span>Tags</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-comments"></i>
-                    <span>Comments</span>
-                    <span class="menu-badge">5</span>
-                </a>
+            <!-- Landing Page Section -->
+            <div class="menu-section" data-section="landing">
+                <div class="menu-section-header">
+                    <div class="menu-section-title">
+                        <i class="fas fa-globe"></i>
+                        Landing Page
+                    </div>
+                    <i class="fas fa-chevron-down menu-section-icon"></i>
+                </div>
+                <div class="menu-section-content">
+                    <a href="{{ route('admin.sliders.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.sliders.*') ? 'active' : '' }}">
+                        <i class="fas fa-images"></i>
+                        <span>Sliders</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pages</span>
+                    </a>
+                    <a href="{{ route('admin.programs.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.programs.*') ? 'active' : '' }}">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Programs</span>
+                    </a>
+                    <a href="{{ route('admin.gallery.albums.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
+                        <i class="fas fa-photo-video"></i>
+                        <span>Gallery</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Schedules</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-bullhorn"></i>
+                        <span>Announcements</span>
+                    </a>
+                </div>
             </div>
 
-            <div class="menu-section">
-                <div class="menu-section-title">Landing Page</div>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-images"></i>
-                    <span>Sliders</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-file-alt"></i>
-                    <span>Pages</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-calendar-check"></i>
-                    <span>Programs</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-photo-video"></i>
-                    <span>Gallery</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-clock"></i>
-                    <span>Schedules</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-bullhorn"></i>
-                    <span>Announcements</span>
-                </a>
+            <!-- People Section -->
+            <div class="menu-section" data-section="people">
+                <div class="menu-section-header">
+                    <div class="menu-section-title">
+                        <i class="fas fa-users"></i>
+                        People
+                    </div>
+                    <i class="fas fa-chevron-down menu-section-icon"></i>
+                </div>
+                <div class="menu-section-content">
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Staff</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-star"></i>
+                        <span>Testimonials</span>
+                    </a>
+                </div>
             </div>
 
-            <div class="menu-section">
-                <div class="menu-section-title">People</div>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-users"></i>
-                    <span>Staff</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-star"></i>
-                    <span>Testimonials</span>
-                </a>
+            <!-- Donations Section -->
+            <div class="menu-section" data-section="donations">
+                <div class="menu-section-header">
+                    <div class="menu-section-title">
+                        <i class="fas fa-hand-holding-heart"></i>
+                        Donations
+                    </div>
+                    <i class="fas fa-chevron-down menu-section-icon"></i>
+                </div>
+                <div class="menu-section-content">
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-bullhorn"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-receipt"></i>
+                        <span>Transactions</span>
+                        <span class="menu-badge">3</span>
+                    </a>
+                </div>
             </div>
 
-            <div class="menu-section">
-                <div class="menu-section-title">Donations</div>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-hand-holding-heart"></i>
-                    <span>Campaigns</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-receipt"></i>
-                    <span>Transactions</span>
-                    <span class="menu-badge">3</span>
-                </a>
-            </div>
-
-            <div class="menu-section">
-                <div class="menu-section-title">Others</div>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>Contacts</span>
-                    <span class="menu-badge">2</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-cog"></i>
-                    <span>Settings</span>
-                </a>
+            <!-- Others Section -->
+            <div class="menu-section" data-section="others">
+                <div class="menu-section-header">
+                    <div class="menu-section-title">
+                        <i class="fas fa-ellipsis-h"></i>
+                        Others
+                    </div>
+                    <i class="fas fa-chevron-down menu-section-icon"></i>
+                </div>
+                <div class="menu-section-content">
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>Contacts</span>
+                        <span class="menu-badge">2</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </div>
             </div>
         </nav>
     </aside>
@@ -503,6 +702,11 @@
         <!-- Header -->
         <header class="header">
             <div class="header-left">
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
                 <h1 class="header-title">@yield('title', 'Dashboard')</h1>
             </div>
 
@@ -557,6 +761,69 @@
             @yield('content')
         </main>
     </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Accordion Menu
+        document.querySelectorAll('.menu-section-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const section = this.parentElement;
+                const isCollapsed = section.classList.contains('collapsed');
+
+                // Toggle current section
+                section.classList.toggle('collapsed');
+
+                // Save state to localStorage
+                const sectionName = section.dataset.section;
+                if (isCollapsed) {
+                    localStorage.removeItem('menu-collapsed-' + sectionName);
+                } else {
+                    localStorage.setItem('menu-collapsed-' + sectionName, 'true');
+                }
+            });
+        });
+
+        // Restore accordion state from localStorage
+        document.querySelectorAll('.menu-section').forEach(section => {
+            const sectionName = section.dataset.section;
+            const isCollapsed = localStorage.getItem('menu-collapsed-' + sectionName);
+            if (isCollapsed === 'true') {
+                section.classList.add('collapsed');
+            }
+        });
+
+        // Mobile Hamburger Menu
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        hamburger.addEventListener('click', function() {
+            this.classList.toggle('active');
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+            document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // Close sidebar when clicking overlay
+        sidebarOverlay.addEventListener('click', function() {
+            hamburger.classList.remove('active');
+            sidebar.classList.remove('active');
+            this.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // Close sidebar when clicking menu item on mobile
+        if (window.innerWidth <= 768) {
+            document.querySelectorAll('.menu-item, .menu-dashboard').forEach(item => {
+                item.addEventListener('click', function() {
+                    hamburger.classList.remove('active');
+                    sidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+        }
+    </script>
 
     @stack('scripts')
 </body>

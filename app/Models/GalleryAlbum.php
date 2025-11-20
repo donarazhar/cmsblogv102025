@@ -5,8 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
 
 class GalleryAlbum extends Model
 {
@@ -18,27 +16,26 @@ class GalleryAlbum extends Model
         'description',
         'cover_image',
         'event_date',
-        'order',
+        'location',
         'is_active',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
-        'order' => 'integer',
         'event_date' => 'date',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+        'is_active' => 'boolean',
     ];
 
-    protected $appends = ['url', 'photos_count'];
-
-    // Relationships
-    public function galleries(): HasMany
+    /**
+     * Relationships
+     */
+    public function galleries()
     {
-        return $this->hasMany(Gallery::class, 'album_id');
+        return $this->hasMany(Gallery::class, 'album_id'); // ✅ Tambahkan foreign key
     }
 
-    // Scopes
+    /**
+     * Scopes
+     */
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
@@ -46,29 +43,6 @@ class GalleryAlbum extends Model
 
     public function scopeOrdered($query)
     {
-        return $query->orderBy('order', 'asc');
-    }
-
-    public function scopeLatest($query)
-    {
-        return $query->orderBy('event_date', 'desc');
-    }
-
-    // Accessors
-    public function getUrlAttribute(): string
-    {
-        return route('gallery.album', $this->slug);
-    }
-
-    public function getPhotosCountAttribute(): int
-    {
-        return $this->galleries()->where('is_active', true)->count();
-    }
-
-    // Mutators
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = $value;
-        $this->attributes['slug'] = $this->attributes['slug'] ?? Str::slug($value);
+        return $query->orderBy('event_date', 'desc')->orderBy('created_at', 'desc');
     }
 }
