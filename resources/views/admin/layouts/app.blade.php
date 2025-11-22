@@ -894,6 +894,13 @@
                         <span>Log Aktivitas</span>
                         <span class="menu-item-tooltip">Log Aktivitas</span>
                     </a>
+
+                    <a href="{{ route('admin.backups.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.backups.*') ? 'active' : '' }}">
+                        <i class="fas fa-database"></i>
+                        <span>Database Backup</span>
+                        <span class="menu-item-tooltip">Database Backup</span>
+                    </a>
                 </div>
             </div>
         </nav>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\AnnouncementController;
+use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\ContactController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\LandingController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -220,5 +222,14 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{activity}', [ActivityLogController::class, 'destroy'])->name('destroy');
             Route::post('/clear', [ActivityLogController::class, 'clear'])->name('clear');
         });
+
+        // Backup routes
+        Route::get('backups', [BackupController::class, 'index'])->name('backups.index');
+        Route::post('backups/create', [BackupController::class, 'create'])->name('backups.create');
+        Route::post('backups/create-full', [BackupController::class, 'createFull'])->name('backups.create-full');
+        Route::get('backups/download/{filename}', [BackupController::class, 'download'])->name('backups.download');
+        Route::delete('backups/{filename}', [BackupController::class, 'destroy'])->name('backups.destroy');
+        Route::post('backups/clean', [BackupController::class, 'clean'])->name('backups.clean');
+        Route::post('backups/restore', [BackupController::class, 'restore'])->name('backups.restore');
     });
 });
