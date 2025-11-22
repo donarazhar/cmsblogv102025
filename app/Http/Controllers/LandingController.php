@@ -35,7 +35,7 @@ class LandingController extends Controller
         $latestPosts = Post::published()
             ->with(['category:id,name,slug', 'author:id,name', 'tags:id,name,slug'])
             ->latest('published_at')
-            ->limit(6)
+            ->limit(3)
             ->get();
 
         // Featured Posts
@@ -51,7 +51,7 @@ class LandingController extends Controller
                 $query->where('status', 'published');
             }])
             ->ordered()
-            ->limit(6)
+            ->limit(3)
             ->get();
 
         // Active Programs
@@ -68,7 +68,7 @@ class LandingController extends Controller
             ->images()
             ->ordered()
             ->select('id', 'title', 'description', 'image')
-            ->limit(8)
+            ->limit(6)
             ->get();
 
         // Gallery Albums
@@ -76,7 +76,7 @@ class LandingController extends Controller
             ->withCount('galleries')
             ->latest('event_date')
             ->select('id', 'name', 'slug', 'cover_image', 'event_date')
-            ->limit(4)
+            ->limit(3)
             ->get();
 
         // Today's Schedule
@@ -84,7 +84,7 @@ class LandingController extends Controller
             ->today()
             ->orderBy('start_time', 'asc')
             ->select('id', 'title', 'type', 'start_time', 'end_time', 'location', 'imam', 'speaker', 'color')
-            ->limit(5)
+            ->limit(3)
             ->get();
 
         // Upcoming Events
@@ -92,7 +92,7 @@ class LandingController extends Controller
             ->where('type', 'event')
             ->upcoming(30)
             ->select('id', 'title', 'date', 'start_time', 'end_time', 'location')
-            ->limit(4)
+            ->limit(3)
             ->get();
 
         // Active Announcements
@@ -109,7 +109,7 @@ class LandingController extends Controller
             ->featured()
             ->ordered()
             ->select('id', 'name', 'position', 'photo', 'slug')
-            ->limit(4)
+            ->limit(3)
             ->get();
 
         // Testimonials

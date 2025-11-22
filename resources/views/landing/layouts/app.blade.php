@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
 
-
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://unpkg.com">
-    <link rel="shortcut icon" href="https://siap.al-azhar.id/upload/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="https://siap.al-azhar.id/upload/favicon.ico" type="image/x-icon" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -71,12 +69,12 @@
             right: 0;
             z-index: 1000;
             background: white;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 20px rgba(0, 83, 197, 0.1);
             transition: all 0.3s ease;
         }
 
         .navbar.scrolled {
-            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 5px 30px rgba(0, 83, 197, 0.2);
         }
 
         .navbar-container {
@@ -97,18 +95,30 @@
             color: var(--dark);
             font-weight: 700;
             font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            color: var(--primary);
         }
 
         .navbar-logo {
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: linear-gradient(135deg, #0053C5 0%, #003d91 100%);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 83, 197, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover .navbar-logo {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 83, 197, 0.4);
         }
 
         .navbar-menu {
@@ -124,16 +134,36 @@
             border-radius: 8px;
             transition: all 0.3s ease;
             font-weight: 500;
+            position: relative;
+        }
+
+        .navbar-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: #0053C5;
+            transition: width 0.3s ease;
+        }
+
+        .navbar-menu a:hover::after {
+            width: calc(100% - 40px);
         }
 
         .navbar-menu a:hover {
-            background: var(--primary);
-            color: white;
+            color: #0053C5;
         }
 
         .navbar-menu a.active {
-            background: var(--primary);
+            background: #0053C5;
             color: white;
+        }
+
+        .navbar-menu a.active::after {
+            width: 0;
         }
 
         .navbar-toggle {
@@ -142,7 +172,12 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: var(--dark);
+            color: #0053C5;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-toggle:hover {
+            transform: scale(1.1);
         }
 
         /* Mobile Menu */
@@ -157,7 +192,7 @@
                 flex-direction: column;
                 padding: 20px;
                 transition: left 0.3s ease;
-                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 5px 20px rgba(0, 83, 197, 0.1);
             }
 
             .navbar-menu.active {
@@ -166,6 +201,10 @@
 
             .navbar-toggle {
                 display: block;
+            }
+
+            .navbar-menu a::after {
+                display: none;
             }
         }
 
@@ -187,7 +226,7 @@
         }
 
         .section-subtitle {
-            color: var(--primary);
+            color: #0053C5;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -211,9 +250,21 @@
 
         /* Footer */
         .footer {
-            background: linear-gradient(135deg, var(--dark) 0%, #111827 100%);
+            background: linear-gradient(135deg, #0053C5 0%, #003d91 100%);
             color: white;
             padding: 60px 0 30px;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
         }
 
         .footer-top {
@@ -221,17 +272,20 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 40px;
             margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
         }
 
         .footer-widget h3 {
             font-size: 1.3rem;
             margin-bottom: 20px;
             font-weight: 700;
+            color: white;
         }
 
         .footer-widget p,
         .footer-widget li {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.85);
             margin-bottom: 10px;
             line-height: 1.8;
         }
@@ -241,25 +295,29 @@
         }
 
         .footer-widget a {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.85);
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            display: inline-block;
         }
 
         .footer-widget a:hover {
             color: white;
+            transform: translateX(5px);
         }
 
         .footer-social {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 12px;
+            margin-top: 20px;
         }
 
         .social-icon {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -267,18 +325,54 @@
             color: white;
             text-decoration: none;
             transition: all 0.3s ease;
+            font-size: 1rem;
+            /* Reduced size */
+            position: relative;
+            /* Added */
+        }
+
+        .social-icon i {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Perfect centering for font awesome icons */
+            line-height: 1;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Specific adjustments for each icon */
+        .social-icon .fa-facebook-f {
+            font-size: 1rem;
+        }
+
+        .social-icon .fa-instagram {
+            font-size: 1.1rem;
+        }
+
+        .social-icon .fa-twitter {
+            font-size: 1rem;
+        }
+
+        .social-icon .fa-youtube {
+            font-size: 1rem;
         }
 
         .social-icon:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
+            background: white;
+            color: #0053C5;
+            border-color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
         }
 
         .footer-bottom {
             padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
             text-align: center;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.8);
+            position: relative;
+            z-index: 1;
         }
 
         /* Scroll to Top Button */
@@ -288,7 +382,7 @@
             right: 30px;
             width: 50px;
             height: 50px;
-            background: var(--primary);
+            background: linear-gradient(135deg, #0053C5 0%, #003d91 100%);
             color: white;
             border-radius: 50%;
             display: flex;
@@ -308,8 +402,8 @@
         }
 
         .scroll-top:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 83, 197, 0.5);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 83, 197, 0.6);
         }
 
         /* Loading */
@@ -335,8 +429,8 @@
         .spinner {
             width: 50px;
             height: 50px;
-            border: 4px solid var(--light);
-            border-top-color: var(--primary);
+            border: 4px solid #e5e7eb;
+            border-top-color: #0053C5;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -344,6 +438,35 @@
         @keyframes spin {
             to {
                 transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .navbar-container {
+                height: 70px;
+            }
+
+            .navbar-brand {
+                font-size: 1.1rem;
+            }
+
+            .navbar-logo {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .footer {
+                padding: 40px 0 20px;
+            }
+
+            .footer-top {
+                gap: 30px;
             }
         }
     </style>
@@ -403,22 +526,26 @@
                     </p>
                     <div class="footer-social">
                         @if (isset($settings['social_facebook']))
-                            <a href="{{ $settings['social_facebook'] }}" target="_blank" class="social-icon">
+                            <a href="{{ $settings['social_facebook'] }}" target="_blank" class="social-icon"
+                                title="Facebook">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
                         @endif
                         @if (isset($settings['social_instagram']))
-                            <a href="{{ $settings['social_instagram'] }}" target="_blank" class="social-icon">
+                            <a href="{{ $settings['social_instagram'] }}" target="_blank" class="social-icon"
+                                title="Instagram">
                                 <i class="fab fa-instagram"></i>
                             </a>
                         @endif
                         @if (isset($settings['social_twitter']))
-                            <a href="{{ $settings['social_twitter'] }}" target="_blank" class="social-icon">
+                            <a href="{{ $settings['social_twitter'] }}" target="_blank" class="social-icon"
+                                title="Twitter">
                                 <i class="fab fa-twitter"></i>
                             </a>
                         @endif
                         @if (isset($settings['social_youtube']))
-                            <a href="{{ $settings['social_youtube'] }}" target="_blank" class="social-icon">
+                            <a href="{{ $settings['social_youtube'] }}" target="_blank" class="social-icon"
+                                title="YouTube">
                                 <i class="fab fa-youtube"></i>
                             </a>
                         @endif
@@ -428,11 +555,16 @@
                 <div class="footer-widget">
                     <h3>Menu Cepat</h3>
                     <ul>
-                        <li><a href="{{ route('about') }}">Tentang Kami</a></li>
-                        <li><a href="{{ route('programs') }}">Program</a></li>
-                        <li><a href="{{ route('blog') }}">Berita</a></li>
-                        <li><a href="{{ route('gallery') }}">Galeri</a></li>
-                        <li><a href="{{ route('contact') }}">Hubungi Kami</a></li>
+                        <li><a href="{{ route('about') }}"><i class="fas fa-chevron-right"
+                                    style="font-size: 0.8rem; margin-right: 8px;"></i>Tentang Kami</a></li>
+                        <li><a href="{{ route('programs') }}"><i class="fas fa-chevron-right"
+                                    style="font-size: 0.8rem; margin-right: 8px;"></i>Program</a></li>
+                        <li><a href="{{ route('blog') }}"><i class="fas fa-chevron-right"
+                                    style="font-size: 0.8rem; margin-right: 8px;"></i>Berita</a></li>
+                        <li><a href="{{ route('gallery') }}"><i class="fas fa-chevron-right"
+                                    style="font-size: 0.8rem; margin-right: 8px;"></i>Galeri</a></li>
+                        <li><a href="{{ route('contact') }}"><i class="fas fa-chevron-right"
+                                    style="font-size: 0.8rem; margin-right: 8px;"></i>Hubungi Kami</a></li>
                     </ul>
                 </div>
 
@@ -440,20 +572,20 @@
                     <h3>Kontak</h3>
                     <ul>
                         <li>
-                            <i class="fas fa-map-marker-alt" style="margin-right: 10px;"></i>
+                            <i class="fas fa-map-marker-alt" style="margin-right: 10px; color: white;"></i>
                             {{ $settings['contact_address'] ?? 'Jakarta, Indonesia' }}
                         </li>
                         <li>
-                            <i class="fas fa-phone" style="margin-right: 10px;"></i>
-                            {{ $settings['contact_phone'] ?? '(021) 1234-5678' }}
+                            <i class="fas fa-phone" style="margin-right: 10px; color: white;"></i>
+                            {{ $settings['contact_phone'] ?? '(+62) 217397267' }}
                         </li>
                         <li>
-                            <i class="fas fa-envelope" style="margin-right: 10px;"></i>
-                            {{ $settings['contact_email'] ?? 'info@alazhar.or.id' }}
+                            <i class="fas fa-envelope" style="margin-right: 10px; color: white;"></i>
+                            {{ $settings['contact_email'] ?? 'masjidagungalazhar@gmail.com' }}
                         </li>
                         <li>
-                            <i class="fab fa-whatsapp" style="margin-right: 10px;"></i>
-                            {{ $settings['contact_whatsapp'] ?? '0812-3456-7890' }}
+                            <i class="fab fa-whatsapp" style="margin-right: 10px; color: white;"></i>
+                            {{ $settings['contact_whatsapp'] ?? '0882-1211-4771' }}
                         </li>
                     </ul>
                 </div>
@@ -461,16 +593,19 @@
                 <div class="footer-widget">
                     <h3>Jam Operasional</h3>
                     <ul>
-                        <li>Senin - Jumat: 05:00 - 22:00</li>
-                        <li>Sabtu - Minggu: 05:00 - 22:00</li>
-                        <li>Jumat: 11:00 - 14:00 (Sholat Jumat)</li>
+                        <li><i class="fas fa-clock" style="margin-right: 10px; color: white;"></i>Senin - Sabtu: 08:00
+                            - 15:00</li>
+                        <li><i class="fas fa-clock" style="margin-right: 10px; color: white;"></i>Ahad :
+                            Janji Temu</li>
+                        <li><i class="fas fa-mosque" style="margin-right: 10px; color: white;"></i>Jumat: 11:30 -
+                            12:30 (Sholat Jumat)</li>
                     </ul>
                 </div>
             </div>
 
             <div class="footer-bottom">
                 <p>&copy; {{ date('Y') }} {{ $settings['site_name'] ?? 'Masjid Agung Al Azhar' }}. All rights
-                    reserved.</p>
+                    reserved. | Developed with <i class="fas fa-heart" style="color: #ef4444;"></i>by DAL ARMY</p>
             </div>
         </div>
     </footer>
@@ -503,14 +638,6 @@
         // Loading
         window.addEventListener('load', () => {
             document.getElementById('loading').classList.add('hide');
-        });
-
-        // AOS Init
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
-            once: true,
-            offset: 100
         });
 
         // Navbar Scroll

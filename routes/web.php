@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProgramController;
 use App\Http\Controllers\Admin\ScheduleController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\TagController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\LandingController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -231,5 +233,13 @@ Route::middleware('auth')->group(function () {
         Route::delete('backups/{filename}', [BackupController::class, 'destroy'])->name('backups.destroy');
         Route::post('backups/clean', [BackupController::class, 'clean'])->name('backups.clean');
         Route::post('backups/restore', [BackupController::class, 'restore'])->name('backups.restore');
+
+        // Settings routes
+        Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+        Route::post('settings', [SettingController::class, 'update'])->name('settings.update');
+        Route::get('settings/create', [SettingController::class, 'create'])->name('settings.create');
+        Route::post('settings/store', [SettingController::class, 'store'])->name('settings.store');
+        Route::delete('settings/{setting}', [SettingController::class, 'destroy'])->name('settings.destroy');
+        Route::post('settings/clear-cache', [SettingController::class, 'clearCache'])->name('settings.clear-cache');
     });
 });

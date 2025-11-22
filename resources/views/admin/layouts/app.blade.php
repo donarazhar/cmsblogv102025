@@ -901,6 +901,11 @@
                         <span>Database Backup</span>
                         <span class="menu-item-tooltip">Database Backup</span>
                     </a>
+                    <a href="{{ route('admin.settings.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
                 </div>
             </div>
         </nav>

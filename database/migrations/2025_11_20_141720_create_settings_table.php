@@ -12,9 +12,9 @@ return new class extends Migration
             $table->id();
             $table->string('key')->unique();
             $table->text('value')->nullable();
-            $table->string('type')->default('text'); // text, textarea, number, boolean, json, image, file
-            $table->string('group')->default('general'); // general, social, contact, seo, appearance, etc.
-            $table->string('label')->nullable();
+            $table->enum('type', ['text', 'textarea', 'email', 'url', 'number', 'boolean', 'image', 'file'])->default('text');
+            $table->string('group')->default('general');
+            $table->string('label');
             $table->text('description')->nullable();
             $table->integer('order')->default(0);
             $table->timestamps();

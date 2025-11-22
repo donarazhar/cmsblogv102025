@@ -331,7 +331,7 @@
 
         <style>
             .announcement-bar {
-                background: linear-gradient(135deg, #0053C5 0%,rgb(33, 120, 241) 100%);
+                background: linear-gradient(135deg, #0053C5 0%, rgb(33, 120, 241) 100%);
                 padding: 0;
                 position: relative;
                 overflow: hidden;
@@ -494,42 +494,6 @@
             }
         </style>
     @endif
-
-    <!-- Statistics -->
-    <section class="section" style="background: var(--light);">
-        <div class="container">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
-                <div class="stat-box" data-aos="fade-up">
-                    <div class="stat-icon">
-                        <i class="fas fa-mosque"></i>
-                    </div>
-                    <div class="stat-number" data-target="{{ $stats['total_programs'] }}">0</div>
-                    <div class="stat-label">Program Aktif</div>
-                </div>
-                <div class="stat-box" data-aos="fade-up" data-aos-delay="100">
-                    <div class="stat-icon">
-                        <i class="fas fa-newspaper"></i>
-                    </div>
-                    <div class="stat-number" data-target="{{ $stats['total_posts'] }}">0</div>
-                    <div class="stat-label">Artikel Tersedia</div>
-                </div>
-                <div class="stat-box" data-aos="fade-up" data-aos-delay="200">
-                    <div class="stat-icon">
-                        <i class="fas fa-hand-holding-heart"></i>
-                    </div>
-                    <div class="stat-number">Rp {{ number_format($stats['total_donations'] / 1000000, 1) }}M</div>
-                    <div class="stat-label">Total Donasi</div>
-                </div>
-                <div class="stat-box" data-aos="fade-up" data-aos-delay="300">
-                    <div class="stat-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="stat-number" data-target="{{ $stats['total_testimonials'] }}">0</div>
-                    <div class="stat-label">Testimoni Positif</div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <style>
         .stat-box {
@@ -759,8 +723,7 @@
                 <div
                     style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-bottom: 50px;">
                     @foreach ($featuredPosts as $post)
-                        <article class="post-card featured" data-aos="fade-up"
-                            data-aos-delay="{{ $loop->index * 100 }}">
+                        <article class="post-card featured" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                             <div class="post-image"
                                 style="background-image: url('{{ $post->featured_image ? asset('storage/' . $post->featured_image) : 'https://via.placeholder.com/800x500' }}');">
                                 <div class="post-badge">Featured</div>
@@ -1741,167 +1704,6 @@
         }, 5000);
     </script>
 
-    <!-- Staff Section -->
-    <section class="section" style="background: var(--light);">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <div class="section-subtitle">Tim Kami</div>
-                <h2 class="section-title">Pengurus & Ustadz</h2>
-                <p class="section-description">
-                    Kenali pengurus dan ustadz yang mengabdi di Masjid Al Azhar
-                </p>
-            </div>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px;">
-                @foreach ($staff as $person)
-                    <div class="staff-card" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
-                        <div class="staff-photo">
-                            @if ($person->photo)
-                                <img src="{{ asset('storage/' . $person->photo) }}" alt="{{ $person->name }}"
-                                    loading="lazy">
-                            @else
-                                <div class="photo-placeholder">{{ strtoupper(substr($person->name, 0, 1)) }}</div>
-                            @endif
-                            @if ($person->social_media)
-                                <div class="staff-social">
-                                    @if (isset($person->social_media['facebook']))
-                                        <a href="{{ $person->social_media['facebook'] }}" target="_blank"><i
-                                                class="fab fa-facebook-f"></i></a>
-                                    @endif
-                                    @if (isset($person->social_media['instagram']))
-                                        <a href="{{ $person->social_media['instagram'] }}" target="_blank"><i
-                                                class="fab fa-instagram"></i></a>
-                                    @endif
-                                    @if (isset($person->social_media['twitter']))
-                                        <a href="{{ $person->social_media['twitter'] }}" target="_blank"><i
-                                                class="fab fa-twitter"></i></a>
-                                    @endif
-                                    @if (isset($person->social_media['youtube']))
-                                        <a href="{{ $person->social_media['youtube'] }}" target="_blank"><i
-                                                class="fab fa-youtube"></i></a>
-                                    @endif
-                                </div>
-                            @endif
-                        </div>
-                        <div class="staff-info">
-                            <h4 class="staff-name">{{ $person->name }}</h4>
-                            <p class="staff-position">{{ $person->position }}</p>
-                            @if ($person->specialization)
-                                <p class="staff-specialization">{{ $person->specialization }}</p>
-                            @endif
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
-    <style>
-        .staff-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .staff-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .staff-photo {
-            width: 100%;
-            height: 280px;
-            background: var(--light);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .staff-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .staff-card:hover .staff-photo img {
-            transform: scale(1.1);
-        }
-
-        .photo-placeholder {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 4rem;
-            font-weight: 700;
-        }
-
-        .staff-social {
-            position: absolute;
-            bottom: -50px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 15px;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-            transition: bottom 0.3s ease;
-        }
-
-        .staff-card:hover .staff-social {
-            bottom: 0;
-        }
-
-        .staff-social a {
-            width: 40px;
-            height: 40px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .staff-social a:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-5px);
-        }
-
-        .staff-info {
-            padding: 25px;
-        }
-
-        .staff-name {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 5px;
-        }
-
-        .staff-position {
-            font-size: 0.95rem;
-            color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .staff-specialization {
-            font-size: 0.85rem;
-            color: #9ca3af;
-        }
-    </style>
-
     <!-- Donations Section -->
     <section class="section">
         <div class="container">
@@ -2152,23 +1954,22 @@
     </style>
 
     <!-- CTA Section -->
-    <section class="section"
-        style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white;">
+    <section class="section cta-section">
         <div class="container">
             <div style="max-width: 800px; margin: 0 auto; text-align: center;" data-aos="zoom-in">
-                <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 20px;">
+                <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 20px; color: white;">
                     Mari Bergabung Bersama Kami
                 </h2>
-                <p style="font-size: 1.2rem; margin-bottom: 40px; opacity: 0.95;">
+                <p style="font-size: 1.2rem; margin-bottom: 40px; opacity: 0.95; color: white;">
                     Ikuti berbagai program kegiatan dan dakwah Islam di Masjid Agung Al Azhar.
                     Bersama kita membangun umat yang lebih baik.
                 </p>
                 <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                    <a href="{{ route('programs') }}" class="btn" style="background: white; color: var(--primary);">
+                    <a href="{{ route('programs') }}" class="btn cta-btn-primary">
                         <i class="fas fa-calendar-check"></i>
                         Lihat Program
                     </a>
-                    <a href="{{ route('contact') }}" class="btn btn-outline">
+                    <a href="{{ route('contact') }}" class="btn cta-btn-outline">
                         <i class="fas fa-envelope"></i>
                         Hubungi Kami
                     </a>
@@ -2176,4 +1977,88 @@
             </div>
         </div>
     </section>
+
+    <style>
+        .cta-section {
+            background: linear-gradient(135deg, #0053C5 0%, #003d91 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Optional: Tambahkan pattern atau overlay */
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .cta-section .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-btn-primary {
+            background: white;
+            color: #0053C5;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-btn-primary:hover {
+            background: #f0f0f0;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .cta-btn-outline:hover {
+            background: white;
+            color: #0053C5;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .cta-section h2 {
+                font-size: 2rem !important;
+            }
+
+            .cta-section p {
+                font-size: 1rem !important;
+            }
+
+            .cta-section .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+
 @endsection
