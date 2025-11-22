@@ -723,8 +723,8 @@
             <a href="{{ route('admin.dashboard') }}"
                 class="menu-dashboard {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                 <i class="fas fa-home"></i>
-                <span>Dashboard</span>
-                <span class="menu-item-tooltip">Dashboard</span>
+                <span>Beranda</span>
+                <span class="menu-item-tooltip">Beranda</span>
             </a>
 
             <!-- Content Section -->
@@ -732,7 +732,7 @@
                 <div class="menu-section-header">
                     <div class="menu-section-title">
                         <i class="fas fa-newspaper"></i>
-                        <span>Content</span>
+                        <span>Konten</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
@@ -740,29 +740,29 @@
                     <a href="{{ route('admin.posts.index') }}"
                         class="menu-item {{ request()->routeIs('admin.posts.*') ? 'active' : '' }}">
                         <i class="fas fa-file-alt"></i>
-                        <span>Posts</span>
-                        <span class="menu-item-tooltip">Posts</span>
+                        <span>Artikel & Berita</span>
+                        <span class="menu-item-tooltip">Artikel & Berita</span>
                     </a>
                     <a href="{{ route('admin.categories.index') }}"
                         class="menu-item {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
                         <i class="fas fa-folder"></i>
-                        <span>Categories</span>
-                        <span class="menu-item-tooltip">Categories</span>
+                        <span>Kategori</span>
+                        <span class="menu-item-tooltip">Kategori</span>
                     </a>
                     <a href="{{ route('admin.tags.index') }}"
                         class="menu-item {{ request()->routeIs('admin.tags.*') ? 'active' : '' }}">
                         <i class="fas fa-tags"></i>
-                        <span>Tags</span>
-                        <span class="menu-item-tooltip">Tags</span>
+                        <span>Label</span>
+                        <span class="menu-item-tooltip">Label</span>
                     </a>
                     <a href="{{ route('admin.comments.index') }}"
                         class="menu-item {{ request()->routeIs('admin.comments.*') ? 'active' : '' }}">
                         <i class="fas fa-comments"></i>
-                        <span>Comments</span>
+                        <span>Komentar</span>
                         @if (App\Models\Comment::pending()->count() > 0)
                             <span class="menu-badge">{{ App\Models\Comment::pending()->count() }}</span>
                         @endif
-                        <span class="menu-item-tooltip">Comments</span>
+                        <span class="menu-item-tooltip">Komentar</span>
                     </a>
                 </div>
             </div>
@@ -772,7 +772,7 @@
                 <div class="menu-section-header">
                     <div class="menu-section-title">
                         <i class="fas fa-globe"></i>
-                        <span>Landing Page</span>
+                        <span>Halaman Utama</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
@@ -780,38 +780,38 @@
                     <a href="{{ route('admin.sliders.index') }}"
                         class="menu-item {{ request()->routeIs('admin.sliders.*') ? 'active' : '' }}">
                         <i class="fas fa-images"></i>
-                        <span>Sliders</span>
-                        <span class="menu-item-tooltip">Sliders</span>
+                        <span>Banner Slider</span>
+                        <span class="menu-item-tooltip">Banner Slider</span>
                     </a>
                     <a href="{{ route('admin.pages.index') }}"
                         class="menu-item {{ request()->routeIs('admin.pages.*') ? 'active' : '' }}">
                         <i class="fas fa-file-alt"></i>
-                        <span>Pages</span>
-                        <span class="menu-item-tooltip">Pages</span>
+                        <span>Halaman</span>
+                        <span class="menu-item-tooltip">Halaman</span>
                     </a>
                     <a href="{{ route('admin.programs.index') }}"
                         class="menu-item {{ request()->routeIs('admin.programs.*') ? 'active' : '' }}">
                         <i class="fas fa-calendar-check"></i>
-                        <span>Programs</span>
-                        <span class="menu-item-tooltip">Programs</span>
+                        <span>Program Masjid</span>
+                        <span class="menu-item-tooltip">Program Masjid</span>
                     </a>
                     <a href="{{ route('admin.gallery.albums.index') }}"
                         class="menu-item {{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
                         <i class="fas fa-photo-video"></i>
-                        <span>Gallery</span>
-                        <span class="menu-item-tooltip">Gallery</span>
+                        <span>Galeri</span>
+                        <span class="menu-item-tooltip">Galeri</span>
                     </a>
                     <a href="{{ route('admin.schedules.index') }}"
                         class="menu-item {{ request()->routeIs('admin.schedules.*') ? 'active' : '' }}">
                         <i class="fas fa-clock"></i>
-                        <span>Schedules</span>
-                        <span class="menu-item-tooltip">Schedules</span>
+                        <span>Jadwal Kegiatan</span>
+                        <span class="menu-item-tooltip">Jadwal Kegiatan</span>
                     </a>
                     <a href="{{ route('admin.announcements.index') }}"
                         class="menu-item {{ request()->routeIs('admin.announcements.*') ? 'active' : '' }}">
                         <i class="fas fa-bullhorn"></i>
-                        <span>Announcements</span>
-                        <span class="menu-item-tooltip">Announcements</span>
+                        <span>Pengumuman</span>
+                        <span class="menu-item-tooltip">Pengumuman</span>
                     </a>
                 </div>
             </div>
@@ -821,7 +821,7 @@
                 <div class="menu-section-header">
                     <div class="menu-section-title">
                         <i class="fas fa-users"></i>
-                        <span>People</span>
+                        <span>Personalia</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
@@ -829,14 +829,14 @@
                     <a href="{{ route('admin.staff.index') }}"
                         class="menu-item {{ request()->routeIs('admin.staff.*') ? 'active' : '' }}">
                         <i class="fas fa-user-tie"></i>
-                        <span>Staff</span>
-                        <span class="menu-item-tooltip">Staff</span>
+                        <span>Pengurus & Staf</span>
+                        <span class="menu-item-tooltip">Pengurus & Staf</span>
                     </a>
                     <a href="{{ route('admin.testimonials.index') }}"
                         class="menu-item {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">
                         <i class="fas fa-star"></i>
-                        <span>Testimonials</span>
-                        <span class="menu-item-tooltip">Testimonials</span>
+                        <span>Testimoni</span>
+                        <span class="menu-item-tooltip">Testimoni</span>
                     </a>
                 </div>
             </div>
@@ -846,7 +846,7 @@
                 <div class="menu-section-header">
                     <div class="menu-section-title">
                         <i class="fas fa-hand-holding-heart"></i>
-                        <span>Donations</span>
+                        <span>Donasi</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
@@ -854,17 +854,17 @@
                     <a href="{{ route('admin.donations.index') }}"
                         class="menu-item {{ request()->routeIs('admin.donations.*') ? 'active' : '' }}">
                         <i class="fas fa-bullhorn"></i>
-                        <span>Campaigns</span>
-                        <span class="menu-item-tooltip">Campaigns</span>
+                        <span>Program Donasi</span>
+                        <span class="menu-item-tooltip">Program Donasi</span>
                     </a>
                     <a href="{{ route('admin.donation-transactions.index') }}"
                         class="menu-item {{ request()->routeIs('admin.donation-transactions.*') ? 'active' : '' }}">
                         <i class="fas fa-receipt"></i>
-                        <span>Transactions</span>
+                        <span>Transaksi</span>
                         @if (App\Models\DonationTransaction::pending()->count() > 0)
                             <span class="menu-badge">{{ App\Models\DonationTransaction::pending()->count() }}</span>
                         @endif
-                        <span class="menu-item-tooltip">Transactions</span>
+                        <span class="menu-item-tooltip">Transaksi</span>
                     </a>
                 </div>
             </div>
@@ -874,7 +874,7 @@
                 <div class="menu-section-header">
                     <div class="menu-section-title">
                         <i class="fas fa-ellipsis-h"></i>
-                        <span>Others</span>
+                        <span>Lainnya</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
@@ -882,17 +882,17 @@
                     <a href="{{ route('admin.contacts.index') }}"
                         class="menu-item {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
                         <i class="fas fa-envelope"></i>
-                        <span>Contacts</span>
+                        <span>Pesan Masuk</span>
                         @if (App\Models\Contact::where('status', 'new')->count() > 0)
                             <span class="menu-badge">{{ App\Models\Contact::where('status', 'new')->count() }}</span>
                         @endif
-                        <span class="menu-item-tooltip">Contacts</span>
+                        <span class="menu-item-tooltip">Pesan Masuk</span>
                     </a>
                     <a href="{{ route('admin.activity-logs.index') }}"
                         class="menu-item {{ request()->routeIs('admin.activity-logs.*') ? 'active' : '' }}">
                         <i class="fas fa-history"></i>
-                        <span>Activity Logs</span>
-                        <span class="menu-item-tooltip">Activity Logs</span>
+                        <span>Log Aktivitas</span>
+                        <span class="menu-item-tooltip">Log Aktivitas</span>
                     </a>
                 </div>
             </div>
