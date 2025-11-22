@@ -71,7 +71,7 @@ class Page extends Model
     // Accessors
     public function getUrlAttribute(): string
     {
-        return route('pages.show', $this->slug);
+        return route('admin.pages.show', $this->slug);
     }
 
     // Mutators

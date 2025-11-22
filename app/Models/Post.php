@@ -120,7 +120,7 @@ class Post extends Model
     // Accessors
     public function getUrlAttribute(): string
     {
-        return route('posts.show', $this->slug);
+        return route('admin.posts.show', $this->slug);
     }
 
     public function getIsPublishedAttribute(): bool

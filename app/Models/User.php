@@ -43,8 +43,10 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'email_verified_at' => 'datetime:Asia/Jakarta',
+            'created_at' => 'datetime:Asia/Jakarta',
+            'updated_at' => 'datetime:Asia/Jakarta',
         ];
     }
     // ✅ TAMBAHKAN METHOD INI
@@ -53,5 +55,10 @@ class User extends Authenticatable
         return LogOptions::defaults()
             ->logOnly(['name', 'email'])
             ->logOnlyDirty();
+    }
+
+    public function actions()
+    {
+        return $this->morphMany(\Spatie\Activitylog\Models\Activity::class, 'causer');
     }
 }

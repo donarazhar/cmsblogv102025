@@ -414,36 +414,6 @@
                         </a>
                     </div>
                 </div>
-
-                <!-- Delete Card -->
-                <div class="card" style="border: 2px solid var(--danger);">
-                    <div class="card-header" style="background: #fee2e2; border-bottom-color: var(--danger);">
-                        <h3 class="card-title" style="color: var(--danger);">Danger Zone</h3>
-                    </div>
-                    <div class="card-body">
-                        <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 15px;">
-                            Hapus program ini secara permanen. Aksi ini tidak dapat dibatalkan.
-                        </p>
-                        @if ($program->current_participants > 0)
-                            <div style="padding: 12px; background: #fef3c7; border-radius: 8px; margin-bottom: 15px;">
-                                <p style="color: #92400e; font-size: 0.85rem; margin: 0;">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                    <strong>Peringatan:</strong> Ada {{ $program->current_participants }} peserta
-                                    terdaftar!
-                                </p>
-                            </div>
-                        @endif
-                        <form action="{{ route('admin.programs.destroy', $program) }}" method="POST"
-                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus program ini?{{ $program->current_participants > 0 ? ' Program ini memiliki ' . $program->current_participants . ' peserta terdaftar!' : '' }}')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger" style="width: 100%;">
-                                <i class="fas fa-trash"></i>
-                                Hapus Program
-                            </button>
-                        </form>
-                    </div>
-                </div>
             </div>
         </div>
     </form>

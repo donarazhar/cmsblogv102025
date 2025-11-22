@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Program extends Model
 {
@@ -20,44 +21,79 @@ class Program extends Model
         'icon',
         'type',
         'frequency',
-        'location',
         'start_date',
         'end_date',
         'start_time',
         'end_time',
-        'registration_fee',
-        'max_participants',
-        'current_participants',
+        'location',
         'organizer',
         'speaker',
         'contact_person',
         'contact_phone',
-        'order',
-        'is_active',
-        'is_featured',
+        'max_participants',
+        'current_participants',
+        'registration_fee',
         'is_registration_open',
+        'is_featured',
+        'is_active',
+        'order',
     ];
 
     protected $casts = [
+        'is_registration_open' => 'boolean',
+        'is_featured' => 'boolean',
+        'is_active' => 'boolean',
+        'order' => 'integer',
+        'max_participants' => 'integer',
+        'current_participants' => 'integer',
+        'registration_fee' => 'decimal:2',
         'start_date' => 'date',
         'end_date' => 'date',
-        'registration_fee' => 'decimal:2',
-        'is_active' => 'boolean',
-        'is_featured' => 'boolean',
-        'is_registration_open' => 'boolean',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
-    /**
-     * Relationships
-     */
-    public function registrations()
+    protected $appends = ['is_full', 'available_slots', 'registration_percentage'];
+
+    // Auto-generate slug dari name
+    protected static function boot()
     {
-        return $this->hasMany(ProgramRegistration::class);
+        parent::boot();
+
+        static::creating(function ($program) {
+            if (empty($program->slug)) {
+                $program->slug = Str::slug($program->name);
+
+                // Check if slug exists, add number if duplicate
+                $count = static::where('slug', 'LIKE', $program->slug . '%')->count();
+                if ($count > 0) {
+                    $program->slug = $program->slug . '-' . ($count + 1);
+                }
+            }
+        });
+
+        static::updating(function ($program) {
+            if ($program->isDirty('name') && empty($program->slug)) {
+                $program->slug = Str::slug($program->name);
+
+                // Check if slug exists, add number if duplicate
+                $count = static::where('slug', 'LIKE', $program->slug . '%')
+                    ->where('id', '!=', $program->id)
+                    ->count();
+                if ($count > 0) {
+                    $program->slug = $program->slug . '-' . ($count + 1);
+                }
+            }
+        });
     }
 
-    /**
-     * Scopes
-     */
+    // Relationships
+    public function registrations(): HasMany
+    {
+        return $this->hasMany(ProgramRegistration::class, 'program_id');
+    }
+
+    // Scopes
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
@@ -68,49 +104,23 @@ class Program extends Model
         return $query->where('is_featured', true);
     }
 
-    public function scopeOrdered($query)
-    {
-        return $query->orderBy('order', 'asc')->orderBy('created_at', 'desc');
-    }
-
     public function scopeByType($query, $type)
     {
         return $query->where('type', $type);
     }
 
-    public function scopeUpcoming($query)
+    public function scopeOrdered($query)
     {
-        return $query->where(function ($q) {
-            $q->whereNull('start_date')
-              ->orWhere('start_date', '>=', now());
-        });
+        return $query->orderBy('order', 'asc');
     }
 
-    public function scopeOngoing($query)
+    public function scopeRegistrationOpen($query)
     {
-        return $query->where(function ($q) {
-            $q->where(function ($subQ) {
-                $subQ->whereNotNull('start_date')
-                     ->whereNotNull('end_date')
-                     ->where('start_date', '<=', now())
-                     ->where('end_date', '>=', now());
-            })->orWhere(function ($subQ) {
-                $subQ->whereNotNull('start_date')
-                     ->whereNull('end_date')
-                     ->where('start_date', '<=', now());
-            });
-        });
+        return $query->where('is_registration_open', true);
     }
 
-    /**
-     * Accessors
-     */
-    public function getIsFreeAttribute()
-    {
-        return $this->registration_fee == 0;
-    }
-
-    public function getIsFullAttribute()
+    // Accessors
+    public function getIsFullAttribute(): bool
     {
         if (!$this->max_participants) {
             return false;
@@ -118,7 +128,7 @@ class Program extends Model
         return $this->current_participants >= $this->max_participants;
     }
 
-    public function getAvailableSlotsAttribute()
+    public function getAvailableSlotsAttribute(): ?int
     {
         if (!$this->max_participants) {
             return null;
@@ -126,42 +136,11 @@ class Program extends Model
         return max(0, $this->max_participants - $this->current_participants);
     }
 
-    public function getDaysLeftAttribute()
+    public function getRegistrationPercentageAttribute(): float
     {
-        if (!$this->end_date) {
-            return null;
-        }
-        $now = Carbon::now();
-        $endDate = Carbon::parse($this->end_date);
-        
-        if ($endDate->isPast()) {
+        if (!$this->max_participants || $this->max_participants == 0) {
             return 0;
         }
-        
-        return $now->diffInDays($endDate);
-    }
-
-    public function getStatusAttribute()
-    {
-        if (!$this->start_date) {
-            return 'ongoing';
-        }
-
-        $now = Carbon::now();
-        $startDate = Carbon::parse($this->start_date);
-        
-        if ($this->end_date) {
-            $endDate = Carbon::parse($this->end_date);
-            
-            if ($now->isBefore($startDate)) {
-                return 'upcoming';
-            } elseif ($now->isAfter($endDate)) {
-                return 'completed';
-            } else {
-                return 'ongoing';
-            }
-        }
-        
-        return $now->isBefore($startDate) ? 'upcoming' : 'ongoing';
+        return min(100, ($this->current_participants / $this->max_participants) * 100);
     }
 }

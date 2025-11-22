@@ -65,7 +65,7 @@ class Staff extends Model
     // Accessors
     public function getUrlAttribute(): string
     {
-        return route('staff.show', $this->slug);
+        return route('admin.staff.show', $this->slug);
     }
 
     // Mutators

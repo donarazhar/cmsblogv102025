@@ -253,28 +253,7 @@
                             Batal
                         </a>
                     </div>
-                </div>
-
-                <!-- Delete Card -->
-                <div class="card" style="border: 2px solid var(--danger);">
-                    <div class="card-header" style="background: #fee2e2; border-bottom-color: var(--danger);">
-                        <h3 class="card-title" style="color: var(--danger);">Danger Zone</h3>
-                    </div>
-                    <div class="card-body">
-                        <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 15px;">
-                            Hapus slider ini secara permanen. Aksi ini tidak dapat dibatalkan.
-                        </p>
-                        <form action="{{ route('admin.sliders.destroy', $slider) }}" method="POST"
-                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus slider ini? Aksi ini tidak dapat dibatalkan!')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger" style="width: 100%;">
-                                <i class="fas fa-trash"></i>
-                                Hapus Slider
-                            </button>
-                        </form>
-                    </div>
-                </div>
+                </div>                
             </div>
         </div>
     </form>

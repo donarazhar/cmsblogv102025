@@ -15,6 +15,7 @@
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="shortcut icon" href="https://siap.al-azhar.id/upload/favicon.ico" type="image/x-icon" />
 
     <!-- Custom CSS -->
     <style>
@@ -37,6 +38,7 @@
             --light: #f9fafb;
             --border: #e5e7eb;
             --sidebar-width: 280px;
+            --sidebar-collapsed-width: 80px;
             --header-height: 70px;
         }
 
@@ -56,9 +58,14 @@
             background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             overflow-y: auto;
+            overflow-x: hidden;
             transition: all 0.3s ease;
             z-index: 1000;
             box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
         }
 
         .sidebar::-webkit-scrollbar {
@@ -76,6 +83,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            position: relative;
         }
 
         .sidebar-logo {
@@ -93,17 +101,65 @@
 
         .sidebar-title {
             flex: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .sidebar-title {
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
         }
 
         .sidebar-title h3 {
             font-size: 1.2rem;
             font-weight: 700;
             margin-bottom: 2px;
+            white-space: nowrap;
         }
 
         .sidebar-title p {
             font-size: 0.8rem;
             opacity: 0.8;
+            white-space: nowrap;
+        }
+
+        /* Sidebar Toggle Button */
+        .sidebar-toggle {
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .sidebar-toggle:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .sidebar-toggle i {
+            font-size: 0.8rem;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-toggle:hover i {
+            color: white;
+        }
+
+        .sidebar.collapsed .sidebar-toggle i {
+            transform: rotate(180deg);
         }
 
         .sidebar-menu {
@@ -138,11 +194,26 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .sidebar.collapsed .menu-section-title {
+            font-size: 0;
+        }
+
+        .sidebar.collapsed .menu-section-title i {
+            font-size: 1.2rem;
+            margin: 0 auto;
         }
 
         .menu-section-icon {
             font-size: 0.7rem;
             transition: transform 0.3s ease;
+        }
+
+        .sidebar.collapsed .menu-section-icon {
+            display: none;
         }
 
         .menu-section.collapsed .menu-section-icon {
@@ -161,8 +232,13 @@
             opacity: 0;
         }
 
+        .sidebar.collapsed .menu-section-content {
+            display: none;
+        }
+
         .menu-item {
-            display: block;
+            display: flex;
+            align-items: center;
             padding: 12px 20px 12px 35px;
             color: white;
             text-decoration: none;
@@ -170,9 +246,18 @@
             position: relative;
         }
 
+        .sidebar.collapsed .menu-item {
+            padding: 12px 20px;
+            justify-content: center;
+        }
+
         .menu-item:hover {
             background: rgba(255, 255, 255, 0.1);
             padding-left: 40px;
+        }
+
+        .sidebar.collapsed .menu-item:hover {
+            padding-left: 20px;
         }
 
         .menu-item.active {
@@ -184,10 +269,24 @@
             width: 20px;
             margin-right: 12px;
             text-align: center;
+            flex-shrink: 0;
+        }
+
+        .sidebar.collapsed .menu-item i {
+            margin-right: 0;
+            font-size: 1.2rem;
+        }
+
+        .menu-item span {
+            white-space: nowrap;
+        }
+
+        .sidebar.collapsed .menu-item span {
+            display: none;
         }
 
         .menu-badge {
-            float: right;
+            margin-left: auto;
             background: var(--danger);
             padding: 2px 8px;
             border-radius: 10px;
@@ -195,19 +294,32 @@
             font-weight: 600;
         }
 
+        .sidebar.collapsed .menu-badge {
+            display: none;
+        }
+
         /* Dashboard Menu (tidak ada accordion) */
         .menu-dashboard {
             padding: 12px 20px;
-            display: block;
+            display: flex;
+            align-items: center;
             color: white;
             text-decoration: none;
             transition: all 0.3s ease;
             margin-bottom: 10px;
         }
 
+        .sidebar.collapsed .menu-dashboard {
+            justify-content: center;
+        }
+
         .menu-dashboard:hover {
             background: rgba(255, 255, 255, 0.1);
             padding-left: 25px;
+        }
+
+        .sidebar.collapsed .menu-dashboard:hover {
+            padding-left: 20px;
         }
 
         .menu-dashboard.active {
@@ -219,6 +331,20 @@
             width: 25px;
             margin-right: 12px;
             text-align: center;
+            flex-shrink: 0;
+        }
+
+        .sidebar.collapsed .menu-dashboard i {
+            margin-right: 0;
+            font-size: 1.2rem;
+        }
+
+        .menu-dashboard span {
+            white-space: nowrap;
+        }
+
+        .sidebar.collapsed .menu-dashboard span {
+            display: none;
         }
 
         /* Mobile Overlay */
@@ -285,6 +411,10 @@
             margin-left: var(--sidebar-width);
             min-height: 100vh;
             transition: margin-left 0.3s ease;
+        }
+
+        .sidebar.collapsed~.main-content {
+            margin-left: var(--sidebar-collapsed-width);
         }
 
         /* Header */
@@ -486,6 +616,30 @@
             }
         }
 
+        /* Tooltip for collapsed sidebar */
+        .menu-item-tooltip {
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--dark);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            margin-left: 10px;
+            z-index: 1002;
+        }
+
+        .sidebar.collapsed .menu-item:hover .menu-item-tooltip,
+        .sidebar.collapsed .menu-dashboard:hover .menu-item-tooltip {
+            opacity: 1;
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .header-search {
@@ -500,14 +654,19 @@
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
+                width: var(--sidebar-width) !important;
             }
 
             .sidebar.active {
                 transform: translateX(0);
             }
 
+            .sidebar.collapsed {
+                width: var(--sidebar-width) !important;
+            }
+
             .main-content {
-                margin-left: 0;
+                margin-left: 0 !important;
             }
 
             .hamburger {
@@ -530,6 +689,10 @@
                 width: 35px;
                 height: 35px;
             }
+
+            .sidebar-toggle {
+                display: none;
+            }
         }
     </style>
 
@@ -550,6 +713,9 @@
                 <h3>Al Azhar</h3>
                 <p>Admin Panel</p>
             </div>
+            <div class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-chevron-left"></i>
+            </div>
         </div>
 
         <nav class="sidebar-menu">
@@ -558,6 +724,7 @@
                 class="menu-dashboard {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                 <i class="fas fa-home"></i>
                 <span>Dashboard</span>
+                <span class="menu-item-tooltip">Dashboard</span>
             </a>
 
             <!-- Content Section -->
@@ -565,27 +732,37 @@
                 <div class="menu-section-header">
                     <div class="menu-section-title">
                         <i class="fas fa-newspaper"></i>
-                        Content
+                        <span>Content</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
                 <div class="menu-section-content">
-                    <a href="#" class="menu-item">
+                    <a href="{{ route('admin.posts.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.posts.*') ? 'active' : '' }}">
                         <i class="fas fa-file-alt"></i>
                         <span>Posts</span>
+                        <span class="menu-item-tooltip">Posts</span>
                     </a>
-                    <a href="#" class="menu-item">
+                    <a href="{{ route('admin.categories.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
                         <i class="fas fa-folder"></i>
                         <span>Categories</span>
+                        <span class="menu-item-tooltip">Categories</span>
                     </a>
-                    <a href="#" class="menu-item">
+                    <a href="{{ route('admin.tags.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.tags.*') ? 'active' : '' }}">
                         <i class="fas fa-tags"></i>
                         <span>Tags</span>
+                        <span class="menu-item-tooltip">Tags</span>
                     </a>
-                    <a href="#" class="menu-item">
+                    <a href="{{ route('admin.comments.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.comments.*') ? 'active' : '' }}">
                         <i class="fas fa-comments"></i>
                         <span>Comments</span>
-                        <span class="menu-badge">5</span>
+                        @if (App\Models\Comment::pending()->count() > 0)
+                            <span class="menu-badge">{{ App\Models\Comment::pending()->count() }}</span>
+                        @endif
+                        <span class="menu-item-tooltip">Comments</span>
                     </a>
                 </div>
             </div>
@@ -595,7 +772,7 @@
                 <div class="menu-section-header">
                     <div class="menu-section-title">
                         <i class="fas fa-globe"></i>
-                        Landing Page
+                        <span>Landing Page</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
@@ -604,28 +781,37 @@
                         class="menu-item {{ request()->routeIs('admin.sliders.*') ? 'active' : '' }}">
                         <i class="fas fa-images"></i>
                         <span>Sliders</span>
+                        <span class="menu-item-tooltip">Sliders</span>
                     </a>
-                    <a href="#" class="menu-item">
+                    <a href="{{ route('admin.pages.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.pages.*') ? 'active' : '' }}">
                         <i class="fas fa-file-alt"></i>
                         <span>Pages</span>
+                        <span class="menu-item-tooltip">Pages</span>
                     </a>
                     <a href="{{ route('admin.programs.index') }}"
                         class="menu-item {{ request()->routeIs('admin.programs.*') ? 'active' : '' }}">
                         <i class="fas fa-calendar-check"></i>
                         <span>Programs</span>
+                        <span class="menu-item-tooltip">Programs</span>
                     </a>
                     <a href="{{ route('admin.gallery.albums.index') }}"
                         class="menu-item {{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
                         <i class="fas fa-photo-video"></i>
                         <span>Gallery</span>
+                        <span class="menu-item-tooltip">Gallery</span>
                     </a>
-                    <a href="#" class="menu-item">
+                    <a href="{{ route('admin.schedules.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.schedules.*') ? 'active' : '' }}">
                         <i class="fas fa-clock"></i>
                         <span>Schedules</span>
+                        <span class="menu-item-tooltip">Schedules</span>
                     </a>
-                    <a href="#" class="menu-item">
+                    <a href="{{ route('admin.announcements.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.announcements.*') ? 'active' : '' }}">
                         <i class="fas fa-bullhorn"></i>
                         <span>Announcements</span>
+                        <span class="menu-item-tooltip">Announcements</span>
                     </a>
                 </div>
             </div>
@@ -635,18 +821,22 @@
                 <div class="menu-section-header">
                     <div class="menu-section-title">
                         <i class="fas fa-users"></i>
-                        People
+                        <span>People</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
                 <div class="menu-section-content">
-                    <a href="#" class="menu-item">
+                    <a href="{{ route('admin.staff.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.staff.*') ? 'active' : '' }}">
                         <i class="fas fa-user-tie"></i>
                         <span>Staff</span>
+                        <span class="menu-item-tooltip">Staff</span>
                     </a>
-                    <a href="#" class="menu-item">
+                    <a href="{{ route('admin.testimonials.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">
                         <i class="fas fa-star"></i>
                         <span>Testimonials</span>
+                        <span class="menu-item-tooltip">Testimonials</span>
                     </a>
                 </div>
             </div>
@@ -656,19 +846,25 @@
                 <div class="menu-section-header">
                     <div class="menu-section-title">
                         <i class="fas fa-hand-holding-heart"></i>
-                        Donations
+                        <span>Donations</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
                 <div class="menu-section-content">
-                    <a href="#" class="menu-item">
+                    <a href="{{ route('admin.donations.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.donations.*') ? 'active' : '' }}">
                         <i class="fas fa-bullhorn"></i>
                         <span>Campaigns</span>
+                        <span class="menu-item-tooltip">Campaigns</span>
                     </a>
-                    <a href="#" class="menu-item">
+                    <a href="{{ route('admin.donation-transactions.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.donation-transactions.*') ? 'active' : '' }}">
                         <i class="fas fa-receipt"></i>
                         <span>Transactions</span>
-                        <span class="menu-badge">3</span>
+                        @if (App\Models\DonationTransaction::pending()->count() > 0)
+                            <span class="menu-badge">{{ App\Models\DonationTransaction::pending()->count() }}</span>
+                        @endif
+                        <span class="menu-item-tooltip">Transactions</span>
                     </a>
                 </div>
             </div>
@@ -678,19 +874,25 @@
                 <div class="menu-section-header">
                     <div class="menu-section-title">
                         <i class="fas fa-ellipsis-h"></i>
-                        Others
+                        <span>Others</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
                 <div class="menu-section-content">
-                    <a href="#" class="menu-item">
+                    <a href="{{ route('admin.contacts.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
                         <i class="fas fa-envelope"></i>
                         <span>Contacts</span>
-                        <span class="menu-badge">2</span>
+                        @if (App\Models\Contact::where('status', 'new')->count() > 0)
+                            <span class="menu-badge">{{ App\Models\Contact::where('status', 'new')->count() }}</span>
+                        @endif
+                        <span class="menu-item-tooltip">Contacts</span>
                     </a>
-                    <a href="#" class="menu-item">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
+                    <a href="{{ route('admin.activity-logs.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.activity-logs.*') ? 'active' : '' }}">
+                        <i class="fas fa-history"></i>
+                        <span>Activity Logs</span>
+                        <span class="menu-item-tooltip">Activity Logs</span>
                     </a>
                 </div>
             </div>
@@ -764,11 +966,44 @@
 
     <!-- JavaScript -->
     <script>
-        // Accordion Menu
+        // Sidebar Toggle (Desktop)
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        // Load saved state
+        const isSidebarCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+        if (isSidebarCollapsed) {
+            sidebar.classList.add('collapsed');
+        }
+
+        sidebarToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            sidebar.classList.toggle('collapsed');
+
+            // Save state to localStorage
+            const isCollapsed = sidebar.classList.contains('collapsed');
+            localStorage.setItem('sidebar-collapsed', isCollapsed);
+        });
+
+        // Accordion Menu with Auto-close other sections
         document.querySelectorAll('.menu-section-header').forEach(header => {
             header.addEventListener('click', function() {
                 const section = this.parentElement;
                 const isCollapsed = section.classList.contains('collapsed');
+
+                // Jika sidebar dalam mode collapsed di desktop, jangan buka accordion
+                if (window.innerWidth > 768 && sidebar.classList.contains('collapsed')) {
+                    return;
+                }
+
+                // Close all other sections (auto-close)
+                document.querySelectorAll('.menu-section').forEach(otherSection => {
+                    if (otherSection !== section) {
+                        otherSection.classList.add('collapsed');
+                        const sectionName = otherSection.dataset.section;
+                        localStorage.setItem('menu-collapsed-' + sectionName, 'true');
+                    }
+                });
 
                 // Toggle current section
                 section.classList.toggle('collapsed');
@@ -794,7 +1029,6 @@
 
         // Mobile Hamburger Menu
         const hamburger = document.getElementById('hamburger');
-        const sidebar = document.getElementById('sidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
 
         hamburger.addEventListener('click', function() {
@@ -823,6 +1057,17 @@
                 });
             });
         }
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                // Reset mobile styles on desktop
+                hamburger.classList.remove('active');
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
     </script>
 
     @stack('scripts')

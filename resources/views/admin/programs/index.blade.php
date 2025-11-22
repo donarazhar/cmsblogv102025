@@ -149,7 +149,7 @@
 
                 <!-- Pagination -->
                 <div class="card-footer">
-                    {{ $programs->links() }}
+                    {{ $programs->links('vendor.pagination.simple') }}
                 </div>
             @else
                 <div class="empty-state">

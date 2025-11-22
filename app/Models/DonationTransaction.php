@@ -77,7 +77,25 @@ class DonationTransaction extends Model
         return $query->orderBy('created_at', 'desc');
     }
 
-    // Methods
+    public function updateAmount($amount)
+    {
+        // Increment or decrement current amount
+        $this->increment('current_amount', $amount);
+
+        // Update progress percentage
+        if ($this->target_amount > 0) {
+            $this->progress_percentage = min(($this->current_amount / $this->target_amount) * 100, 100);
+            $this->save();
+        }
+
+        // Update donor count if adding
+        if ($amount > 0) {
+            $this->increment('donor_count');
+        }
+    }
+
+    // app/Models/DonationTransaction.php
+
     public function verify($verifier_id)
     {
         $this->update([

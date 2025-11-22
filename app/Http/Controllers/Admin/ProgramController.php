@@ -12,9 +12,16 @@ class ProgramController extends Controller
 {
     public function index()
     {
-        $programs = Program::with('registrations')
-            ->ordered()
-            ->paginate(15);
+        // Jika model ProgramRegistration ada, gunakan withCount
+        // Jika tidak ada, jangan gunakan eager loading
+        try {
+            $programs = Program::withCount('registrations')
+                ->ordered()
+                ->paginate(15);
+        } catch (\Exception $e) {
+            // Fallback jika tabel registrations belum ada
+            $programs = Program::ordered()->paginate(15);
+        }
 
         return view('admin.programs.index', compact('programs'));
     }

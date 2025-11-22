@@ -49,7 +49,7 @@ class Tag extends Model
     // Accessors
     public function getUrlAttribute(): string
     {
-        return route('tags.show', $this->slug);
+        return route('admin.tags.show', $this->slug);
     }
 
     public function getPostsCountAttribute(): int

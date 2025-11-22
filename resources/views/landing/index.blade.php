@@ -294,22 +294,205 @@
         });
     </script>
 
-    <!-- Announcements -->
+    <!-- Announcements with Running Text Animation -->
     @if ($announcements->count() > 0)
-        <section style="background: var(--warning); padding: 20px 0;">
+        <section class="announcement-bar">
             <div class="container">
-                <div style="display: flex; align-items: center; gap: 20px; overflow-x: auto;">
-                    <i class="fas fa-bullhorn" style="font-size: 1.5rem; color: white; flex-shrink: 0;"></i>
-                    <div style="flex: 1; overflow: hidden;">
-                        @foreach ($announcements as $announcement)
-                            <p style="color: white; font-weight: 600; margin-bottom: 5px;">
-                                {{ $announcement->title }}
-                            </p>
-                        @endforeach
+                <div class="announcement-wrapper">
+                    <!-- Icon -->
+                    <div class="announcement-icon">
+                        <i class="fas fa-bullhorn"></i>
+                        <span class="announcement-label">Pengumuman</span>
+                    </div>
+
+                    <!-- Running Text Container -->
+                    <div class="announcement-content">
+                        <div class="announcement-marquee">
+                            <div class="announcement-track">
+                                @foreach ($announcements as $announcement)
+                                    <span class="announcement-item">
+                                        <i class="fas fa-circle" style="font-size: 6px; margin: 0 15px;"></i>
+                                        {{ $announcement->title }}
+                                    </span>
+                                @endforeach
+                                <!-- Duplicate untuk seamless loop -->
+                                @foreach ($announcements as $announcement)
+                                    <span class="announcement-item">
+                                        <i class="fas fa-circle" style="font-size: 6px; margin: 0 15px;"></i>
+                                        {{ $announcement->title }}
+                                    </span>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
+
+        <style>
+            .announcement-bar {
+                background: linear-gradient(135deg, #0053C5 0%,rgb(33, 120, 241) 100%);
+                padding: 0;
+                position: relative;
+                overflow: hidden;
+                box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+                z-index: 100;
+            }
+
+            .announcement-bar::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                animation: shine 3s infinite;
+            }
+
+            @keyframes shine {
+                0% {
+                    left: -100%;
+                }
+
+                100% {
+                    left: 100%;
+                }
+            }
+
+            .announcement-wrapper {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+                padding: 15px 0;
+                position: relative;
+            }
+
+            .announcement-icon {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                flex-shrink: 0;
+                color: white;
+                background: rgba(255, 255, 255, 0.2);
+                padding: 12px 20px;
+                border-radius: 50px;
+                backdrop-filter: blur(10px);
+            }
+
+            .announcement-icon i {
+                font-size: 1.3rem;
+                animation: pulse 2s ease-in-out infinite;
+            }
+
+            @keyframes pulse {
+
+                0%,
+                100% {
+                    transform: scale(1);
+                }
+
+                50% {
+                    transform: scale(1.1);
+                }
+            }
+
+            .announcement-label {
+                font-weight: 700;
+                font-size: 0.9rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            .announcement-content {
+                flex: 1;
+                overflow: hidden;
+                position: relative;
+                mask-image: linear-gradient(to right,
+                        transparent 0%,
+                        black 5%,
+                        black 95%,
+                        transparent 100%);
+                -webkit-mask-image: linear-gradient(to right,
+                        transparent 0%,
+                        black 5%,
+                        black 95%,
+                        transparent 100%);
+            }
+
+            .announcement-marquee {
+                display: flex;
+                overflow: hidden;
+            }
+
+            .announcement-track {
+                display: flex;
+                animation: scroll 30s linear infinite;
+                will-change: transform;
+            }
+
+            .announcement-track:hover {
+                animation-play-state: paused;
+            }
+
+            @keyframes scroll {
+                0% {
+                    transform: translateX(0);
+                }
+
+                100% {
+                    transform: translateX(-50%);
+                }
+            }
+
+            .announcement-item {
+                color: white;
+                font-weight: 600;
+                font-size: 1rem;
+                white-space: nowrap;
+                display: inline-flex;
+                align-items: center;
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                .announcement-wrapper {
+                    gap: 10px;
+                    padding: 12px 0;
+                }
+
+                .announcement-icon {
+                    padding: 10px 15px;
+                    gap: 8px;
+                }
+
+                .announcement-icon i {
+                    font-size: 1.1rem;
+                }
+
+                .announcement-label {
+                    display: none;
+                }
+
+                .announcement-item {
+                    font-size: 0.9rem;
+                }
+
+                .announcement-track {
+                    animation-duration: 20s;
+                }
+
+                .announcement-close {
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+
+            /* Hidden state */
+            .announcement-bar.hidden {
+                display: none;
+            }
+        </style>
     @endif
 
     <!-- Statistics -->
@@ -1574,7 +1757,8 @@
                     <div class="staff-card" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                         <div class="staff-photo">
                             @if ($person->photo)
-                                <img src="{{ asset('storage/' . $person->photo) }}" alt="{{ $person->name }}" loading="lazy">
+                                <img src="{{ asset('storage/' . $person->photo) }}" alt="{{ $person->name }}"
+                                    loading="lazy">
                             @else
                                 <div class="photo-placeholder">{{ strtoupper(substr($person->name, 0, 1)) }}</div>
                             @endif

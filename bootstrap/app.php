@@ -11,8 +11,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Alias middleware
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        ]);
+
+        // Track user activity di semua web routes
+        $middleware->web(append: [
+            \App\Http\Middleware\TrackFrontendActivity::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
