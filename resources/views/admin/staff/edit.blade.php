@@ -361,13 +361,22 @@
                     <h3 class="section-title"><i class="fas fa-camera"></i> Foto</h3>
 
                     <div class="form-group">
-                        <label class="form-label">Upload Foto Baru</label>
                         @if ($staff->photo)
-                            <div class="photo-preview" style="display:block;margin-bottom:15px">
-                                <img src="{{ asset('storage/' . $staff->photo) }}" alt="{{ $staff->name }}"
-                                    id="previewImage">
+                            <label class="form-label">Foto Saat Ini</label>
+                            <div class="photo-preview" style="display:block; margin-bottom:15px">
+                                <img src="{{ Storage::disk('public')->url($staff->photo) }}" alt="{{ $staff->name }}"
+                                    id="currentPhoto"
+                                    onerror="this.onerror=null; this.src='https://via.placeholder.com/300x300?text=No+Image';">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <a href="{{ route('admin.staff.remove-photo', $staff) }}" class="btn btn-sm btn-danger"
+                                    onclick="return confirm('Yakin ingin menghapus foto ini?')">
+                                    <i class="fas fa-trash"></i> Hapus Foto
+                                </a>
                             </div>
                         @endif
+
+                        <label class="form-label">Upload Foto Baru</label>
                         <div class="photo-upload" onclick="document.getElementById('photo').click()">
                             <i class="fas fa-cloud-upload-alt"
                                 style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"></i>
@@ -376,6 +385,15 @@
                         </div>
                         <input type="file" id="photo" name="photo" style="display: none;" accept="image/*"
                             onchange="previewPhoto(this)">
+
+                        <!-- Preview foto baru yang akan diupload -->
+                        <div id="newPhotoPreview" style="display: none; margin-top: 15px;">
+                            <label class="form-label">Preview Foto Baru</label>
+                            <div class="photo-preview">
+                                <img id="previewImage" src="" alt="Preview">
+                            </div>
+                        </div>
+
                         @error('photo')
                             <div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div>
                         @enderror
@@ -518,13 +536,18 @@
             this.dataset.manualEdit = 'true';
         });
 
-        // Photo preview
+        // Photo preview untuk foto baru
         function previewPhoto(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
+                const newPhotoPreview = document.getElementById('newPhotoPreview');
+                const previewImage = document.getElementById('previewImage');
+
                 reader.onload = function(e) {
-                    document.getElementById('previewImage').src = e.target.result;
+                    previewImage.src = e.target.result;
+                    newPhotoPreview.style.display = 'block';
                 };
+
                 reader.readAsDataURL(input.files[0]);
             }
         }

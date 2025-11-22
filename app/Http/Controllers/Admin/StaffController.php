@@ -194,6 +194,16 @@ class StaffController extends Controller
             ->with('success', 'Staff berhasil diperbarui!');
     }
 
+    public function removePhoto(Staff $staff)
+    {
+        if ($staff->photo && Storage::disk('public')->exists($staff->photo)) {
+            Storage::disk('public')->delete($staff->photo);
+            $staff->update(['photo' => null]);
+        }
+
+        return redirect()->back()->with('success', 'Foto berhasil dihapus!');
+    }
+
     public function destroy(Staff $staff)
     {
         // Delete photo

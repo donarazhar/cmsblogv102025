@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class Staff extends Model
 {
@@ -73,5 +74,22 @@ class Staff extends Model
     {
         $this->attributes['name'] = $value;
         $this->attributes['slug'] = $this->attributes['slug'] ?? Str::slug($value);
+    }
+
+    /**
+     * Get photo URL
+     */
+    public function getPhotoUrlAttribute()
+    {
+        if (!$this->photo) {
+            return 'https://via.placeholder.com/300x300?text=No+Image';
+        }
+
+        // Cek apakah file exists
+        if (Storage::disk('public')->exists($this->photo)) {
+            return Storage::disk('public')->url($this->photo);
+        }
+
+        return 'https://via.placeholder.com/300x300?text=No+Image';
     }
 }

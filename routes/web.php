@@ -15,11 +15,13 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProgramController;
 use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\LandingController;
 use Illuminate\Support\Facades\Route;
+
 
 
 /*
@@ -125,11 +127,12 @@ Route::middleware('auth')->group(function () {
             ->name('comments.bulk-action');
 
         // Staff Routes
-        Route::resource('staff', \App\Http\Controllers\Admin\StaffController::class);
-        Route::delete('staff/bulk-delete', [\App\Http\Controllers\Admin\StaffController::class, 'bulkDelete'])
+        Route::resource('staff', StaffController::class);
+        Route::delete('staff/bulk-delete', [StaffController::class, 'bulkDelete'])
             ->name('staff.bulk-delete');
-        Route::post('staff/update-order', [\App\Http\Controllers\Admin\StaffController::class, 'updateOrder'])
+        Route::post('staff/update-order', [StaffController::class, 'updateOrder'])
             ->name('staff.update-order');
+        Route::get('staff/{staff}/remove-photo', [StaffController::class, 'removePhoto'])->name('staff.remove-photo');
 
         // Testimonials
         Route::resource('testimonials', TestimonialController::class);
