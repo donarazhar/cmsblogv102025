@@ -510,7 +510,7 @@
     <nav class="navbar" id="navbar">
         <div class="navbar-container">
             <a href="{{ route('home') }}" class="navbar-brand">
-                <img src="{{ asset('img/ypia.png') }}" alt="{{ setting('site_name', 'Al Azhar') }}"
+                <img src="{{ asset('assets/img/ypia.png') }}" alt="{{ setting('site_name', 'Al Azhar') }}"
                     class="navbar-logo-img">
                 <span>{{ setting('site_name', 'Al Azhar') }}</span>
             </a>
