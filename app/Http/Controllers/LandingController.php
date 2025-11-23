@@ -2,165 +2,140 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Announcement;
-use App\Models\Category;
-use App\Models\Donation;
-use App\Models\Gallery;
-use App\Models\GalleryAlbum;
-use App\Models\Post;
-use App\Models\Program;
-use App\Models\Schedule;
-use App\Models\Setting;
-use App\Models\Slider;
-use App\Models\Staff;
-use App\Models\Testimonial;
-use App\Models\DonationTransaction;
+use App\Models\{
+    Announcement,
+    Category,
+    Donation,
+    DonationTransaction,
+    Gallery,
+    GalleryAlbum,
+    Post,
+    Program,
+    Schedule,
+    Slider,
+    Staff,
+    Testimonial
+};
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class LandingController extends Controller
 {
     /**
-     * Display landing page
+     * Display landing page with optimized caching
      */
     public function index()
     {
-        // Hero Sliders - limit dan select specific columns
-        $sliders = Slider::active()
-            ->ordered()
-            ->select('id', 'title', 'subtitle', 'description', 'image', 'button_text', 'button_link', 'button_text_2', 'button_link_2', 'text_position', 'overlay_color', 'overlay_opacity')
-            ->limit(5)
-            ->get();
-
-        // Latest Posts - dengan eager loading
-        $latestPosts = Post::published()
-            ->with(['category:id,name,slug', 'author:id,name', 'tags:id,name,slug'])
-            ->latest('published_at')
-            ->limit(3)
-            ->get();
-
-        // Featured Posts
-        $featuredPosts = Post::published()
-            ->featured()
-            ->with(['category:id,name,slug', 'author:id,name'])
-            ->limit(3)
-            ->get();
-
-        // Categories
-        $categories = Category::active()
-            ->withCount(['posts' => function ($query) {
-                $query->where('status', 'published');
-            }])
-            ->ordered()
-            ->limit(3)
-            ->get();
-
-        // Active Programs
-        $programs = Program::active()
-            ->featured()
-            ->ordered()
-            ->select('id', 'name', 'slug', 'description', 'image', 'icon', 'type', 'frequency', 'location', 'start_time')
-            ->limit(4)
-            ->get();
-
-        // Gallery - Featured Images
-        $galleries = Gallery::active()
-            ->featured()
-            ->images()
-            ->ordered()
-            ->select('id', 'title', 'description', 'image')
-            ->limit(6)
-            ->get();
-
-        // Gallery Albums
-        $albums = GalleryAlbum::active()
-            ->withCount('galleries')
-            ->latest('event_date')
-            ->select('id', 'name', 'slug', 'cover_image', 'event_date')
-            ->limit(3)
-            ->get();
-
-        // Today's Schedule
-        $todaySchedules = Schedule::active()
-            ->today()
-            ->orderBy('start_time', 'asc')
-            ->select('id', 'title', 'type', 'start_time', 'end_time', 'location', 'imam', 'speaker', 'color')
-            ->limit(3)
-            ->get();
-
-        // Upcoming Events
-        $upcomingEvents = Schedule::active()
-            ->where('type', 'event')
-            ->upcoming(30)
-            ->select('id', 'title', 'date', 'start_time', 'end_time', 'location')
-            ->limit(3)
-            ->get();
-
-        // Active Announcements
-        $announcements = Announcement::active()
-            ->onHomepage()
-            ->byPriority()
-            ->ordered()
-            ->select('id', 'title', 'content', 'type', 'priority')
-            ->limit(3)
-            ->get();
-
-        // Featured Staff
-        $staff = Staff::active()
-            ->featured()
-            ->ordered()
-            ->select('id', 'name', 'position', 'photo', 'slug')
-            ->limit(3)
-            ->get();
-
-        // Testimonials
-        $testimonials = Testimonial::approved()
-            ->featured()
-            ->ordered()
-            ->select('id', 'name', 'role', 'company', 'content', 'photo', 'rating')
-            ->limit(6)
-            ->get();
-
-        // Active Donations
-        $donations = Donation::active()
-            ->ongoing()
-            ->featured()
-            ->ordered()
-            ->select('id', 'campaign_name', 'slug', 'description', 'image', 'category', 'target_amount', 'current_amount', 'donor_count', 'end_date')
-            ->limit(3)
-            ->get();
-
-        // Statistics - use cache
-        $stats = cache()->remember('landing_stats', 3600, function () {
+        // Cache ALL data in one go - 5 minutes cache
+        $data = Cache::remember('landing_page_complete_v3', 300, function () {
             return [
-                'total_posts' => Post::published()->count(),
-                'total_programs' => Program::active()->count(),
-                'total_donations' => Donation::active()->sum('current_amount'),
-                'total_testimonials' => Testimonial::approved()->count(),
+                // Hero Sliders
+                'sliders' => Slider::active()
+                    ->ordered()
+                    ->select('id', 'title', 'subtitle', 'description', 'image', 'button_text', 'button_link', 'button_text_2', 'button_link_2', 'text_position', 'overlay_color', 'overlay_opacity')
+                    ->limit(5)
+                    ->get(),
+
+                // Announcements
+                'announcements' => Announcement::active()
+                    ->onHomepage()
+                    ->byPriority()
+                    ->ordered()
+                    ->select('id', 'title', 'type', 'priority')
+                    ->limit(5)
+                    ->get(),
+
+                // Programs
+                'programs' => Program::active()
+                    ->featured()
+                    ->ordered()
+                    ->select('id', 'name', 'slug', 'description', 'image', 'icon', 'type', 'frequency', 'location', 'start_time')
+                    ->limit(4)
+                    ->get(),
+
+                // Latest Posts
+                'latestPosts' => Post::published()
+                    ->whereHas('category')
+                    ->whereHas('author')
+                    ->with(['category:id,name,slug', 'author:id,name'])
+                    ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'published_at', 'category_id', 'author_id', 'views_count')
+                    ->latest('published_at')
+                    ->limit(6)
+                    ->get(),
+
+                // Featured Posts
+                'featuredPosts' => Post::published()
+                    ->featured()
+                    ->whereHas('category')
+                    ->whereHas('author')
+                    ->with(['category:id,name,slug', 'author:id,name'])
+                    ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'published_at', 'category_id', 'author_id', 'views_count')
+                    ->limit(3)
+                    ->get(),
+
+                // Gallery
+                'galleries' => Gallery::active()
+                    ->featured()
+                    ->images()
+                    ->ordered()
+                    ->select('id', 'title', 'description', 'image')
+                    ->limit(6)
+                    ->get(),
+
+                // Gallery Albums
+                'albums' => GalleryAlbum::active()
+                    ->withCount('galleries')
+                    ->latest('event_date')
+                    ->select('id', 'name', 'slug', 'cover_image', 'event_date')
+                    ->limit(3)
+                    ->get(),
+
+                // Today's Schedule
+                'todaySchedules' => Schedule::active()
+                    ->today()
+                    ->orderBy('start_time', 'asc')
+                    ->select('id', 'title', 'type', 'start_time', 'end_time', 'location', 'imam', 'speaker', 'color')
+                    ->limit(3)
+                    ->get(),
+
+                // Upcoming Events
+                'upcomingEvents' => Schedule::active()
+                    ->where('type', 'event')
+                    ->upcoming(30)
+                    ->select('id', 'title', 'date', 'start_time', 'end_time', 'location')
+                    ->limit(3)
+                    ->get(),
+
+                // Testimonials
+                'testimonials' => Testimonial::approved()
+                    ->featured()
+                    ->ordered()
+                    ->select('id', 'name', 'role', 'company', 'content', 'photo', 'rating')
+                    ->limit(6)
+                    ->get(),
+
+                // Donations
+                'donations' => Donation::active()
+                    ->ongoing()
+                    ->featured()
+                    ->ordered()
+                    ->select('id', 'campaign_name', 'slug', 'description', 'image', 'category', 'target_amount', 'current_amount', 'donor_count', 'end_date')
+                    ->limit(3)
+                    ->get(),
+
+                // Categories
+                'categories' => Category::active()
+                    ->withCount(['posts' => function ($query) {
+                        $query->where('status', 'published');
+                    }])
+                    ->ordered()
+                    ->select('id', 'name', 'slug', 'description', 'icon')
+                    ->limit(3)
+                    ->get(),
             ];
         });
 
-        // Settings - use cache
-        $settings = cache()->remember('settings_all', 3600, function () {
-            return Setting::pluck('value', 'key')->toArray();
-        });
-
-        return view('landing.index', compact(
-            'sliders',
-            'latestPosts',
-            'featuredPosts',
-            'categories',
-            'programs',
-            'galleries',
-            'albums',
-            'todaySchedules',
-            'upcomingEvents',
-            'announcements',
-            'staff',
-            'testimonials',
-            'donations',
-            'stats',
-            'settings'
-        ));
+        return view('landing.index', $data);
     }
 
     /**
@@ -168,10 +143,16 @@ class LandingController extends Controller
      */
     public function about()
     {
-        $staff = Staff::active()->ordered()->get();
-        $settings = Setting::getAll();
+        $data = Cache::remember('about_page_data_v2', 300, function () {
+            return [
+                'staff' => Staff::active()
+                    ->ordered()
+                    ->select('id', 'name', 'slug', 'position', 'department', 'photo', 'biography', 'email', 'phone')
+                    ->get(),
+            ];
+        });
 
-        return view('landing.about', compact('staff', 'settings'));
+        return view('landing.about', $data);
     }
 
     /**
@@ -179,10 +160,12 @@ class LandingController extends Controller
      */
     public function programs()
     {
-        $programs = Program::active()->ordered()->paginate(12);
-        $settings = Setting::getAll();
+        $programs = Program::active()
+            ->ordered()
+            ->select('id', 'name', 'slug', 'description', 'image', 'type', 'frequency', 'location', 'start_date', 'start_time', 'registration_fee')
+            ->paginate(12);
 
-        return view('landing.programs', compact('programs', 'settings'));
+        return view('landing.programs', compact('programs'));
     }
 
     /**
@@ -190,16 +173,22 @@ class LandingController extends Controller
      */
     public function programDetail($slug)
     {
-        $program = Program::where('slug', $slug)->where('is_active', true)->firstOrFail();
-        $relatedPrograms = Program::active()
-            ->where('id', '!=', $program->id)
-            ->where('type', $program->type)
-            ->limit(3)
-            ->get();
+        $data = Cache::remember("program_detail_{$slug}_v2", 600, function () use ($slug) {
+            $program = Program::where('slug', $slug)
+                ->where('is_active', true)
+                ->firstOrFail();
 
-        $settings = Setting::getAll();
+            $relatedPrograms = Program::active()
+                ->where('id', '!=', $program->id)
+                ->where('type', $program->type)
+                ->select('id', 'name', 'slug', 'description', 'image', 'type', 'icon')
+                ->limit(3)
+                ->get();
 
-        return view('landing.program-detail', compact('program', 'relatedPrograms', 'settings'));
+            return compact('program', 'relatedPrograms');
+        });
+
+        return view('landing.program-detail', $data);
     }
 
     /**
@@ -207,33 +196,60 @@ class LandingController extends Controller
      */
     public function blog(Request $request)
     {
-        $query = Post::published()->with(['category', 'author', 'tags']);
+        $query = Post::published()
+            ->whereHas('category')
+            ->whereHas('author')
+            ->with([
+                'category:id,name,slug',
+                'author:id,name',
+                'tags:id,name,slug'
+            ])
+            ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'published_at', 'category_id', 'author_id', 'views_count', 'reading_time');
 
-        // Filter by category
-        if ($request->has('category')) {
+        if ($request->filled('category')) {
             $query->whereHas('category', function ($q) use ($request) {
                 $q->where('slug', $request->category);
             });
         }
 
-        // Filter by tag
-        if ($request->has('tag')) {
+        if ($request->filled('tag')) {
             $query->whereHas('tags', function ($q) use ($request) {
                 $q->where('slug', $request->tag);
             });
         }
 
-        // Search
-        if ($request->has('search')) {
-            $query->search($request->search);
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('excerpt', 'like', "%{$search}%")
+                    ->orWhere('content', 'like', "%{$search}%");
+            });
         }
 
         $posts = $query->latest('published_at')->paginate(6);
-        $categories = Category::active()->withCount('posts')->ordered()->get();
-        $popularPosts = Post::published()->popular(5)->get();
-        $settings = Setting::getAll();
 
-        return view('landing.blog', compact('posts', 'categories', 'popularPosts', 'settings'));
+        $sidebarData = Cache::remember('blog_sidebar_data_v2', 300, function () {
+            return [
+                'categories' => Category::active()
+                    ->withCount(['posts' => function ($q) {
+                        $q->where('status', 'published');
+                    }])
+                    ->ordered()
+                    ->select('id', 'name', 'slug')
+                    ->get(),
+
+                'popularPosts' => Post::published()
+                    ->whereHas('category')
+                    ->orderBy('views_count', 'desc')
+                    ->select('id', 'title', 'slug', 'featured_image', 'published_at', 'category_id')
+                    ->with('category:id,name,slug')
+                    ->limit(5)
+                    ->get(),
+            ];
+        });
+
+        return view('landing.blog', array_merge(compact('posts'), $sidebarData));
     }
 
     /**
@@ -243,22 +259,34 @@ class LandingController extends Controller
     {
         $post = Post::where('slug', $slug)
             ->where('status', 'published')
-            ->with(['category', 'author', 'tags', 'approvedComments.user'])
+            ->with([
+                'category:id,name,slug',
+                'author:id,name',
+                'tags:id,name,slug',
+                'approvedComments.user:id,name'
+            ])
             ->firstOrFail();
 
-        // Increment views
-        $post->incrementViews();
+        dispatch(function () use ($post) {
+            $post->increment('views_count');
+        })->afterResponse();
 
-        // Related posts
-        $relatedPosts = Post::published()
-            ->where('id', '!=', $post->id)
-            ->where('category_id', $post->category_id)
-            ->limit(3)
-            ->get();
+        $relatedPosts = Cache::remember("related_posts_cat_{$post->category_id}_v2", 300, function () use ($post) {
+            return Post::published()
+                ->whereHas('category')
+                ->whereHas('author')
+                ->where('id', '!=', $post->id)
+                ->where('category_id', $post->category_id)
+                ->with([
+                    'category:id,name,slug',
+                    'author:id,name'
+                ])
+                ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'published_at', 'category_id', 'author_id')
+                ->limit(3)
+                ->get();
+        });
 
-        $settings = Setting::getAll();
-
-        return view('landing.blog-detail', compact('post', 'relatedPosts', 'settings'));
+        return view('landing.blog-detail', compact('post', 'relatedPosts'));
     }
 
     /**
@@ -269,11 +297,10 @@ class LandingController extends Controller
         $albums = GalleryAlbum::active()
             ->withCount('galleries')
             ->latest('event_date')
+            ->select('id', 'name', 'slug', 'description', 'cover_image', 'event_date')
             ->paginate(12);
 
-        $settings = Setting::getAll();
-
-        return view('landing.gallery', compact('albums', 'settings'));
+        return view('landing.gallery', compact('albums'));
     }
 
     /**
@@ -281,15 +308,21 @@ class LandingController extends Controller
      */
     public function galleryAlbum($slug)
     {
-        $album = GalleryAlbum::where('slug', $slug)->where('is_active', true)->firstOrFail();
-        $galleries = Gallery::where('album_id', $album->id)
-            ->where('is_active', true)
-            ->ordered()
-            ->get();
+        $data = Cache::remember("gallery_album_{$slug}_v2", 600, function () use ($slug) {
+            $album = GalleryAlbum::where('slug', $slug)
+                ->where('is_active', true)
+                ->firstOrFail();
 
-        $settings = Setting::getAll();
+            $galleries = Gallery::where('album_id', $album->id)
+                ->where('is_active', true)
+                ->ordered()
+                ->select('id', 'title', 'description', 'image', 'type')
+                ->get();
 
-        return view('landing.gallery-album', compact('album', 'galleries', 'settings'));
+            return compact('album', 'galleries');
+        });
+
+        return view('landing.gallery-album', $data);
     }
 
     /**
@@ -297,9 +330,7 @@ class LandingController extends Controller
      */
     public function contact()
     {
-        $settings = Setting::getAll();
-
-        return view('landing.contact', compact('settings'));
+        return view('landing.contact');
     }
 
     /**
@@ -312,7 +343,7 @@ class LandingController extends Controller
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:20',
             'subject' => 'required|string|max:255',
-            'message' => 'required|string',
+            'message' => 'required|string|max:1000',
         ], [
             'name.required' => 'Nama harus diisi',
             'email.required' => 'Email harus diisi',
@@ -343,25 +374,28 @@ class LandingController extends Controller
         $donations = Donation::active()
             ->ongoing()
             ->ordered()
+            ->select('id', 'campaign_name', 'slug', 'description', 'image', 'category', 'target_amount', 'current_amount', 'donor_count', 'end_date')
             ->paginate(12);
 
-        $featuredDonations = Donation::active()
-            ->featured()
-            ->ongoing()
-            ->ordered()
-            ->limit(3)
-            ->get();
+        $cachedData = Cache::remember('donations_page_data_v2', 300, function () {
+            return [
+                'featuredDonations' => Donation::active()
+                    ->featured()
+                    ->ongoing()
+                    ->ordered()
+                    ->select('id', 'campaign_name', 'slug', 'description', 'image', 'target_amount', 'current_amount', 'donor_count')
+                    ->limit(3)
+                    ->get(),
 
-        // Statistics
-        $stats = [
-            'total_collected' => Donation::sum('current_amount'),
-            'total_donors' => DonationTransaction::where('status', 'verified')->count(),
-            'active_campaigns' => Donation::active()->ongoing()->count(),
-        ];
+                'stats' => [
+                    'total_collected' => Donation::sum('current_amount'),
+                    'total_donors' => DonationTransaction::where('status', 'verified')->distinct('donor_email')->count(),
+                    'active_campaigns' => Donation::active()->ongoing()->count(),
+                ],
+            ];
+        });
 
-        $settings = Setting::getAll();
-
-        return view('landing.donations', compact('donations', 'featuredDonations', 'stats', 'settings'));
+        return view('landing.donations', array_merge(compact('donations'), $cachedData));
     }
 
     /**
@@ -373,24 +407,43 @@ class LandingController extends Controller
             ->where('is_active', true)
             ->firstOrFail();
 
-        // Recent Transactions
         $recentDonations = DonationTransaction::where('donation_id', $donation->id)
             ->where('status', 'verified')
             ->where('is_anonymous', false)
+            ->select('id', 'donor_name', 'amount', 'created_at')
             ->latest()
             ->limit(10)
             ->get();
 
-        // Related Donations
-        $relatedDonations = Donation::active()
-            ->ongoing()
-            ->where('id', '!=', $donation->id)
-            ->where('category', $donation->category)
-            ->limit(3)
-            ->get();
+        $relatedDonations = Cache::remember("related_donations_cat_{$donation->category}_v2", 300, function () use ($donation) {
+            return Donation::active()
+                ->ongoing()
+                ->where('id', '!=', $donation->id)
+                ->where('category', $donation->category)
+                ->select('id', 'campaign_name', 'slug', 'image', 'target_amount', 'current_amount')
+                ->limit(3)
+                ->get();
+        });
 
-        $settings = Setting::getAll();
+        return view('landing.donation-detail', compact('donation', 'recentDonations', 'relatedDonations'));
+    }
 
-        return view('landing.donation-detail', compact('donation', 'recentDonations', 'relatedDonations', 'settings'));
+    /**
+     * Clear all landing page cache
+     */
+    public function clearCache()
+    {
+        $cacheKeys = [
+            'landing_page_complete_v3',
+            'about_page_data_v2',
+            'blog_sidebar_data_v2',
+            'donations_page_data_v2',
+        ];
+
+        foreach ($cacheKeys as $key) {
+            Cache::forget($key);
+        }
+
+        return back()->with('success', 'Cache berhasil dibersihkan!');
     }
 }

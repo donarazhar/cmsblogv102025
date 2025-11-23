@@ -12,6 +12,16 @@ class SettingController extends Controller
     public function index()
     {
         $settings = Setting::ordered()->get()->groupBy('group');
+
+        // Pastikan semua settings dengan type image menggunakan Storage::url()
+        foreach ($settings as $group => $groupSettings) {
+            foreach ($groupSettings as $setting) {
+                if (in_array($setting->type, ['image', 'file']) && $setting->value) {
+                    // Tidak perlu transform di sini, akan di-handle di blade
+                }
+            }
+        }
+
         return view('admin.settings.index', compact('settings'));
     }
 

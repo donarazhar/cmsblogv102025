@@ -40,17 +40,16 @@ class Program extends Model
     ];
 
     protected $casts = [
-        'is_registration_open' => 'boolean',
-        'is_featured' => 'boolean',
+        'start_date' => 'date',
+        'end_date' => 'date',
+        'start_time' => 'datetime:H:i:s',
+        'end_time' => 'datetime:H:i:s',
         'is_active' => 'boolean',
-        'order' => 'integer',
+        'is_featured' => 'boolean',
+        'is_registration_open' => 'boolean',
+        'registration_fee' => 'integer',
         'max_participants' => 'integer',
         'current_participants' => 'integer',
-        'registration_fee' => 'decimal:2',
-        // 'start_date' => 'date',
-        // 'end_date' => 'date',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
     ];
 
     protected $appends = ['is_full', 'available_slots', 'registration_percentage'];

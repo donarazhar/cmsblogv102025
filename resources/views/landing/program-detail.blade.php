@@ -88,7 +88,7 @@
                                     </div>
                                     <div>
                                         <div class="detail-label">Tanggal Mulai</div>
-                                        <div class="detail-value">{{ $program->start_date->format('d F Y') }}</div>
+                                        <div class="detail-value">{{ \Carbon\Carbon::parse($program->start_date)->format('d F Y') }}</div>
                                     </div>
                                 </div>
                             @endif
@@ -100,7 +100,7 @@
                                     </div>
                                     <div>
                                         <div class="detail-label">Tanggal Selesai</div>
-                                        <div class="detail-value">{{ $program->end_date->format('d F Y') }}</div>
+                                        <div class="detail-value"> {{ \Carbon\Carbon::parse($program->end_date)->translatedFormat('d F Y') }}</div>
                                     </div>
                                 </div>
                             @endif

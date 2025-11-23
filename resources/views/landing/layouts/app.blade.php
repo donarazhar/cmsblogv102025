@@ -4,17 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="@yield('meta_description', $settings['seo_description'] ?? 'Masjid Agung Al Azhar - Pusat Kegiatan Keagamaan dan Dakwah')">
-    <meta name="keywords" content="@yield('meta_keywords', $settings['seo_keywords'] ?? 'masjid al azhar, masjid jakarta, kajian islam')">
+    <meta name="description" content="@yield('meta_description', setting('seo_description', 'Masjid Agung Al Azhar - Pusat Kegiatan Keagamaan dan Dakwah'))">
+    <meta name="keywords" content="@yield('meta_keywords', setting('seo_keywords', 'masjid al azhar, masjid jakarta, kajian islam'))">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', $settings['site_name'] ?? 'Masjid Agung Al Azhar')</title>
+    <title>@yield('title', setting('site_name', 'Masjid Agung Al Azhar'))</title>
 
     <!-- Preload critical resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://unpkg.com">
-    <link rel="shortcut icon" href="https://siap.al-azhar.id/upload/favicon.ico" type="image/x-icon" />
+
+    @if (setting('site_favicon'))
+        <link rel="shortcut icon" href="{{ asset('storage/' . setting('site_favicon')) }}" type="image/x-icon" />
+    @else
+        <link rel="shortcut icon" href="https://siap.al-azhar.id/upload/favicon.ico" type="image/x-icon" />
+    @endif
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -102,6 +107,22 @@
             color: var(--primary);
         }
 
+        /* Navbar Logo Image */
+        .navbar-logo-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0, 83, 197, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover .navbar-logo-img {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 83, 197, 0.4);
+        }
+
+        /* Keep existing .navbar-logo for icon fallback */
         .navbar-logo {
             width: 50px;
             height: 50px;
@@ -114,6 +135,11 @@
             font-size: 1.5rem;
             box-shadow: 0 5px 15px rgba(0, 83, 197, 0.3);
             transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover .navbar-logo {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 83, 197, 0.4);
         }
 
         .navbar-brand:hover .navbar-logo {
@@ -326,22 +352,18 @@
             text-decoration: none;
             transition: all 0.3s ease;
             font-size: 1rem;
-            /* Reduced size */
             position: relative;
-            /* Added */
         }
 
         .social-icon i {
             display: flex;
             align-items: center;
             justify-content: center;
-            /* Perfect centering for font awesome icons */
             line-height: 1;
             width: 100%;
             height: 100%;
         }
 
-        /* Specific adjustments for each icon */
         .social-icon .fa-facebook-f {
             font-size: 1rem;
         }
@@ -356,6 +378,10 @@
 
         .social-icon .fa-youtube {
             font-size: 1rem;
+        }
+
+        .social-icon .fa-tiktok {
+            font-size: 1.1rem;
         }
 
         .social-icon:hover {
@@ -484,10 +510,9 @@
     <nav class="navbar" id="navbar">
         <div class="navbar-container">
             <a href="{{ route('home') }}" class="navbar-brand">
-                <div class="navbar-logo">
-                    <i class="fas fa-mosque"></i>
-                </div>
-                <span>{{ $settings['site_name'] ?? 'Al Azhar' }}</span>
+                <img src="{{ asset('img/ypia.png') }}" alt="{{ setting('site_name', 'Al Azhar') }}"
+                    class="navbar-logo-img">
+                <span>{{ setting('site_name', 'Al Azhar') }}</span>
             </a>
 
             <ul class="navbar-menu" id="navbarMenu">
@@ -521,32 +546,43 @@
         <div class="container">
             <div class="footer-top">
                 <div class="footer-widget">
-                    <h3>{{ $settings['site_name'] ?? 'Masjid Agung Al Azhar' }}</h3>
-                    <p>{{ $settings['site_description'] ?? 'Pusat kegiatan keagamaan, pendidikan, dan dakwah Islam di Jakarta.' }}
+                    <h3>{{ setting('site_name', 'Masjid Agung Al Azhar') }}</h3>
+                    <p>{{ setting('site_description', 'Pusat kegiatan keagamaan, pendidikan, dan dakwah Islam di Jakarta.') }}
                     </p>
                     <div class="footer-social">
-                        @if (isset($settings['social_facebook']))
-                            <a href="{{ $settings['social_facebook'] }}" target="_blank" class="social-icon"
+                        @if (setting('social_facebook'))
+                            <a href="{{ setting('social_facebook') }}" target="_blank" class="social-icon"
                                 title="Facebook">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
                         @endif
-                        @if (isset($settings['social_instagram']))
-                            <a href="{{ $settings['social_instagram'] }}" target="_blank" class="social-icon"
+
+                        @if (setting('social_instagram'))
+                            <a href="{{ setting('social_instagram') }}" target="_blank" class="social-icon"
                                 title="Instagram">
                                 <i class="fab fa-instagram"></i>
                             </a>
                         @endif
-                        @if (isset($settings['social_twitter']))
-                            <a href="{{ $settings['social_twitter'] }}" target="_blank" class="social-icon"
+
+                        @if (setting('social_twitter'))
+                            <a href="{{ setting('social_twitter') }}" target="_blank" class="social-icon"
                                 title="Twitter">
                                 <i class="fab fa-twitter"></i>
                             </a>
                         @endif
-                        @if (isset($settings['social_youtube']))
-                            <a href="{{ $settings['social_youtube'] }}" target="_blank" class="social-icon"
+
+                        @if (setting('social_youtube'))
+                            <a href="{{ setting('social_youtube') }}" target="_blank" class="social-icon"
                                 title="YouTube">
                                 <i class="fab fa-youtube"></i>
+                            </a>
+                        @endif
+
+                        {{-- ✅ TAMBAHKAN INI --}}
+                        @if (setting('social_tiktok'))
+                            <a href="{{ setting('social_tiktok') }}" target="_blank" class="social-icon"
+                                title="TikTok">
+                                <i class="fab fa-tiktok"></i>
                             </a>
                         @endif
                     </div>
@@ -573,19 +609,19 @@
                     <ul>
                         <li>
                             <i class="fas fa-map-marker-alt" style="margin-right: 10px; color: white;"></i>
-                            {{ $settings['contact_address'] ?? 'Jakarta, Indonesia' }}
+                            {{ setting('contact_address', 'Jakarta, Indonesia') }}
                         </li>
                         <li>
                             <i class="fas fa-phone" style="margin-right: 10px; color: white;"></i>
-                            {{ $settings['contact_phone'] ?? '(+62) 217397267' }}
+                            {{ setting('contact_phone', '(+62) 217397267') }}
                         </li>
                         <li>
                             <i class="fas fa-envelope" style="margin-right: 10px; color: white;"></i>
-                            {{ $settings['contact_email'] ?? 'masjidagungalazhar@gmail.com' }}
+                            {{ setting('contact_email', 'masjidagungalazhar@gmail.com') }}
                         </li>
                         <li>
                             <i class="fab fa-whatsapp" style="margin-right: 10px; color: white;"></i>
-                            {{ $settings['contact_whatsapp'] ?? '0882-1211-4771' }}
+                            {{ setting('contact_whatsapp', '0882-1211-4771') }}
                         </li>
                     </ul>
                 </div>
@@ -604,8 +640,8 @@
             </div>
 
             <div class="footer-bottom">
-                <p>&copy; {{ date('Y') }} {{ $settings['site_name'] ?? 'Masjid Agung Al Azhar' }}. All rights
-                    reserved. | Developed with <i class="fas fa-heart" style="color: #ef4444;"></i>by DAL ARMY</p>
+                <p>&copy; {{ date('Y') }} {{ setting('site_name', 'Masjid Agung Al Azhar') }}. All rights
+                    reserved. | Developed with <i class="fas fa-heart" style="color: #ef4444;"></i> by DAL ARMY</p>
             </div>
         </div>
     </footer>
@@ -619,7 +655,6 @@
     <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
 
     <script>
-        // Wait for AOS to load
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof AOS !== 'undefined') {
                 AOS.init({
@@ -627,7 +662,7 @@
                     easing: 'ease-in-out',
                     once: true,
                     offset: 100,
-                    disable: 'mobile' // Disable on mobile for better performance
+                    disable: 'mobile'
                 });
             }
         });
@@ -635,12 +670,10 @@
 
     <!-- Custom JS -->
     <script>
-        // Loading
         window.addEventListener('load', () => {
             document.getElementById('loading').classList.add('hide');
         });
 
-        // Navbar Scroll
         window.addEventListener('scroll', () => {
             const navbar = document.getElementById('navbar');
             if (window.scrollY > 50) {
@@ -650,7 +683,6 @@
             }
         });
 
-        // Mobile Menu Toggle
         const navbarToggle = document.getElementById('navbarToggle');
         const navbarMenu = document.getElementById('navbarMenu');
 
@@ -661,7 +693,6 @@
             icon.classList.toggle('fa-times');
         });
 
-        // Scroll to Top
         const scrollTop = document.getElementById('scrollTop');
 
         window.addEventListener('scroll', () => {
@@ -679,7 +710,6 @@
             });
         });
 
-        // Close mobile menu when clicking outside
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.navbar')) {
                 navbarMenu.classList.remove('active');

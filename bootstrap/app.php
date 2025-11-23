@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\TrackFrontendActivity::class,
             \App\Http\Middleware\RedirectIfAuthenticated::class,
+            \App\Http\Middleware\ShareSettings::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
