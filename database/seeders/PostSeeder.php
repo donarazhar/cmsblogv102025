@@ -152,21 +152,5 @@ class PostSeeder extends Seeder
             $post->tags()->attach($tags);
         }
 
-        // Create additional posts
-        for ($i = 1; $i <= 15; $i++) {
-            $post = Post::create([
-                'title' => 'Artikel Contoh ' . $i,
-                'excerpt' => 'Ini adalah excerpt artikel contoh ke-' . $i,
-                'content' => '<p>Ini adalah konten artikel contoh ke-' . $i . '. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>',
-                'category_id' => rand(1, 6),
-                'author_id' => rand(1, 3),
-                'status' => 'published',
-                'post_type' => 'article',
-                'published_at' => now()->subDays(rand(1, 30)),
-                'views_count' => rand(50, 500),
-            ]);
-
-            $post->tags()->attach([rand(1, 6), rand(7, 12)]);
-        }
     }
 }

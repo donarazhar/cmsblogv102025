@@ -62,6 +62,7 @@ class GalleryController extends Controller
 
         $validated['is_active'] = $request->has('is_active') ? 1 : 0;
         $validated['is_featured'] = $request->has('is_featured') ? 1 : 0;
+        $validated['uploaded_by'] = auth()->id(); // ← TAMBAHKAN INI
 
         if (!isset($validated['order'])) {
             $maxOrder = Gallery::where('album_id', $validated['album_id'])->max('order') ?? 0; // ✅ Ubah ke album_id
@@ -158,6 +159,7 @@ class GalleryController extends Controller
                 'order' => $maxOrder + $index + 1,
                 'is_active' => true,
                 'is_featured' => false,
+                'uploaded_by' => auth()->id(), // ← TAMBAHKAN INI
             ]);
         }
 

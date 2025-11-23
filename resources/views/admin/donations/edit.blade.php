@@ -133,7 +133,7 @@
 
                             @if ($donation->image)
                                 <div style="margin-bottom: 12px;">
-                                    <img src="{{ Storage::url($donation->image) }}" alt="{{ $donation->campaign_name }}"
+                                    <img src="{{ asset('storage/' . $donation->image) }}" alt="{{ $donation->campaign_name }}"
                                         style="max-width: 300px; height: auto; border-radius: 8px; border: 1px solid var(--border);"
                                         id="currentImage">
                                 </div>

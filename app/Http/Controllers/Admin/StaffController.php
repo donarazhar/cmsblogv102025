@@ -7,7 +7,6 @@ use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
 
 class StaffController extends Controller
 {
@@ -36,17 +35,12 @@ class StaffController extends Controller
             $query->where('is_active', $request->status === 'active');
         }
 
-        // Filter by featured
-        if ($request->filled('featured')) {
-            $query->where('is_featured', $request->featured === 'yes');
-        }
-
         // Sort
         $sortField = $request->get('sort', 'order');
         $sortDirection = $request->get('direction', 'asc');
         $query->orderBy($sortField, $sortDirection);
 
-        $staff = $query->paginate(5)->withQueryString();
+        $staff = $query->paginate(12)->withQueryString();
 
         // Stats
         $stats = [
@@ -79,49 +73,62 @@ class StaffController extends Controller
             'department' => 'nullable|string|max:255',
             'type' => 'required|in:board,imam,teacher,staff,volunteer',
             'biography' => 'nullable|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:20',
             'specialization' => 'nullable|string|max:255',
+            'facebook' => 'nullable|url',
+            'instagram' => 'nullable|url',
+            'twitter' => 'nullable|url',
+            'linkedin' => 'nullable|url',
             'join_date' => 'nullable|date',
             'order' => 'nullable|integer|min:0',
-            'is_featured' => 'boolean',
-            'is_active' => 'boolean',
-            // Social media
-            'facebook' => 'nullable|url',
-            'twitter' => 'nullable|url',
-            'instagram' => 'nullable|url',
-            'linkedin' => 'nullable|url',
-            'youtube' => 'nullable|url',
         ]);
 
-        // Generate slug if not provided
-        if (empty($validated['slug'])) {
-            $validated['slug'] = Str::slug($validated['name']);
-        } else {
-            $validated['slug'] = Str::slug($validated['slug']);
-        }
+        // ❌ HAPUS BARIS INI - Ini yang bikin stuck!
+        // dd($validated);
 
         // Handle photo upload
         if ($request->hasFile('photo')) {
-            $validated['photo'] = $request->file('photo')->store('staff', 'public');
+            $validated['photo'] = $request->file('photo')->store('staff/photos', 'public');
         }
 
-        // Handle social media
-        $validated['social_media'] = [
+        // Combine social media fields ke JSON
+        $validated['social_media'] = array_filter([
             'facebook' => $request->facebook,
-            'twitter' => $request->twitter,
             'instagram' => $request->instagram,
+            'twitter' => $request->twitter,
             'linkedin' => $request->linkedin,
-            'youtube' => $request->youtube,
-        ];
+        ]);
 
-        $validated['is_featured'] = $request->has('is_featured');
-        $validated['is_active'] = $request->has('is_active');
+        // Remove individual social media fields
+        unset($validated['facebook'], $validated['instagram'], $validated['twitter'], $validated['linkedin']);
+
+        // Handle checkboxes
+        $validated['is_featured'] = $request->has('is_featured') ? 1 : 0;
+        $validated['is_active'] = $request->has('is_active') ? 1 : 0;
+
+        // Auto-generate slug if empty
+        if (empty($validated['slug'])) {
+            $validated['slug'] = Str::slug($validated['name']);
+
+            // Check for duplicate slug
+            $count = Staff::where('slug', 'LIKE', $validated['slug'] . '%')->count();
+            if ($count > 0) {
+                $validated['slug'] = $validated['slug'] . '-' . ($count + 1);
+            }
+        }
+
+        // Auto increment order if not set
+        if (!isset($validated['order'])) {
+            $maxOrder = Staff::max('order') ?? 0;
+            $validated['order'] = $maxOrder + 1;
+        }
 
         Staff::create($validated);
 
-        return redirect()->route('admin.staff.index')
+        return redirect()
+            ->route('admin.staff.index')
             ->with('success', 'Staff berhasil ditambahkan!');
     }
 
@@ -139,59 +146,57 @@ class StaffController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => ['nullable', 'string', 'max:255', Rule::unique('staff')->ignore($staff->id)],
+            'slug' => 'nullable|string|max:255|unique:staff,slug,' . $staff->id,
             'position' => 'required|string|max:255',
             'department' => 'nullable|string|max:255',
             'type' => 'required|in:board,imam,teacher,staff,volunteer',
             'biography' => 'nullable|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:20',
             'specialization' => 'nullable|string|max:255',
+            'facebook' => 'nullable|url',
+            'instagram' => 'nullable|url',
+            'twitter' => 'nullable|url',
+            'linkedin' => 'nullable|url',
             'join_date' => 'nullable|date',
             'order' => 'nullable|integer|min:0',
-            'is_featured' => 'boolean',
-            'is_active' => 'boolean',
-            // Social media
-            'facebook' => 'nullable|url',
-            'twitter' => 'nullable|url',
-            'instagram' => 'nullable|url',
-            'linkedin' => 'nullable|url',
-            'youtube' => 'nullable|url',
         ]);
-
-        // Generate slug if not provided
-        if (empty($validated['slug'])) {
-            $validated['slug'] = Str::slug($validated['name']);
-        } else {
-            $validated['slug'] = Str::slug($validated['slug']);
-        }
 
         // Handle photo upload
         if ($request->hasFile('photo')) {
             // Delete old photo
-            if ($staff->photo) {
+            if ($staff->photo && Storage::disk('public')->exists($staff->photo)) {
                 Storage::disk('public')->delete($staff->photo);
             }
-            $validated['photo'] = $request->file('photo')->store('staff', 'public');
+            $validated['photo'] = $request->file('photo')->store('staff/photos', 'public');
         }
 
-        // Handle social media
-        $validated['social_media'] = [
+        // Combine social media fields ke JSON
+        $validated['social_media'] = array_filter([
             'facebook' => $request->facebook,
-            'twitter' => $request->twitter,
             'instagram' => $request->instagram,
+            'twitter' => $request->twitter,
             'linkedin' => $request->linkedin,
-            'youtube' => $request->youtube,
-        ];
+        ]);
 
-        $validated['is_featured'] = $request->has('is_featured');
-        $validated['is_active'] = $request->has('is_active');
+        // Remove individual social media fields
+        unset($validated['facebook'], $validated['instagram'], $validated['twitter'], $validated['linkedin']);
+
+        // Handle checkboxes
+        $validated['is_featured'] = $request->has('is_featured') ? 1 : 0;
+        $validated['is_active'] = $request->has('is_active') ? 1 : 0;
+
+        // Auto-generate slug if empty
+        if (empty($validated['slug'])) {
+            $validated['slug'] = Str::slug($validated['name']);
+        }
 
         $staff->update($validated);
 
-        return redirect()->route('admin.staff.index')
-            ->with('success', 'Staff berhasil diperbarui!');
+        return redirect()
+            ->route('admin.staff.index')
+            ->with('success', 'Staff berhasil diupdate!');
     }
 
     public function removePhoto(Staff $staff)
@@ -201,19 +206,22 @@ class StaffController extends Controller
             $staff->update(['photo' => null]);
         }
 
-        return redirect()->back()->with('success', 'Foto berhasil dihapus!');
+        return redirect()
+            ->route('admin.staff.edit', $staff)
+            ->with('success', 'Foto berhasil dihapus!');
     }
 
     public function destroy(Staff $staff)
     {
         // Delete photo
-        if ($staff->photo) {
+        if ($staff->photo && Storage::disk('public')->exists($staff->photo)) {
             Storage::disk('public')->delete($staff->photo);
         }
 
         $staff->delete();
 
-        return redirect()->route('admin.staff.index')
+        return redirect()
+            ->route('admin.staff.index')
             ->with('success', 'Staff berhasil dihapus!');
     }
 
@@ -227,27 +235,14 @@ class StaffController extends Controller
         $staff = Staff::whereIn('id', $request->ids)->get();
 
         foreach ($staff as $member) {
-            if ($member->photo) {
+            if ($member->photo && Storage::disk('public')->exists($member->photo)) {
                 Storage::disk('public')->delete($member->photo);
             }
             $member->delete();
         }
 
-        return redirect()->route('admin.staff.index')
+        return redirect()
+            ->route('admin.staff.index')
             ->with('success', count($request->ids) . ' staff berhasil dihapus!');
-    }
-
-    public function updateOrder(Request $request)
-    {
-        $request->validate([
-            'orders' => 'required|array',
-            'orders.*' => 'required|integer',
-        ]);
-
-        foreach ($request->orders as $id => $order) {
-            Staff::where('id', $id)->update(['order' => $order]);
-        }
-
-        return response()->json(['success' => true, 'message' => 'Urutan berhasil diperbarui']);
     }
 }

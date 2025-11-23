@@ -206,9 +206,20 @@
                                             {{ $transaction->transaction_code }}</div>
                                     </td>
                                     <td style="padding: 12px;">
-                                        <div style="font-weight: 600;">{{ $transaction->donation->campaign_name }}</div>
+                                        <div style="font-weight: 600;">
+                                            @if($transaction->donation)
+                                                {{ $transaction->donation->campaign_name }}
+                                            @else
+                                                <span style="color: #ef4444;">Campaign Dihapus</span>
+                                            @endif
+                                        </div>
                                         <div style="font-size: 0.85rem; color: #6b7280;">
-                                            {{ ucfirst($transaction->donation->category) }}</div>
+                                            @if($transaction->donation)
+                                                {{ ucfirst($transaction->donation->category) }}
+                                            @else
+                                                -
+                                            @endif
+                                        </div>
                                     </td>
                                     <td style="padding: 12px;">
                                         <div style="font-weight: 600;">

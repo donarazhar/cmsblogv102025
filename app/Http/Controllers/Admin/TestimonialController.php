@@ -27,14 +27,15 @@ class TestimonialController extends Controller
             'role' => 'nullable|string|max:255',
             'company' => 'nullable|string|max:255',
             'content' => 'required|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'rating' => 'required|integer|min:1|max:5',
             'status' => 'required|in:pending,approved,rejected',
             'is_featured' => 'boolean',
             'order' => 'nullable|integer|min:0',
         ]);
 
-        if ($request->hasFile('photo')) {
+        // ✅ PERBAIKAN: Cek apakah file photo benar-benar ada dan valid
+        if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
             $validated['photo'] = $request->file('photo')->store('testimonials', 'public');
         }
 
@@ -59,16 +60,17 @@ class TestimonialController extends Controller
             'role' => 'nullable|string|max:255',
             'company' => 'nullable|string|max:255',
             'content' => 'required|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'rating' => 'required|integer|min:1|max:5',
             'status' => 'required|in:pending,approved,rejected',
             'is_featured' => 'boolean',
             'order' => 'nullable|integer|min:0',
         ]);
 
-        if ($request->hasFile('photo')) {
+        // ✅ PERBAIKAN: Cek apakah file photo benar-benar ada dan valid
+        if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
             // Delete old photo
-            if ($testimonial->photo) {
+            if ($testimonial->photo && Storage::disk('public')->exists($testimonial->photo)) {
                 Storage::disk('public')->delete($testimonial->photo);
             }
             $validated['photo'] = $request->file('photo')->store('testimonials', 'public');

@@ -67,7 +67,7 @@
 
                         <div class="form-group">
                             <label for="content">Konten Detail</label>
-                            <textarea name="content" id="content" rows="8" class="form-control @error('content') is-invalid @enderror"
+                            <textarea name="content" id="content" class="form-control @error('content') is-invalid @enderror"
                                 placeholder="Detail lengkap program (opsional)">{{ old('content', $program->content) }}</textarea>
                             @error('content')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -110,7 +110,7 @@
                                     <label for="start_date">Tanggal Mulai</label>
                                     <input type="date" name="start_date" id="start_date"
                                         class="form-control @error('start_date') is-invalid @enderror"
-                                        value="{{ old('start_date', $program->start_date ? $program->start_date->format('Y-m-d') : '') }}">
+                                        value="{{ old('start_date', optional($program->start_date)->format('Y-m-d')) }}">
                                     @error('start_date')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -121,7 +121,7 @@
                                     <label for="end_date">Tanggal Selesai</label>
                                     <input type="date" name="end_date" id="end_date"
                                         class="form-control @error('end_date') is-invalid @enderror"
-                                        value="{{ old('end_date', $program->end_date ? $program->end_date->format('Y-m-d') : '') }}">
+                                        value="{{ old('end_date', optional($program->end_date)->format('Y-m-d')) }}">
                                     @error('end_date')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -452,6 +452,16 @@
             margin-bottom: 20px;
         }
 
+        /* TinyMCE Container */
+        .tox-tinymce {
+            border-radius: 8px !important;
+            border: 2px solid var(--border) !important;
+        }
+
+        .tox .tox-statusbar {
+            border-radius: 0 0 8px 8px !important;
+        }
+
         .card-header {
             padding: 20px 25px;
             border-bottom: 1px solid var(--border);
@@ -693,7 +703,80 @@
 @endpush
 
 @push('scripts')
+    {{-- TinyMCE Self-Hosted (No API Key Required) --}}
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.2/tinymce.min.js"></script>
+
     <script>
+        // Initialize TinyMCE for Content
+        tinymce.init({
+            selector: '#content',
+            height: 400,
+            menubar: true,
+            plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'help', 'wordcount'
+            ],
+            toolbar: 'undo redo | blocks fontsize | ' +
+                'bold italic underline strikethrough | forecolor backcolor | ' +
+                'alignleft aligncenter alignright alignjustify | ' +
+                'bullist numlist outdent indent | removeformat | ' +
+                'link image media table | code fullscreen | help',
+            content_style: 'body { font-family: Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; }',
+
+            // Image Upload Handler
+            images_upload_handler: function(blobInfo, success, failure, progress) {
+                let xhr, formData;
+                xhr = new XMLHttpRequest();
+                xhr.withCredentials = false;
+                xhr.open('POST', '{{ route('admin.programs.upload-image') }}');
+                xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+
+                xhr.upload.onprogress = function(e) {
+                    progress(e.loaded / e.total * 100);
+                };
+
+                xhr.onload = function() {
+                    if (xhr.status === 403) {
+                        failure('HTTP Error: ' + xhr.status, {
+                            remove: true
+                        });
+                        return;
+                    }
+
+                    if (xhr.status < 200 || xhr.status >= 300) {
+                        failure('HTTP Error: ' + xhr.status);
+                        return;
+                    }
+
+                    let json = JSON.parse(xhr.responseText);
+
+                    if (!json || typeof json.location != 'string') {
+                        failure('Invalid JSON: ' + xhr.responseText);
+                        return;
+                    }
+
+                    success(json.location);
+                };
+
+                xhr.onerror = function() {
+                    failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+                };
+
+                formData = new FormData();
+                formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+                xhr.send(formData);
+            },
+
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            image_advtab: true,
+            relative_urls: false,
+            remove_script_host: false,
+            convert_urls: true,
+        });
+
         // Image Preview
         function previewImage(input) {
             const preview = document.getElementById('imagePreview');

@@ -205,7 +205,9 @@
             justify-content: space-between;
             gap: 15px;
             background: var(--light);
-            border-radius: 0 0 12px 12px
+            border-radius: 0 0 12px 12px;
+            position: relative;
+            z-index: 10;
         }
 
         .btn {
@@ -213,13 +215,16 @@
             border-radius: 8px;
             font-weight: 600;
             font-size: .95rem;
-            cursor: pointer;
+            cursor: pointer !important;
+            pointer-events: auto !important;
             transition: all .3s ease;
             border: none;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 8px
+            gap: 8px;
+            position: relative;
+            z-index: 11;
         }
 
         .btn-primary {
@@ -236,6 +241,17 @@
         .btn-secondary {
             background: #e5e7eb;
             color: var(--dark)
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
         }
 
         @media (max-width:768px) {
@@ -263,7 +279,7 @@
             <p class="form-subtitle">Edit data {{ $staff->name }}</p>
         </div>
 
-        <form method="POST" action="{{ route('admin.staff.update', $staff) }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('admin.staff.update', $staff) }}" enctype="multipart/form-data" id="mainForm">
             @csrf
             @method('PUT')
 
@@ -364,15 +380,14 @@
                         @if ($staff->photo)
                             <label class="form-label">Foto Saat Ini</label>
                             <div class="photo-preview" style="display:block; margin-bottom:15px">
-                                <img src="{{ Storage::disk('public')->url($staff->photo) }}" alt="{{ $staff->name }}"
-                                    id="currentPhoto"
-                                    onerror="this.onerror=null; this.src='https://via.placeholder.com/300x300?text=No+Image';">
+                                <img src="{{ asset('storage/' . $staff->photo) }}" alt="{{ $staff->name }}"
+                                    id="currentPhoto">
                             </div>
                             <div style="margin-bottom: 15px;">
-                                <a href="{{ route('admin.staff.remove-photo', $staff) }}" class="btn btn-sm btn-danger"
-                                    onclick="return confirm('Yakin ingin menghapus foto ini?')">
+                                {{-- ✅ PERBAIKAN: Gunakan button dengan onClick untuk delete foto --}}
+                                <button type="button" class="btn btn-danger" onclick="deletePhoto()">
                                     <i class="fas fa-trash"></i> Hapus Foto
-                                </a>
+                                </button>
                             </div>
                         @endif
 
@@ -473,7 +488,7 @@
                             <label for="join_date" class="form-label">Tanggal Bergabung</label>
                             <input type="date" id="join_date" name="join_date"
                                 class="form-input @error('join_date') error @enderror"
-                                value="{{ old('join_date', $staff->join_date ? $staff->join_date->format('Y-m-d') : '') }}">
+                                value="{{ old('join_date', optional($staff->join_date)->format('Y-m-d')) }}">
                         </div>
 
                         <div class="form-group">
@@ -516,12 +531,19 @@
                 <a href="{{ route('admin.staff.show', $staff) }}" class="btn btn-secondary">
                     <i class="fas fa-times"></i> Batal
                 </a>
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary" id="submitBtn">
                     <i class="fas fa-save"></i> Update Staff
                 </button>
             </div>
         </form>
     </div>
+
+    {{-- ✅ PERBAIKAN: Form terpisah untuk delete foto --}}
+    <form id="deletePhotoForm" action="{{ route('admin.staff.remove-photo', $staff) }}" method="POST"
+        style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
 
     <script>
         // Auto generate slug
@@ -551,5 +573,17 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
+
+        // ✅ PERBAIKAN: Function untuk delete foto
+        function deletePhoto() {
+            if (confirm('Yakin ingin menghapus foto ini?')) {
+                document.getElementById('deletePhotoForm').submit();
+            }
+        }
+
+        // ✅ DEBUGGING: Log klik button submit
+        document.getElementById('submitBtn').addEventListener('click', function(e) {
+            console.log('Submit button clicked!');
+        });
     </script>
 @endsection

@@ -259,7 +259,7 @@
                 @if ($staff->join_date)
                     <div class="info-item">
                         <span class="info-label">Tanggal Bergabung</span>
-                        <span class="info-value">{{ $staff->join_date->format('d M Y') }}</span>
+                        <span class="info-value">{{ optional($staff->join_date)->format('d M Y') }}</span>
                     </div>
                 @endif
 

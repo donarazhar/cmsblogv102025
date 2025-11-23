@@ -88,7 +88,8 @@
                             <!-- Image -->
                             <div style="position: relative; background: #f3f4f6;">
                                 @if ($donation->image)
-                                    <img src="{{ Storage::url($donation->image) }}" alt="{{ $donation->campaign_name }}"
+                                    <img src="{{ asset('storage/' . $donation->image) }} "
+                                        alt="{{ $donation->campaign_name }}"
                                         style="width: 100%; height: 100%; object-fit: cover;">
                                 @else
                                     <div

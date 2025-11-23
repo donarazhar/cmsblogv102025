@@ -141,7 +141,7 @@
 
                 <!-- Pagination -->
                 <div class="card-footer">
-                    {{ $galleries->links() }}
+                    {{ $galleries->links('vendor.pagination.simple') }}
                 </div>
             @else
                 <div class="empty-state">

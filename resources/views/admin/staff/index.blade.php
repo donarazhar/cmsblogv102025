@@ -303,45 +303,6 @@
         <p class="page-subtitle">Kelola data pengurus, imam, ustadz, dan staf masjid</p>
     </div>
 
-    <!-- Stats -->
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-icon" style="background: #dbeafe; color: #1e40af;">
-                <i class="fas fa-users"></i>
-            </div>
-            <div class="stat-label">Total Staff</div>
-            <div class="stat-value">{{ $stats['total'] }}</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon" style="background: #d1fae5; color: #065f46;">
-                <i class="fas fa-user-check"></i>
-            </div>
-            <div class="stat-label">Active</div>
-            <div class="stat-value">{{ $stats['active'] }}</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon" style="background: #fef3c7; color: #92400e;">
-                <i class="fas fa-star"></i>
-            </div>
-            <div class="stat-label">Featured</div>
-            <div class="stat-value">{{ $stats['featured'] }}</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon" style="background: #fce7f3; color: #9f1239;">
-                <i class="fas fa-user-tie"></i>
-            </div>
-            <div class="stat-label">Board</div>
-            <div class="stat-value">{{ $stats['by_type']['board'] }}</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon" style="background: #e0e7ff; color: #3730a3;">
-                <i class="fas fa-mosque"></i>
-            </div>
-            <div class="stat-label">Imam</div>
-            <div class="stat-value">{{ $stats['by_type']['imam'] }}</div>
-        </div>
-    </div>
-
     <!-- Main Card -->
     <div class="card">
         <div class="card-header">

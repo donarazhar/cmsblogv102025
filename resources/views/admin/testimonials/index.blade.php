@@ -37,7 +37,8 @@
                             <tr style="border-bottom: 1px solid var(--border);">
                                 <td style="padding: 12px;">
                                     @if ($testimonial->photo)
-                                        <img src="{{ Storage::url($testimonial->photo) }}" alt="{{ $testimonial->name }}"
+                                        <img src="{{ asset('storage/' . $testimonial->photo) }}"
+                                            alt="{{ $testimonial->name }}"
                                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
                                     @else
                                         <div
@@ -60,8 +61,11 @@
                                 <td style="padding: 12px;">
                                     <div style="color: #f59e0b;">
                                         @for ($i = 1; $i <= 5; $i++)
-                                            <i class="fas fa-star{{ $i <= $testimonial->rating ? '' : '-half-alt' }}"
-                                                style="font-size: 0.85rem;"></i>
+                                            @if ($i <= $testimonial->rating)
+                                                <i class="fas fa-star" style="font-size: 0.85rem;"></i>
+                                            @else
+                                                <i class="far fa-star" style="font-size: 0.85rem; color: #d1d5db;"></i>
+                                            @endif
                                         @endfor
                                     </div>
                                 </td>
@@ -135,7 +139,6 @@
             </div>
 
             <div class="pagination">
-                <!-- Pagination -->
                 <div style="margin-top: 50px; text-align:center; padding: 10px; border-radius: 5px;">
                     {{ $testimonials->links('vendor.pagination.simple') }}
                 </div>

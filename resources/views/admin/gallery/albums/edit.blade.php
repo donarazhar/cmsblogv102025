@@ -99,46 +99,36 @@
                             <label for="event_date">Tanggal Event</label>
                             <input type="date" name="event_date" id="event_date"
                                 class="form-control @error('event_date') is-invalid @enderror"
-                                value="{{ old('event_date', $album->event_date ? $album->event_date->format('Y-m-d') : '') }}">
-                            @error('event_date')
+                                value="{{ old('event_date', optional($album->event_date)->format('Y-m-d')) }}"
+                                @error('event_date')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label for="location">Lokasi</label>
-                            <input type="text" name="location" id="location"
-                                class="form-control @error('location') is-invalid @enderror"
-                                value="{{ old('location', $album->location) }}" placeholder="Lokasi kegiatan">
-                            @error('location')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="is_active" value="1"
-                                    {{ old('is_active', $album->is_active) ? 'checked' : '' }}>
-                                <span>Album Aktif</span>
-                            </label>
+                                </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="is_active" value="1"
+                                        {{ old('is_active', $album->is_active) ? 'checked' : '' }}>
+                                    <span>Album Aktif</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="card">
-                    <div class="card-body">
-                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">
-                            <i class="fas fa-save"></i>
-                            Update Album
-                        </button>
-                        <a href="{{ route('admin.gallery.albums.index') }}" class="btn btn-secondary" style="width: 100%;">
-                            <i class="fas fa-times"></i>
-                            Batal
-                        </a>
+                    <div class="card">
+                        <div class="card-body">
+                            <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">
+                                <i class="fas fa-save"></i>
+                                Update Album
+                            </button>
+                            <a href="{{ route('admin.gallery.albums.index') }}" class="btn btn-secondary"
+                                style="width: 100%;">
+                                <i class="fas fa-times"></i>
+                                Batal
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </form>
 @endsection
 

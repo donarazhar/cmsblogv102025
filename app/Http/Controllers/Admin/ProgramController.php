@@ -12,14 +12,11 @@ class ProgramController extends Controller
 {
     public function index()
     {
-        // Jika model ProgramRegistration ada, gunakan withCount
-        // Jika tidak ada, jangan gunakan eager loading
         try {
             $programs = Program::withCount('registrations')
                 ->ordered()
                 ->paginate(15);
         } catch (\Exception $e) {
-            // Fallback jika tabel registrations belum ada
             $programs = Program::ordered()->paginate(15);
         }
 
@@ -45,8 +42,8 @@ class ProgramController extends Controller
             'location' => 'nullable|string|max:255',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-            'start_time' => 'nullable|date_format:H:i',
-            'end_time' => 'nullable|date_format:H:i|after:start_time',
+            'start_time' => 'nullable',
+            'end_time' => 'nullable',
             'registration_fee' => 'nullable|numeric|min:0',
             'max_participants' => 'nullable|integer|min:1',
             'organizer' => 'nullable|string|max:255',
@@ -54,37 +51,30 @@ class ProgramController extends Controller
             'contact_person' => 'nullable|string|max:255',
             'contact_phone' => 'nullable|string|max:20',
             'order' => 'nullable|integer|min:0',
-            'is_active' => 'boolean',
-            'is_featured' => 'boolean',
-            'is_registration_open' => 'boolean',
-        ], [
-            'name.required' => 'Nama program harus diisi',
-            'description.required' => 'Deskripsi program harus diisi',
-            'type.required' => 'Tipe program harus dipilih',
-            'end_date.after_or_equal' => 'Tanggal selesai harus setelah atau sama dengan tanggal mulai',
-            'end_time.after' => 'Waktu selesai harus setelah waktu mulai',
         ]);
 
-        // Generate slug if not provided
         if (empty($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['name']);
+
+            // Check for duplicate slug
+            $count = Program::where('slug', 'LIKE', $validated['slug'] . '%')->count();
+            if ($count > 0) {
+                $validated['slug'] = $validated['slug'] . '-' . ($count + 1);
+            }
         }
 
-        // Handle image upload
-        if ($request->hasFile('image')) {
+        // ✅ PERBAIKAN: Handle image dengan isValid()
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $validated['image'] = $request->file('image')->store('programs', 'public');
         }
 
-        // Set defaults
         $validated['is_active'] = $request->has('is_active') ? 1 : 0;
         $validated['is_featured'] = $request->has('is_featured') ? 1 : 0;
         $validated['is_registration_open'] = $request->has('is_registration_open') ? 1 : 0;
         $validated['current_participants'] = 0;
 
-        // Auto increment order
         if (!isset($validated['order'])) {
-            $maxOrder = Program::max('order') ?? 0;
-            $validated['order'] = $maxOrder + 1;
+            $validated['order'] = (Program::max('order') ?? 0) + 1;
         }
 
         Program::create($validated);
@@ -113,8 +103,8 @@ class ProgramController extends Controller
             'location' => 'nullable|string|max:255',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-            'start_time' => 'nullable|date_format:H:i',
-            'end_time' => 'nullable|date_format:H:i|after:start_time',
+            'start_time' => 'nullable',
+            'end_time' => 'nullable',
             'registration_fee' => 'nullable|numeric|min:0',
             'max_participants' => 'nullable|integer|min:1',
             'organizer' => 'nullable|string|max:255',
@@ -122,19 +112,15 @@ class ProgramController extends Controller
             'contact_person' => 'nullable|string|max:255',
             'contact_phone' => 'nullable|string|max:20',
             'order' => 'nullable|integer|min:0',
-            'is_active' => 'boolean',
-            'is_featured' => 'boolean',
-            'is_registration_open' => 'boolean',
         ]);
 
-        // Generate slug if not provided
         if (empty($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['name']);
         }
 
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            if ($program->image) {
+        // ✅ PERBAIKAN: Handle image dengan isValid()
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            if ($program->image && Storage::disk('public')->exists($program->image)) {
                 Storage::disk('public')->delete($program->image);
             }
             $validated['image'] = $request->file('image')->store('programs', 'public');
@@ -153,7 +139,7 @@ class ProgramController extends Controller
 
     public function destroy(Program $program)
     {
-        if ($program->image) {
+        if ($program->image && Storage::disk('public')->exists($program->image)) {
             Storage::disk('public')->delete($program->image);
         }
 
@@ -170,9 +156,7 @@ class ProgramController extends Controller
 
         $status = $program->is_active ? 'diaktifkan' : 'dinonaktifkan';
 
-        return redirect()
-            ->route('admin.programs.index')
-            ->with('success', "Program berhasil {$status}!");
+        return redirect()->back()->with('success', "Program berhasil {$status}!");
     }
 
     public function toggleFeatured(Program $program)
@@ -181,8 +165,26 @@ class ProgramController extends Controller
 
         $status = $program->is_featured ? 'ditampilkan di featured' : 'dihapus dari featured';
 
-        return redirect()
-            ->route('admin.programs.index')
-            ->with('success', "Program berhasil {$status}!");
+        return redirect()->back()->with('success', "Program berhasil {$status}!");
+    }
+
+    /**
+     * Upload image for TinyMCE editor
+     */
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ]);
+
+        if ($request->hasFile('file') && $request->file('file')->isValid()) {
+            $path = $request->file('file')->store('programs/content', 'public');
+
+            return response()->json([
+                'location' => asset('storage/' . $path)
+            ]);
+        }
+
+        return response()->json(['error' => 'Upload failed'], 400);
     }
 }

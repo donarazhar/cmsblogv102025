@@ -107,7 +107,7 @@
                 </label>
                 @if ($testimonial->photo)
                     <div style="margin-bottom: 12px;">
-                        <img src="{{ Storage::url($testimonial->photo) }}" alt="{{ $testimonial->name }}"
+                        <img src="{{ asset('storage/' . $testimonial->photo) }}" alt="{{ $testimonial->name }}"
                             style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
                     </div>
                 @endif

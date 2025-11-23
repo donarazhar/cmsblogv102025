@@ -11,12 +11,13 @@ class Gallery extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'album_id',  // ✅ Ubah dari gallery_album_id ke album_id
+        'album_id',  
         'title',
         'description',
         'image',
         'type',
         'video_url',
+        'uploaded_by',
         'order',
         'is_active',
         'is_featured',

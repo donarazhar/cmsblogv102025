@@ -17,13 +17,12 @@ class GalleryAlbum extends Model
         'description',
         'cover_image',
         'event_date',
-        'location',
         'order',
         'is_active',
     ];
 
     protected $casts = [
-        'event_date' => 'date',
+        'event_date' => 'datetime:Y-m-d',  // ← UBAH FORMAT
         'is_active' => 'boolean',
         'order' => 'integer',
     ];

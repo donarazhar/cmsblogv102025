@@ -98,8 +98,10 @@ Route::middleware('auth')->group(function () {
             ->name('posts.publish');
         Route::post('posts/{post}/unpublish', [PostController::class, 'unpublish'])
             ->name('posts.unpublish');
+        Route::post('/posts/upload-image', [PostController::class, 'uploadImage'])->name('posts.upload-image');
         Route::delete('posts/{post}/remove-image', [PostController::class, 'removeImage'])
             ->name('posts.remove-image');
+
 
         // Categories routes
         Route::resource('categories', CategoryController::class);
@@ -161,6 +163,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('programs', ProgramController::class);
         Route::post('programs/{program}/toggle', [ProgramController::class, 'toggleStatus'])->name('programs.toggle');
         Route::post('programs/{program}/toggle-featured', [ProgramController::class, 'toggleFeatured'])->name('programs.toggle-featured');
+        // Program Image Upload (for TinyMCE)
+        Route::post('/programs/upload-image', [ProgramController::class, 'uploadImage'])->name('programs.upload-image');
 
         // Gallery Albums
         Route::prefix('gallery')->name('gallery.')->group(function () {

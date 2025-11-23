@@ -47,8 +47,8 @@ class Program extends Model
         'max_participants' => 'integer',
         'current_participants' => 'integer',
         'registration_fee' => 'decimal:2',
-        'start_date' => 'date',
-        'end_date' => 'date',
+        // 'start_date' => 'date',
+        // 'end_date' => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

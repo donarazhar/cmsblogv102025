@@ -149,7 +149,7 @@
                                 <td>
                                     <div class="post-title-cell">
                                         @if ($post->featured_image)
-                                            <img src="{{ Storage::url($post->featured_image) }}"
+                                           <img src="{{ asset('storage/' . $post->featured_image) }}"
                                                 alt="{{ $post->title }}" class="post-thumb">
                                         @else
                                             <div class="post-thumb-placeholder">

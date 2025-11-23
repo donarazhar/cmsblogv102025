@@ -131,6 +131,26 @@ class PostController extends Controller
             ->with('success', 'Post berhasil ditambahkan!');
     }
 
+    /**
+     * Upload image for TinyMCE editor
+     */
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ]);
+
+        if ($request->hasFile('file')) {
+            $path = $request->file('file')->store('posts/content', 'public');
+
+            return response()->json([
+                'location' => asset('storage/' . $path)
+            ]);
+        }
+
+        return response()->json(['error' => 'Upload failed'], 400);
+    }
+
     public function show(Post $post)
     {
         $post->load('category', 'author', 'tags', 'comments');

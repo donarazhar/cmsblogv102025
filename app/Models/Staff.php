@@ -35,7 +35,7 @@ class Staff extends Model
         'is_active' => 'boolean',
         'order' => 'integer',
         'social_media' => 'array',
-        'join_date' => 'date',
+        'join_date' => 'datetime:Y-m-d',  // ← UBAH FORMAT
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

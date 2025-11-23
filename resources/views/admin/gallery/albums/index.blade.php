@@ -69,10 +69,7 @@
                                 <div class="album-meta">
                                     @if ($album->event_date)
                                         <span><i class="fas fa-calendar"></i>
-                                            {{ $album->event_date->format('d M Y') }}</span>
-                                    @endif
-                                    @if ($album->location)
-                                        <span><i class="fas fa-map-marker-alt"></i> {{ $album->location }}</span>
+                                            {{ $album->event_date ? \Carbon\Carbon::parse($album->event_date)->format('d M Y') : '-' }}
                                     @endif
                                 </div>
 
@@ -420,4 +417,3 @@
         }
     </style>
 @endpush
-

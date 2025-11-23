@@ -58,7 +58,7 @@
 
                         <div class="form-group">
                             <label for="content">Konten <span class="required">*</span></label>
-                            <textarea id="content" name="content" class="form-control @error('content') is-invalid @enderror" rows="15"
+                            <textarea id="content" name="content" class="form-control @error('content') is-invalid @enderror"
                                 required>{{ old('content', $post->content) }}</textarea>
                             @error('content')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -81,11 +81,9 @@
                                     <img src="{{ asset('storage/' . $post->featured_image) }}" alt="{{ $post->title }}"
                                         style="max-width: 100%; border-radius: 8px; display: block;">
                                     <div style="margin-top: 10px;">
-                                        <a href="{{ route('admin.posts.remove-image', $post) }}"
-                                            class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Yakin ingin menghapus gambar ini?')">
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="deleteImage()">
                                             <i class="fas fa-trash"></i> Hapus Gambar
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
                             @endif
@@ -312,6 +310,9 @@
             </div>
         </div>
     </form>
+
+    {{-- ✅ Form terpisah untuk delete image --}}
+    <form id="deleteImageForm" action="{{ route('admin.posts.remove-image', $post) }}" method="GET" style="display: none;"></form>
 @endsection
 
 @push('styles')
@@ -372,6 +373,16 @@
 
         .form-control.is-invalid {
             border-color: var(--danger);
+        }
+
+        /* TinyMCE Container */
+        .tox-tinymce {
+            border-radius: 8px !important;
+            border: 1px solid var(--border) !important;
+        }
+
+        .tox .tox-statusbar {
+            border-radius: 0 0 8px 8px !important;
         }
 
         .invalid-feedback {
@@ -464,7 +475,90 @@
 @endpush
 
 @push('scripts')
+    {{-- TinyMCE Self-Hosted (No API Key Required) --}}
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.2/tinymce.min.js"></script>
+
     <script>
+        // Initialize TinyMCE
+        tinymce.init({
+            selector: '#content',
+            height: 500,
+            menubar: true,
+            plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'help', 'wordcount'
+            ],
+            toolbar: 'undo redo | blocks fontsize | ' +
+                'bold italic underline strikethrough | forecolor backcolor | ' +
+                'alignleft aligncenter alignright alignjustify | ' +
+                'bullist numlist outdent indent | removeformat | ' +
+                'link image media table | code fullscreen | help',
+            content_style: 'body { font-family: Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; }',
+            
+            // Image Upload Handler
+            images_upload_handler: function(blobInfo, success, failure, progress) {
+                let xhr, formData;
+                xhr = new XMLHttpRequest();
+                xhr.withCredentials = false;
+                xhr.open('POST', '{{ route("admin.posts.upload-image") }}');
+                xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+
+                xhr.upload.onprogress = function(e) {
+                    progress(e.loaded / e.total * 100);
+                };
+
+                xhr.onload = function() {
+                    if (xhr.status === 403) {
+                        failure('HTTP Error: ' + xhr.status, {
+                            remove: true
+                        });
+                        return;
+                    }
+
+                    if (xhr.status < 200 || xhr.status >= 300) {
+                        failure('HTTP Error: ' + xhr.status);
+                        return;
+                    }
+
+                    let json = JSON.parse(xhr.responseText);
+
+                    if (!json || typeof json.location != 'string') {
+                        failure('Invalid JSON: ' + xhr.responseText);
+                        return;
+                    }
+
+                    success(json.location);
+                };
+
+                xhr.onerror = function() {
+                    failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+                };
+
+                formData = new FormData();
+                formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+                xhr.send(formData);
+            },
+            
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            image_advtab: true,
+            relative_urls: false,
+            remove_script_host: false,
+            convert_urls: true,
+            content_css: [
+                '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+            ]
+        });
+
+        // Delete Image Function
+        function deleteImage() {
+            if (confirm('Yakin ingin menghapus gambar ini?')) {
+                document.getElementById('deleteImageForm').submit();
+            }
+        }
+
         // Auto generate slug from title
         document.getElementById('title').addEventListener('input', function() {
             const title = this.value;
