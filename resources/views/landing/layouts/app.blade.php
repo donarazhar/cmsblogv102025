@@ -510,15 +510,21 @@
     <nav class="navbar" id="navbar">
         <div class="navbar-container">
             <a href="{{ route('home') }}" class="navbar-brand">
-                <img src="{{ asset('storage/assets/img/ypia.png') }}" alt="{{ setting('site_name', 'Al Azhar') }}"
-                    class="navbar-logo-img">
+                @if (setting('site_logo'))
+                    <img src="{{ asset('storage/' . setting('site_logo')) }}"
+                        alt="{{ setting('site_name', 'Al Azhar') }}" class="navbar-logo-img">
+                @else
+                    <img src="{{ asset('assets/img/ypia.png') }}" alt="{{ setting('site_name', 'Al Azhar') }}"
+                        class="navbar-logo-img">
+                @endif
                 <span>{{ setting('site_name', 'Al Azhar') }}</span>
             </a>
 
             <ul class="navbar-menu" id="navbarMenu">
                 <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a>
                 </li>
-                <li><a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">Tentang</a>
+                <li><a href="{{ route('about') }}"
+                        class="{{ request()->routeIs('about') ? 'active' : '' }}">Tentang</a>
                 </li>
                 <li><a href="{{ route('programs') }}"
                         class="{{ request()->routeIs('programs') ? 'active' : '' }}">Program</a></li>

@@ -98,16 +98,27 @@
                             @elseif($setting->type === 'image')
                                 @if ($setting->value)
                                     <div style="margin-bottom: 12px;">
-                                        <img src="{{ Storage::url($setting->value) }}" alt="{{ $setting->label }}"
+                                        <img src="{{ asset('storage/' . $setting->value) }} " alt="{{ $setting->label }}"
                                             style="max-width: 200px; height: auto; border-radius: 8px; border: 1px solid var(--border);">
                                         <p style="font-size: 0.85rem; color: #6b7280; margin-top: 4px;">Current:
                                             {{ basename($setting->value) }}</p>
                                     </div>
                                 @endif
                                 <input type="file" name="settings[{{ $setting->key }}]" accept="image/*"
+                                    id="file-{{ $setting->key }}" onchange="previewImage(this, '{{ $setting->key }}')"
                                     style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem;">
-                                <p style="font-size: 0.85rem; color: #6b7280; margin-top: 4px;">Format: JPG, PNG.
-                                    Maksimal 2MB</p>
+                                <p style="font-size: 0.85rem; color: #6b7280; margin-top: 4px;">
+                                    Format: JPG, PNG, GIF, WEBP. Maksimal 2MB
+                                </p>
+
+                                {{-- Preview area --}}
+                                <div id="preview-{{ $setting->key }}" style="margin-top: 12px; display: none;">
+                                    <p style="font-size: 0.85rem; color: var(--primary); margin-bottom: 8px;">
+                                        <i class="fas fa-eye"></i> Preview:
+                                    </p>
+                                    <img id="preview-img-{{ $setting->key }}"
+                                        style="max-width: 200px; height: auto; border-radius: 8px; border: 2px solid var(--primary);">
+                                </div>
                             @endif
 
                             @error('settings.' . $setting->key)
@@ -136,6 +147,32 @@
     </form>
 
     <script>
+        // Preview image sebelum upload
+        function previewImage(input, key) {
+            const previewDiv = document.getElementById(`preview-${key}`);
+            const previewImg = document.getElementById(`preview-img-${key}`);
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    previewDiv.style.display = 'block';
+
+                    console.log(`Preview loaded for ${key}`);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+
+                // Log file info
+                console.log('File selected:', {
+                    key: key,
+                    name: input.files[0].name,
+                    size: input.files[0].size,
+                    type: input.files[0].type
+                });
+            }
+        }
         // Function untuk delete setting
         function deleteSetting(url) {
             if (confirm('Yakin ingin menghapus setting ini?')) {
