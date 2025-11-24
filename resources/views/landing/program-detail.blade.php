@@ -27,9 +27,9 @@
     <!-- Program Content -->
     <section class="section">
         <div class="container">
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px;">
+            <div class="program-layout">
                 <!-- Main Content -->
-                <div>
+                <div class="main-content">
                     @if ($program->image)
                         <img src="{{ asset('storage/' . $program->image) }}" alt="{{ $program->name }}"
                             style="width: 100%; border-radius: 20px; margin-bottom: 30px;" data-aos="fade-up">
@@ -75,12 +75,14 @@
                     @endif
                 </div>
 
-                <!-- Sidebar -->
-                <div>
-                    <div class="sidebar-box" data-aos="fade-left">
+                <!-- Sidebar Container dengan Batas -->
+                <div class="sidebar-container">
+                    <!-- Detail Program Box (Sticky) -->
+                    <div class="sidebar-box sticky-sidebar" data-aos="fade-left">
                         <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 20px;">Detail Program</h3>
 
                         <div class="detail-list">
+                            {{-- Semua detail items tetap sama --}}
                             @if ($program->start_date)
                                 <div class="detail-item-vertical">
                                     <div class="detail-icon">
@@ -88,7 +90,8 @@
                                     </div>
                                     <div>
                                         <div class="detail-label">Tanggal Mulai</div>
-                                        <div class="detail-value">{{ \Carbon\Carbon::parse($program->start_date)->format('d F Y') }}</div>
+                                        <div class="detail-value">
+                                            {{ \Carbon\Carbon::parse($program->start_date)->format('d F Y') }}</div>
                                     </div>
                                 </div>
                             @endif
@@ -100,7 +103,9 @@
                                     </div>
                                     <div>
                                         <div class="detail-label">Tanggal Selesai</div>
-                                        <div class="detail-value"> {{ \Carbon\Carbon::parse($program->end_date)->translatedFormat('d F Y') }}</div>
+                                        <div class="detail-value">
+                                            {{ \Carbon\Carbon::parse($program->end_date)->translatedFormat('d F Y') }}
+                                        </div>
                                     </div>
                                 </div>
                             @endif
@@ -159,9 +164,9 @@
                                                 <span
                                                     style="color: var(--danger); font-size: 0.85rem; display: block;">(Penuh)</span>
                                             @else
-                                                <span
-                                                    style="color: var(--success); font-size: 0.85rem; display: block;">({{ $program->available_slots }}
-                                                    slot tersisa)</span>
+                                                <span style="color: var(--success); font-size: 0.85rem; display: block;">
+                                                    ({{ $program->available_slots }} slot tersisa)
+                                                </span>
                                             @endif
                                         </div>
                                     </div>
@@ -223,10 +228,10 @@
                         </a>
                     </div>
 
-                    <!-- Share Box -->
-                    <div class="sidebar-box" data-aos="fade-left" data-aos-delay="100" style="margin-top: 30px;">
+                    <!-- Share Box (Non-Sticky) -->
+                    <div class="sidebar-box share-box" data-aos="fade-left" data-aos-delay="100">
                         <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 20px;">Bagikan Program</h3>
-                        <div style="display: flex; gap: 10px;">
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                             <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(route('program.detail', $program->slug)) }}"
                                 target="_blank" class="share-btn" style="background: #1877f2;">
                                 <i class="fab fa-facebook-f"></i>
@@ -242,6 +247,12 @@
                             <button onclick="copyLink()" class="share-btn" style="background: #6b7280;">
                                 <i class="fas fa-link"></i>
                             </button>
+                        </div>
+
+                        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
+                            <p style="font-size: 0.85rem; color: #6b7280; text-align: center;">
+                                <i class="fas fa-share-alt"></i> Bantu sebarkan program ini
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -289,6 +300,25 @@
     @endif
 
     <style>
+        .program-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            align-items: start;
+            /* Penting: align to start */
+        }
+
+        .main-content {
+            /* Main content area */
+        }
+
+        .sidebar-container {
+            position: relative;
+            /* Ini yang membatasi sticky */
+            min-height: 100px;
+            /* Minimal height */
+        }
+
         .content-box {
             background: white;
             padding: 35px;
@@ -302,8 +332,22 @@
             padding: 30px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Sticky sidebar dengan pembatasan */
+        .sidebar-box.sticky-sidebar {
             position: sticky;
             top: 100px;
+            align-self: start;
+            /* Stick di start container */
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        /* Share Box tidak sticky dan gap dari sticky box */
+        .sidebar-box.share-box {
+            position: relative;
+            margin-top: 30px;
         }
 
         .detail-list {
@@ -418,14 +462,43 @@
             justify-content: center;
         }
 
+        /* Custom scrollbar */
+        .sidebar-box.sticky-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar-box.sticky-sidebar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .sidebar-box.sticky-sidebar::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        .sidebar-box.sticky-sidebar::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
         @media (max-width: 1024px) {
-            section>div>div[style*="grid-template-columns: 2fr 1fr"] {
+            .program-layout {
                 grid-template-columns: 1fr !important;
             }
 
-            .sidebar-box {
+            .sidebar-container {
+                position: relative;
+            }
+
+            .sidebar-box.sticky-sidebar {
                 position: relative;
                 top: 0;
+                max-height: none;
+                align-self: auto;
+            }
+
+            .sidebar-box.share-box {
+                margin-top: 20px;
             }
         }
     </style>

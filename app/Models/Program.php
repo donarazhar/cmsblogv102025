@@ -42,8 +42,10 @@ class Program extends Model
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
-        'start_time' => 'datetime:H:i:s',
-        'end_time' => 'datetime:H:i:s',
+        // ❌ HAPUS CASTING INI:
+        // 'start_time' => 'datetime:H:i:s',
+        // 'end_time' => 'datetime:H:i:s',
+
         'is_active' => 'boolean',
         'is_featured' => 'boolean',
         'is_registration_open' => 'boolean',
@@ -141,5 +143,16 @@ class Program extends Model
             return 0;
         }
         return min(100, ($this->current_participants / $this->max_participants) * 100);
+    }
+
+    // ✅ TAMBAHKAN: Accessor untuk format time di view
+    public function getFormattedStartTimeAttribute(): ?string
+    {
+        return $this->start_time ? substr($this->start_time, 0, 5) : null;
+    }
+
+    public function getFormattedEndTimeAttribute(): ?string
+    {
+        return $this->end_time ? substr($this->end_time, 0, 5) : null;
     }
 }

@@ -58,8 +58,7 @@
 
                         <div class="form-group">
                             <label for="content">Konten <span class="required">*</span></label>
-                            <textarea id="content" name="content" class="form-control @error('content') is-invalid @enderror"
-                                required>{{ old('content', $post->content) }}</textarea>
+                            <textarea id="content" name="content" class="form-control @error('content') is-invalid @enderror" required>{{ old('content', $post->content) }}</textarea>
                             @error('content')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -312,7 +311,8 @@
     </form>
 
     {{-- ✅ Form terpisah untuk delete image --}}
-    <form id="deleteImageForm" action="{{ route('admin.posts.remove-image', $post) }}" method="GET" style="display: none;"></form>
+    <form id="deleteImageForm" action="{{ route('admin.posts.remove-image', $post) }}" method="GET"
+        style="display: none;"></form>
 @endsection
 
 @push('styles')
@@ -495,13 +495,13 @@
                 'bullist numlist outdent indent | removeformat | ' +
                 'link image media table | code fullscreen | help',
             content_style: 'body { font-family: Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; }',
-            
+
             // Image Upload Handler
             images_upload_handler: function(blobInfo, success, failure, progress) {
                 let xhr, formData;
                 xhr = new XMLHttpRequest();
                 xhr.withCredentials = false;
-                xhr.open('POST', '{{ route("admin.posts.upload-image") }}');
+                xhr.open('POST', '{{ route('admin.posts.upload-image') }}');
                 xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
 
                 xhr.upload.onprogress = function(e) {
@@ -540,13 +540,17 @@
 
                 xhr.send(formData);
             },
-            
+
+            // Image configuration
             automatic_uploads: true,
             file_picker_types: 'image',
             image_advtab: true,
+
             relative_urls: false,
             remove_script_host: false,
             convert_urls: true,
+
+            // Tambahan untuk styling
             content_css: [
                 '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
             ]
