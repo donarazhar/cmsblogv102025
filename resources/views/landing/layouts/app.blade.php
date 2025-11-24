@@ -16,9 +16,11 @@
     <link rel="dns-prefetch" href="https://unpkg.com">
 
     @if (setting('site_favicon'))
-        <link rel="shortcut icon" href="{{ asset('storage/' . setting('site_favicon')) }}" type="image/x-icon" />
+        <link rel="icon" type="image/x-icon" href="{{ asset('storage/' . setting('site_favicon')) }}" />
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('storage/' . setting('site_favicon')) }}">
     @else
-        <link rel="shortcut icon" href="https://siap.al-azhar.id/upload/favicon.ico" type="image/x-icon" />
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/ypia.png') }}">
     @endif
 
     <!-- Fonts -->
@@ -109,12 +111,20 @@
 
         /* Navbar Logo Image */
         .navbar-logo-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            /* Membuat bulat */
             object-fit: cover;
-            box-shadow: 0 5px 15px rgba(0, 83, 197, 0.3);
-            transition: all 0.3s ease;
+            /* Menjaga proporsi */
+            object-position: center;
+            /* Posisi gambar di tengah */
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            /* Border opsional */
+            background: white;
+            /* Background putih jika gambar transparan */
+            flex-shrink: 0;
+            /* Prevent logo dari shrink */
         }
 
         .navbar-brand:hover .navbar-logo-img {
