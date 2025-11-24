@@ -305,7 +305,6 @@
             grid-template-columns: 2fr 1fr;
             gap: 40px;
             align-items: start;
-            /* Penting: align to start */
         }
 
         .main-content {
@@ -313,10 +312,7 @@
         }
 
         .sidebar-container {
-            position: relative;
-            /* Ini yang membatasi sticky */
-            min-height: 100px;
-            /* Minimal height */
+            /* Container normal, tidak perlu position */
         }
 
         .content-box {
@@ -332,22 +328,21 @@
             padding: 30px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            /* Spacing antar box */
         }
 
-        /* Sticky sidebar dengan pembatasan */
+        /* Hapus semua sticky behavior */
         .sidebar-box.sticky-sidebar {
-            position: sticky;
-            top: 100px;
-            align-self: start;
-            /* Stick di start container */
-            max-height: calc(100vh - 120px);
-            overflow-y: auto;
+            position: relative;
+            /* ✅ Tidak sticky lagi */
+            /* Hapus semua property sticky */
         }
 
-        /* Share Box tidak sticky dan gap dari sticky box */
         .sidebar-box.share-box {
             position: relative;
-            margin-top: 30px;
+            margin-bottom: 0;
+            /* Box terakhir tidak perlu margin bottom */
         }
 
         .detail-list {
@@ -432,6 +427,8 @@
             border: none;
             cursor: pointer;
             font-size: 1.2rem;
+            min-width: 45px;
+            /* Prevent too small on mobile */
         }
 
         .share-btn:hover {
@@ -462,43 +459,42 @@
             justify-content: center;
         }
 
-        /* Custom scrollbar */
-        .sidebar-box.sticky-sidebar::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .sidebar-box.sticky-sidebar::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-
-        .sidebar-box.sticky-sidebar::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 10px;
-        }
-
-        .sidebar-box.sticky-sidebar::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-dark);
-        }
-
         @media (max-width: 1024px) {
             .program-layout {
                 grid-template-columns: 1fr !important;
             }
 
             .sidebar-container {
-                position: relative;
+                margin-top: 20px;
             }
 
-            .sidebar-box.sticky-sidebar {
-                position: relative;
-                top: 0;
-                max-height: none;
-                align-self: auto;
+            .sidebar-box {
+                margin-bottom: 20px;
             }
 
             .sidebar-box.share-box {
-                margin-top: 20px;
+                margin-bottom: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content-box {
+                padding: 25px;
+            }
+
+            .sidebar-box {
+                padding: 20px;
+            }
+
+            .detail-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .share-btn {
+                height: 40px;
+                font-size: 1rem;
             }
         }
     </style>
