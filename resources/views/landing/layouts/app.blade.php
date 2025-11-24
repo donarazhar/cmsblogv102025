@@ -23,6 +23,9 @@
         <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/ypia.png') }}">
     @endif
 
+    {{-- SEO Meta Tags --}}
+    <x-seo :title="$pageTitle ?? 'Home'" :description="$pageDescription ?? setting('seo_description')" :keywords="$pageKeywords ?? setting('seo_keywords')" :image="$pageImage ?? null" :breadcrumb="$breadcrumb ?? []" />
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -508,6 +511,7 @@
     </style>
 
     @stack('styles')
+    <x-analytics />
 </head>
 
 <body>
@@ -734,6 +738,18 @@
                 icon.classList.remove('fa-times');
             }
         });
+    </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7NW9G4G7HM"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-7NW9G4G7HM');
     </script>
 
     @stack('scripts')

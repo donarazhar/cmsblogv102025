@@ -22,7 +22,11 @@ use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\RobotsController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
+
+
 
 
 
@@ -36,6 +40,9 @@ use Illuminate\Support\Facades\Route;
 
 // Home
 Route::get('/', [LandingController::class, 'index'])->name('home');
+// SEO Routes
+Route::get('sitemap.xml', [SitemapController::class, 'index']);
+Route::get('robots.txt', [RobotsController::class, 'index']);
 
 // About
 Route::get('/about', [LandingController::class, 'about'])->name('about');

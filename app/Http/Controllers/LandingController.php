@@ -135,7 +135,12 @@ class LandingController extends Controller
             ];
         });
 
-        return view('landing.index', $data);
+        return view('landing.index', $data, [
+            'pageTitle' => 'Beranda',
+            'pageDescription' => 'Masjid Agung Al Azhar - Pusat Kegiatan Keagamaan dan Dakwah Islam di Jakarta',
+            'pageKeywords' => 'masjid al azhar, masjid jakarta, kajian islam, sholat jumat',
+            'breadcrumb' => [],
+        ]);
     }
 
     /**
