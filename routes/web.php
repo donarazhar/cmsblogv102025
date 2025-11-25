@@ -26,6 +26,14 @@ use App\Http\Controllers\RobotsController;
 use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
+/*
+|--------------------------------------------------------------------------
+| SEO Routes (Harus paling atas)
+|--------------------------------------------------------------------------
+*/
+
+Route::get('sitemap.xml', [SitemapController::class, 'index']);
+Route::get('robots.txt', [RobotsController::class, 'index']);
 
 /*
 |--------------------------------------------------------------------------
@@ -35,9 +43,6 @@ use Illuminate\Support\Facades\Route;
 
 // Home
 Route::get('/', [LandingController::class, 'index'])->name('home');
-// SEO Routes
-Route::get('sitemap.xml', [SitemapController::class, 'index']);
-Route::get('robots.txt', [RobotsController::class, 'index']);
 
 // About
 Route::get('/about', [LandingController::class, 'about'])->name('about');
@@ -62,15 +67,11 @@ Route::get('/donation/{slug}', [LandingController::class, 'donationDetail'])->na
 Route::get('/contact', [LandingController::class, 'contact'])->name('contact');
 Route::post('/contact', [LandingController::class, 'contactSubmit'])->name('contact.submit');
 
-// Dynamic Pages Route
-Route::get('/{slug}', [LandingController::class, 'page'])->name('page.show');
-
 /*
 |--------------------------------------------------------------------------
-| Authentication Routes
+| Authentication Routes (Guest Only)
 |--------------------------------------------------------------------------
 */
-
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');
@@ -84,15 +85,19 @@ Route::middleware('guest')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Authenticated Routes
+| Authenticated Routes (Logged In Users Only)
 |--------------------------------------------------------------------------
 */
-
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // Admin Routes
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Panel Routes
+    |--------------------------------------------------------------------------
+    */
     Route::prefix('admin')->name('admin.')->group(function () {
+        // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         // Posts Routes
@@ -103,27 +108,27 @@ Route::middleware('auth')->group(function () {
             ->name('posts.publish');
         Route::post('posts/{post}/unpublish', [PostController::class, 'unpublish'])
             ->name('posts.unpublish');
-        Route::post('/posts/upload-image', [PostController::class, 'uploadImage'])->name('posts.upload-image');
+        Route::post('posts/upload-image', [PostController::class, 'uploadImage'])
+            ->name('posts.upload-image');
         Route::delete('posts/{post}/remove-image', [PostController::class, 'removeImage'])
             ->name('posts.remove-image');
 
-
-        // Categories routes
+        // Categories Routes
         Route::resource('categories', CategoryController::class);
-        Route::patch('categories/{category}/toggle-status', [CategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
-        Route::get('categories/{category}/remove-image', [CategoryController::class, 'removeImage'])->name('categories.remove-image');
-        Route::post('categories/reorder', [CategoryController::class, 'reorder'])->name('categories.reorder');
+        Route::patch('categories/{category}/toggle-status', [CategoryController::class, 'toggleStatus'])
+            ->name('categories.toggle-status');
+        Route::get('categories/{category}/remove-image', [CategoryController::class, 'removeImage'])
+            ->name('categories.remove-image');
+        Route::post('categories/reorder', [CategoryController::class, 'reorder'])
+            ->name('categories.reorder');
 
-        //  Tags Routes
+        // Tags Routes
         Route::resource('tags', TagController::class);
         Route::delete('tags/bulk-delete', [TagController::class, 'bulkDelete'])
             ->name('tags.bulk-delete');
 
         // Comments Routes
-        Route::resource('comments', CommentController::class)
-            ->except(['create', 'store']);
-
-        // Comment Actions
+        Route::resource('comments', CommentController::class)->except(['create', 'store']);
         Route::post('comments/{comment}/approve', [CommentController::class, 'approve'])
             ->name('comments.approve');
         Route::post('comments/{comment}/spam', [CommentController::class, 'spam'])
@@ -132,8 +137,6 @@ Route::middleware('auth')->group(function () {
             ->name('comments.trash');
         Route::post('comments/{comment}/reply', [CommentController::class, 'reply'])
             ->name('comments.reply');
-
-        // Bulk Actions
         Route::post('comments/bulk-action', [CommentController::class, 'bulkAction'])
             ->name('comments.bulk-action');
 
@@ -143,19 +146,22 @@ Route::middleware('auth')->group(function () {
             ->name('staff.bulk-delete');
         Route::post('staff/update-order', [StaffController::class, 'updateOrder'])
             ->name('staff.update-order');
-        Route::get('staff/{staff}/remove-photo', [StaffController::class, 'removePhoto'])->name('staff.remove-photo');
+        Route::get('staff/{staff}/remove-photo', [StaffController::class, 'removePhoto'])
+            ->name('staff.remove-photo');
 
-        // Testimonials
+        // Testimonials Routes
         Route::resource('testimonials', TestimonialController::class);
         Route::post('testimonials/{testimonial}/approve', [TestimonialController::class, 'approve'])
             ->name('testimonials.approve');
         Route::post('testimonials/{testimonial}/reject', [TestimonialController::class, 'reject'])
             ->name('testimonials.reject');
 
-        // Sliders CRUD
+        // Sliders Routes
         Route::resource('sliders', SliderController::class);
-        Route::post('sliders/{slider}/toggle', [SliderController::class, 'toggleStatus'])->name('sliders.toggle');
-        Route::post('sliders/update-order', [SliderController::class, 'updateOrder'])->name('sliders.update-order');
+        Route::post('sliders/{slider}/toggle', [SliderController::class, 'toggleStatus'])
+            ->name('sliders.toggle');
+        Route::post('sliders/update-order', [SliderController::class, 'updateOrder'])
+            ->name('sliders.update-order');
 
         // Pages Routes
         Route::resource('pages', PageController::class);
@@ -164,22 +170,26 @@ Route::middleware('auth')->group(function () {
         Route::delete('pages/{page}/remove-image', [PageController::class, 'removeImage'])
             ->name('pages.remove-image');
 
-        // Programs
+        // Programs Routes
         Route::resource('programs', ProgramController::class);
-        Route::post('programs/{program}/toggle', [ProgramController::class, 'toggleStatus'])->name('programs.toggle');
-        Route::post('programs/{program}/toggle-featured', [ProgramController::class, 'toggleFeatured'])->name('programs.toggle-featured');
-        // Program Image Upload (for TinyMCE)
-        Route::post('/programs/upload-image', [ProgramController::class, 'uploadImage'])->name('programs.upload-image');
+        Route::post('programs/{program}/toggle', [ProgramController::class, 'toggleStatus'])
+            ->name('programs.toggle');
+        Route::post('programs/{program}/toggle-featured', [ProgramController::class, 'toggleFeatured'])
+            ->name('programs.toggle-featured');
+        Route::post('programs/upload-image', [ProgramController::class, 'uploadImage'])
+            ->name('programs.upload-image');
 
-        // Gallery Albums
+        // Gallery Routes
         Route::prefix('gallery')->name('gallery.')->group(function () {
             Route::resource('albums', GalleryAlbumController::class);
-            Route::post('albums/{album}/toggle', [GalleryAlbumController::class, 'toggleStatus'])->name('albums.toggle');
+            Route::post('albums/{album}/toggle', [GalleryAlbumController::class, 'toggleStatus'])
+                ->name('albums.toggle');
 
-            // Gallery Photos
             Route::resource('photos', GalleryController::class);
-            Route::post('photos/{photo}/toggle', [GalleryController::class, 'toggleStatus'])->name('photos.toggle');
-            Route::post('photos/bulk-upload', [GalleryController::class, 'bulkUpload'])->name('photos.bulk-upload');
+            Route::post('photos/{photo}/toggle', [GalleryController::class, 'toggleStatus'])
+                ->name('photos.toggle');
+            Route::post('photos/bulk-upload', [GalleryController::class, 'bulkUpload'])
+                ->name('photos.bulk-upload');
         });
 
         // Schedules Routes
@@ -194,7 +204,6 @@ Route::middleware('auth')->group(function () {
         Route::post('announcements/reorder', [AnnouncementController::class, 'reorder'])
             ->name('announcements.reorder');
 
-
         // Donation Routes
         Route::resource('donations', DonationController::class);
         Route::post('donations/{donation}/toggle-active', [DonationController::class, 'toggleActive'])
@@ -202,7 +211,7 @@ Route::middleware('auth')->group(function () {
         Route::post('donations/{donation}/toggle-featured', [DonationController::class, 'toggleFeatured'])
             ->name('donations.toggle-featured');
 
-        // Donation Transaction Routes
+        // Donation Transactions Routes
         Route::resource('donation-transactions', DonationTransactionController::class);
         Route::post('donation-transactions/{donationTransaction}/verify', [DonationTransactionController::class, 'verify'])
             ->name('donation-transactions.verify');
@@ -210,7 +219,7 @@ Route::middleware('auth')->group(function () {
             ->name('donation-transactions.reject');
         Route::post('donation-transactions/bulk-verify', [DonationTransactionController::class, 'bulkVerify'])
             ->name('donation-transactions.bulk-verify');
-        Route::get('donation-transactions-export', [DonationTransactionController::class, 'export'])
+        Route::get('donation-transactions/export', [DonationTransactionController::class, 'export'])
             ->name('donation-transactions.export');
 
         // Contacts Routes
@@ -224,31 +233,43 @@ Route::middleware('auth')->group(function () {
         Route::get('contacts/export/csv', [ContactController::class, 'exportCsv'])
             ->name('contacts.export-csv');
 
-        // Activity Logs Routes (sudah ada di response sebelumnya)
+        // Activity Logs Routes
         Route::prefix('activity-logs')->name('activity-logs.')->group(function () {
             Route::get('/', [ActivityLogController::class, 'index'])->name('index');
             Route::get('/analytics', [ActivityLogController::class, 'analytics'])->name('analytics');
-            Route::get('/{activity}/show', [ActivityLogController::class, 'show'])->name('show'); // Tambahkan ini
+            Route::get('/{activity}/show', [ActivityLogController::class, 'show'])->name('show');
             Route::get('/user/{user}', [ActivityLogController::class, 'userActivity'])->name('user-activity');
             Route::delete('/{activity}', [ActivityLogController::class, 'destroy'])->name('destroy');
             Route::post('/clear', [ActivityLogController::class, 'clear'])->name('clear');
         });
 
-        // Backup routes
-        Route::get('backups', [BackupController::class, 'index'])->name('backups.index');
-        Route::post('backups/create', [BackupController::class, 'create'])->name('backups.create');
-        Route::post('backups/create-full', [BackupController::class, 'createFull'])->name('backups.create-full');
-        Route::get('backups/download/{filename}', [BackupController::class, 'download'])->name('backups.download');
-        Route::delete('backups/{filename}', [BackupController::class, 'destroy'])->name('backups.destroy');
-        Route::post('backups/clean', [BackupController::class, 'clean'])->name('backups.clean');
-        Route::post('backups/restore', [BackupController::class, 'restore'])->name('backups.restore');
+        // Backup Routes
+        Route::prefix('backups')->name('backups.')->group(function () {
+            Route::get('/', [BackupController::class, 'index'])->name('index');
+            Route::post('/create', [BackupController::class, 'create'])->name('create');
+            Route::post('/create-full', [BackupController::class, 'createFull'])->name('create-full');
+            Route::get('/download/{filename}', [BackupController::class, 'download'])->name('download');
+            Route::delete('/{filename}', [BackupController::class, 'destroy'])->name('destroy');
+            Route::post('/clean', [BackupController::class, 'clean'])->name('clean');
+            Route::post('/restore', [BackupController::class, 'restore'])->name('restore');
+        });
 
-        // Settings routes
-        Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
-        Route::post('settings', [SettingController::class, 'update'])->name('settings.update');
-        Route::get('settings/create', [SettingController::class, 'create'])->name('settings.create');
-        Route::post('settings/store', [SettingController::class, 'store'])->name('settings.store');
-        Route::delete('settings/{setting}', [SettingController::class, 'destroy'])->name('settings.destroy');
-        Route::post('settings/clear-cache', [SettingController::class, 'clearCache'])->name('settings.clear-cache');
+        // Settings Routes
+        Route::prefix('settings')->name('settings.')->group(function () {
+            Route::get('/', [SettingController::class, 'index'])->name('index');
+            Route::post('/', [SettingController::class, 'update'])->name('update');
+            Route::get('/create', [SettingController::class, 'create'])->name('create');
+            Route::post('/store', [SettingController::class, 'store'])->name('store');
+            Route::delete('/{setting}', [SettingController::class, 'destroy'])->name('destroy');
+            Route::post('/clear-cache', [SettingController::class, 'clearCache'])->name('clear-cache');
+        });
     });
 });
+
+/*
+|--------------------------------------------------------------------------
+| Dynamic Pages Route (MUST BE LAST - Catch-All Route)
+|--------------------------------------------------------------------------
+| IMPORTANT: This route MUST be at the bottom to avoid catching other routes
+*/
+Route::get('/{slug}', [LandingController::class, 'page'])->name('page.show');
