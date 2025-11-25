@@ -7,44 +7,31 @@
     <meta name="description" content="@yield('meta_description', setting('seo_description', 'Masjid Agung Al Azhar - Pusat Kegiatan Keagamaan dan Dakwah'))">
     <meta name="keywords" content="@yield('meta_keywords', setting('seo_keywords', 'masjid al azhar, masjid jakarta, kajian islam'))">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="theme-color" content="#0053C5">
     <title>@yield('title', setting('site_name', 'Masjid Agung Al Azhar'))</title>
 
-    <!-- Preload critical resources -->
+    <!-- Preload & Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="dns-prefetch" href="https://unpkg.com">
 
-    @if (setting('site_favicon'))
-        <link rel="icon" type="image/x-icon" href="{{ asset('storage/' . setting('site_favicon')) }}" />
-        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('storage/' . setting('site_favicon')) }}">
-    @else
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/ypia.png') }}">
-    @endif
+    {{-- Favicon --}}
+    <link rel="shortcut icon" href="https://siap.al-azhar.id/upload/favicon.ico" type="image/x-icon" />
 
-    {{-- SEO Meta Tags --}}
+    <!-- SEO -->
     <x-seo :title="$pageTitle ?? 'Home'" :description="$pageDescription ?? setting('seo_description')" :keywords="$pageKeywords ?? setting('seo_keywords')" :image="$pageImage ?? null" :breadcrumb="$breadcrumb ?? []" />
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- AOS Animation - Load async -->
-    <link rel="preload" href="https://unpkg.com/aos@next/dist/aos.css" as="style"
-        onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
-    </noscript>
-
-    <!-- Custom CSS -->
     <style>
-        * {
+        /* ===== CSS RESET & VARIABLES ===== */
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -53,470 +40,100 @@
         :root {
             --primary: #0053C5;
             --primary-dark: #003d91;
-            --primary-light: #3374d1;
-            --secondary: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --success: #10b981;
-            --info: #3b82f6;
-            --dark: #1f2937;
-            --light: #f9fafb;
-            --border: #e5e7eb;
+            --primary-light: #e8f1fc;
+
+            --secondary: #1e293b;
+            --accent: #f59e0b;
+
+            --text: #334155;
+            --text-light: #64748b;
+            --text-dark: #0f172a;
+
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+
+            --shadow: 0 4px 15px rgba(0, 83, 197, 0.08);
+            --shadow-lg: 0 10px 40px rgba(0, 83, 197, 0.12);
+            --shadow-xl: 0 20px 50px rgba(0, 83, 197, 0.15);
+
+            --radius: 10px;
+            --radius-lg: 16px;
+
+            --transition: all 0.3s ease;
+
+            --navbar-height: 80px;
+            --container-max: 1200px;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            color: var(--dark);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background: var(--white);
             line-height: 1.6;
             overflow-x: hidden;
         }
 
-        /* Navbar */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background: white;
-            box-shadow: 0 2px 20px rgba(0, 83, 197, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .navbar.scrolled {
-            box-shadow: 0 5px 30px rgba(0, 83, 197, 0.2);
-        }
-
-        .navbar-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 80px;
-        }
-
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        a {
+            color: inherit;
             text-decoration: none;
-            color: var(--dark);
-            font-weight: 700;
-            font-size: 1.3rem;
-            transition: all 0.3s ease;
         }
 
-        .navbar-brand:hover {
-            color: var(--primary);
-        }
-
-        /* Navbar Logo Image */
-        .navbar-logo-img {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            /* Membuat bulat */
-            object-fit: cover;
-            /* Menjaga proporsi */
-            object-position: center;
-            /* Posisi gambar di tengah */
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            /* Border opsional */
-            background: white;
-            /* Background putih jika gambar transparan */
-            flex-shrink: 0;
-            /* Prevent logo dari shrink */
-        }
-
-        .navbar-brand:hover .navbar-logo-img {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 83, 197, 0.4);
-        }
-
-        /* Keep existing .navbar-logo for icon fallback */
-        .navbar-logo {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #0053C5 0%, #003d91 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0, 83, 197, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .navbar-brand:hover .navbar-logo {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 83, 197, 0.4);
-        }
-
-        .navbar-brand:hover .navbar-logo {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 83, 197, 0.4);
-        }
-
-        .navbar-menu {
-            display: flex;
-            list-style: none;
-            gap: 10px;
-        }
-
-        .navbar-menu a {
-            text-decoration: none;
-            color: var(--dark);
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            position: relative;
-        }
-
-        .navbar-menu a::after {
-            content: '';
-            position: absolute;
-            bottom: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2px;
-            background: #0053C5;
-            transition: width 0.3s ease;
-        }
-
-        .navbar-menu a:hover::after {
-            width: calc(100% - 40px);
-        }
-
-        .navbar-menu a:hover {
-            color: #0053C5;
-        }
-
-        .navbar-menu a.active {
-            background: #0053C5;
-            color: white;
-        }
-
-        .navbar-menu a.active::after {
-            width: 0;
-        }
-
-        .navbar-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #0053C5;
-            transition: all 0.3s ease;
-        }
-
-        .navbar-toggle:hover {
-            transform: scale(1.1);
-        }
-
-        /* Dropdown Menu */
-        .nav-item-dropdown {
-            position: relative;
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            min-width: 220px;
-            padding: 10px 0;
-            list-style: none;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .nav-item-dropdown:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown-menu li a {
-            padding: 12px 20px;
-            color: var(--dark);
+        img {
+            max-width: 100%;
+            height: auto;
             display: block;
-            transition: all 0.3s ease;
         }
 
-        .dropdown-menu li a:hover {
-            background: var(--light);
-            color: var(--primary);
-            padding-left: 25px;
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            background: none;
         }
 
-        .dropdown-menu li a::after {
-            display: none;
+        ul,
+        ol {
+            list-style: none;
         }
 
-        /* Mobile Menu */
-        @media (max-width: 768px) {
-            .navbar-menu {
-                position: fixed;
-                top: 80px;
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - 80px);
-                background: white;
-                flex-direction: column;
-                padding: 20px;
-                transition: left 0.3s ease;
-                box-shadow: 0 5px 20px rgba(0, 83, 197, 0.1);
-            }
-
-            .navbar-menu.active {
-                left: 0;
-            }
-
-            .navbar-toggle {
-                display: block;
-            }
-
-            .navbar-menu a::after {
-                display: none;
-            }
-        }
-
-        /* Container */
+        /* ===== CONTAINER ===== */
         .container {
-            max-width: 1200px;
+            width: 100%;
+            max-width: var(--container-max);
             margin: 0 auto;
             padding: 0 20px;
         }
 
-        /* Section */
-        .section {
-            padding: 80px 0;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .section-subtitle {
-            color: #0053C5;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--dark);
-            margin-bottom: 15px;
-        }
-
-        .section-description {
-            color: #6b7280;
-            font-size: 1.1rem;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        /* Footer */
-        .footer {
-            background: linear-gradient(135deg, #0053C5 0%, #003d91 100%);
-            color: white;
-            padding: 60px 0 30px;
-            position: relative;
-        }
-
-        .footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.5;
-        }
-
-        .footer-top {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .footer-widget h3 {
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-            font-weight: 700;
-            color: white;
-        }
-
-        .footer-widget p,
-        .footer-widget li {
-            color: rgba(255, 255, 255, 0.85);
-            margin-bottom: 10px;
-            line-height: 1.8;
-        }
-
-        .footer-widget ul {
-            list-style: none;
-        }
-
-        .footer-widget a {
-            color: rgba(255, 255, 255, 0.85);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .footer-widget a:hover {
-            color: white;
-            transform: translateX(5px);
-        }
-
-        .footer-social {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .social-icon {
-            width: 45px;
-            height: 45px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-            position: relative;
-        }
-
-        .social-icon i {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
-            width: 100%;
-            height: 100%;
-        }
-
-        .social-icon .fa-facebook-f {
-            font-size: 1rem;
-        }
-
-        .social-icon .fa-instagram {
-            font-size: 1.1rem;
-        }
-
-        .social-icon .fa-twitter {
-            font-size: 1rem;
-        }
-
-        .social-icon .fa-youtube {
-            font-size: 1rem;
-        }
-
-        .social-icon .fa-tiktok {
-            font-size: 1.1rem;
-        }
-
-        .social-icon:hover {
-            background: white;
-            color: #0053C5;
-            border-color: white;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
-        }
-
-        .footer-bottom {
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            text-align: center;
-            color: rgba(255, 255, 255, 0.8);
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Scroll to Top Button */
-        .scroll-top {
+        /* ===== LOADING SCREEN ===== */
+        .page-loader {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #0053C5 0%, #003d91 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 5px 20px rgba(0, 83, 197, 0.4);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 999;
-        }
-
-        .scroll-top.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .scroll-top:hover {
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 8px 25px rgba(0, 83, 197, 0.6);
-        }
-
-        /* Loading */
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
+            inset: 0;
+            background: var(--white);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
 
-        .loading.hide {
+        .page-loader.loaded {
             opacity: 0;
+            visibility: hidden;
             pointer-events: none;
         }
 
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #e5e7eb;
-            border-top-color: #0053C5;
+        .loader-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
         }
 
         @keyframes spin {
@@ -525,32 +142,556 @@
             }
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .section-title {
-                font-size: 2rem;
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--navbar-height);
+            background: var(--white);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled {
+            box-shadow: var(--shadow);
+        }
+
+        .navbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            padding: 0 20px;
+            max-width: var(--container-max);
+            margin: 0 auto;
+        }
+
+        /* Brand */
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--text-dark);
+            transition: var(--transition);
+        }
+
+        .navbar-brand:hover {
+            color: var(--primary);
+        }
+
+        .brand-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius);
+            object-fit: cover;
+            background: var(--primary-light);
+            transition: var(--transition);
+        }
+
+        .navbar-brand:hover .brand-logo {
+            transform: scale(1.05);
+            box-shadow: var(--shadow);
+        }
+
+        .brand-text {
+            display: none;
+        }
+
+        @media (min-width: 480px) {
+            .brand-text {
+                display: block;
+            }
+        }
+
+        /* Nav Menu - Desktop */
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text);
+            border-radius: var(--radius);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .nav-link.active {
+            color: var(--white);
+            background: var(--primary);
+        }
+
+        .nav-link .dropdown-icon {
+            font-size: 0.65rem;
+            transition: var(--transition);
+            margin-left: 2px;
+        }
+
+        /* Dropdown - Desktop */
+        .nav-dropdown .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            min-width: 220px;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition);
+            z-index: 100;
+            border: 1px solid var(--border);
+        }
+
+        .nav-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .nav-dropdown:hover .dropdown-icon {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            font-size: 0.875rem;
+            color: var(--text);
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .dropdown-item:hover {
+            color: var(--primary);
+            background: var(--primary-light);
+            padding-left: 20px;
+        }
+
+        .dropdown-item i {
+            font-size: 0.8rem;
+            width: 16px;
+            color: var(--text-light);
+        }
+
+        /* Mobile Toggle */
+        .navbar-toggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 46px;
+            height: 46px;
+            background: var(--bg);
+            border-radius: var(--radius);
+            color: var(--text-dark);
+            font-size: 1.25rem;
+            transition: var(--transition);
+        }
+
+        .navbar-toggle:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        /* ===== MOBILE MENU HEADER (Hidden on Desktop) ===== */
+        .mobile-menu-header {
+            display: none;
+        }
+
+        .navbar-menu-wrapper {
+            display: contents;
+        }
+
+        /* ===== MOBILE MENU - SLIDE FROM LEFT ===== */
+        @media (max-width: 991px) {
+            :root {
+                --navbar-height: 70px;
             }
 
-            .navbar-container {
+            .navbar-toggle {
+                display: flex;
+            }
+
+            /* Mobile Menu Wrapper */
+            .navbar-menu-wrapper {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 300px;
+                max-width: 85vw;
+                background: var(--white);
+                transform: translateX(-100%);
+                transition: transform 0.35s ease;
+                z-index: 1001;
+                box-shadow: var(--shadow-xl);
+                display: flex;
+                flex-direction: column;
+            }
+
+            .navbar-menu-wrapper.active {
+                transform: translateX(0);
+            }
+
+            /* Mobile Menu Header - Show on Mobile */
+            .mobile-menu-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 20px;
                 height: 70px;
+                border-bottom: 1px solid var(--border);
+                background: var(--white);
+                flex-shrink: 0;
             }
 
-            .navbar-brand {
+            .mobile-menu-title {
+                font-weight: 700;
                 font-size: 1.1rem;
+                color: var(--text-dark);
             }
 
-            .navbar-logo {
-                width: 45px;
-                height: 45px;
-                font-size: 1.2rem;
+            .mobile-menu-close {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                background: var(--bg);
+                border-radius: var(--radius);
+                color: var(--text-dark);
+                font-size: 1.1rem;
+                transition: var(--transition);
+                cursor: pointer;
+                border: none;
             }
 
-            .footer {
-                padding: 40px 0 20px;
+            .mobile-menu-close:hover {
+                background: var(--primary-light);
+                color: var(--primary);
             }
 
-            .footer-top {
-                gap: 30px;
+            /* Menu List */
+            .navbar-menu {
+                flex: 1;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 5px;
+                padding: 20px;
+                overflow-y: auto;
+            }
+
+            .nav-item {
+                width: 100%;
+            }
+
+            .nav-link {
+                padding: 14px 16px;
+                font-size: 1rem;
+                border-radius: var(--radius);
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            /* Mobile Dropdown */
+            .nav-dropdown .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                padding-left: 16px;
+                margin-top: 5px;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.35s ease;
+                background: transparent;
+            }
+
+            .nav-dropdown.open .dropdown-menu {
+                max-height: 500px;
+            }
+
+            .nav-dropdown.open .dropdown-icon {
+                transform: rotate(180deg);
+            }
+
+            .dropdown-item {
+                padding: 12px 16px;
+                background: var(--bg);
+                margin-bottom: 4px;
+                border-radius: var(--radius);
+            }
+        }
+
+        /* ===== OVERLAY ===== */
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            min-height: calc(100vh - var(--navbar-height));
+            padding-top: var(--navbar-height);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .footer-main {
+            position: relative;
+            padding: 60px 0 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-brand-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .footer-brand-desc {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius);
+            color: var(--white);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background: var(--white);
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer Widget */
+        .footer-widget-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            color: var(--white);
+            transform: translateX(5px);
+        }
+
+        .footer-link i {
+            font-size: 0.7rem;
+            width: 14px;
+        }
+
+        /* Contact Info */
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .contact-item {
+            display: flex;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.6;
+        }
+
+        .contact-item i {
+            width: 16px;
+            margin-top: 4px;
+            color: rgba(255, 255, 255, 0.6);
+            flex-shrink: 0;
+        }
+
+        /* Footer Bottom */
+        .footer-bottom {
+            position: relative;
+            padding: 25px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .footer-copyright {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .footer-copyright a {
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .footer-copyright .heart {
+            color: #ef4444;
+            animation: heartbeat 1.5s ease infinite;
+        }
+
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.15);
+            }
+        }
+
+        /* ===== SCROLL TO TOP ===== */
+        .scroll-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(15px);
+            transition: var(--transition);
+            z-index: 997;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .scroll-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-4px);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .footer-main {
+                padding: 50px 0 25px;
+            }
+
+            .footer-grid {
+                gap: 35px;
+            }
+
+            .scroll-top {
+                bottom: 20px;
+                right: 20px;
+                width: 44px;
+                height: 44px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-brand {
+                max-width: 100%;
+            }
+
+            .container {
+                padding: 0 16px;
             }
         }
     </style>
@@ -560,263 +701,384 @@
 </head>
 
 <body>
-    <!-- Loading -->
-    <div class="loading" id="loading">
-        <div class="spinner"></div>
+    <!-- Page Loader -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-spinner"></div>
     </div>
+
+    <!-- Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
 
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
-        <div class="navbar-container">
+        <div class="navbar-inner">
+            <!-- Brand -->
             <a href="{{ route('home') }}" class="navbar-brand">
                 @if (setting('site_logo'))
                     <img src="{{ asset('storage/' . setting('site_logo')) }}"
-                        alt="{{ setting('site_name', 'Al Azhar') }}" class="navbar-logo-img">
+                        alt="{{ setting('site_name', 'Al Azhar') }}" class="brand-logo" width="48" height="48">
                 @else
                     <img src="{{ asset('assets/img/ypia.png') }}" alt="{{ setting('site_name', 'Al Azhar') }}"
-                        class="navbar-logo-img">
+                        class="brand-logo" width="48" height="48">
                 @endif
-                <span>{{ setting('site_name', 'Al Azhar') }}</span>
+                <span class="brand-text">{{ setting('site_name', 'Al Azhar') }}</span>
             </a>
 
-            <ul class="navbar-menu" id="navbarMenu">
-                <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a>
-                </li>
+            <!-- Menu -->
+            <div class="navbar-menu-wrapper">
+                <!-- Mobile Menu Header - PINDAHKAN KE SINI -->
+                <div class="mobile-menu-header">
+                    <span class="mobile-menu-title">Menu</span>
+                    <button class="mobile-menu-close" id="mobileMenuClose" type="button">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
 
-                @php
-                    $pages = \App\Models\Page::published()->inMenu()->whereNull('parent_id')->with('children')->get();
-                @endphp
+                <!-- Menu List -->
+                <ul class="navbar-menu" id="navbarMenu">
+                    <li class="nav-item">
+                        <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">
+                            Beranda
+                        </a>
+                    </li>
 
-                @foreach ($pages as $page)
-                    @if ($page->children->where('status', 'published')->where('show_in_menu', true)->count() > 0)
-                        {{-- Page with Children (Dropdown) --}}
-                        <li class="nav-item-dropdown">
-                            <a href="{{ $page->custom_url ?? route('page.show', $page->slug) }}"
-                                class="{{ request()->is($page->slug) || request()->is($page->slug . '/*') || ($page->custom_url && request()->fullUrl() == $page->custom_url) ? 'active' : '' }}">
-                                @if ($page->icon)
-                                    <i class="{{ $page->icon }}"></i>
-                                @endif
-                                {{ $page->title }}
-                                <i class="fas fa-chevron-down" style="font-size: 0.7rem; margin-left: 5px;"></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                                @foreach ($page->children->where('status', 'published')->where('show_in_menu', true) as $child)
-                                    <li>
-                                        <a href="{{ $child->custom_url ?? route('page.show', $child->slug) }}">
-                                            @if ($child->icon)
-                                                <i class="{{ $child->icon }}"></i>
-                                            @endif
-                                            {{ $child->title }}
-                                        </a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </li>
-                    @else
-                        {{-- Regular Page --}}
-                        <li>
-                            <a href="{{ $page->custom_url ?? route('page.show', $page->slug) }}"
-                                class="{{ request()->is($page->slug) || ($page->custom_url && request()->fullUrl() == $page->custom_url) ? 'active' : '' }}">
-                                @if ($page->icon)
-                                    <i class="{{ $page->icon }}"></i>
-                                @endif
-                                {{ $page->title }}
-                            </a>
-                        </li>
-                    @endif
-                @endforeach
-            </ul>
+                    @php
+                        $pages = \App\Models\Page::published()
+                            ->inMenu()
+                            ->whereNull('parent_id')
+                            ->with([
+                                'children' => function ($q) {
+                                    $q->where('status', 'published')->where('show_in_menu', true);
+                                },
+                            ])
+                            ->get();
+                    @endphp
 
-            <button class="navbar-toggle" id="navbarToggle">
+                    @foreach ($pages as $page)
+                        @if ($page->children->count() > 0)
+                            <li class="nav-item nav-dropdown">
+                                <a href="javascript:void(0)"
+                                    class="nav-link {{ request()->is($page->slug) || request()->is($page->slug . '/*') ? 'active' : '' }}">
+                                    @if ($page->icon)
+                                        <i class="{{ $page->icon }}"></i>
+                                    @endif
+                                    {{ $page->title }}
+                                    <i class="fas fa-chevron-down dropdown-icon"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    @foreach ($page->children as $child)
+                                        <li>
+                                            <a href="{{ $child->custom_url ?? route('page.show', $child->slug) }}"
+                                                class="dropdown-item">
+                                                @if ($child->icon)
+                                                    <i class="{{ $child->icon }}"></i>
+                                                @endif
+                                                {{ $child->title }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a href="{{ $page->custom_url ?? route('page.show', $page->slug) }}"
+                                    class="nav-link {{ request()->is($page->slug) ? 'active' : '' }}">
+                                    @if ($page->icon)
+                                        <i class="{{ $page->icon }}"></i>
+                                    @endif
+                                    {{ $page->title }}
+                                </a>
+                            </li>
+                        @endif
+                    @endforeach
+                </ul>
+            </div>
+
+            <!-- Mobile Toggle -->
+            <button class="navbar-toggle" id="navbarToggle" type="button">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main style="margin-top: 80px;">
+    <main class="main-content">
         @yield('content')
     </main>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-top">
-                <div class="footer-widget">
-                    <h3>{{ setting('site_name', 'Masjid Agung Al Azhar') }}</h3>
-                    <p>{{ setting('site_description', 'Pusat kegiatan keagamaan, pendidikan, dan dakwah Islam di Jakarta.') }}
-                    </p>
-                    <div class="footer-social">
-                        @if (setting('social_facebook'))
-                            <a href="{{ setting('social_facebook') }}" target="_blank" class="social-icon"
-                                title="Facebook">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-                        @endif
-
-                        @if (setting('social_instagram'))
-                            <a href="{{ setting('social_instagram') }}" target="_blank" class="social-icon"
-                                title="Instagram">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                        @endif
-
-                        @if (setting('social_twitter'))
-                            <a href="{{ setting('social_twitter') }}" target="_blank" class="social-icon"
-                                title="Twitter">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                        @endif
-
-                        @if (setting('social_youtube'))
-                            <a href="{{ setting('social_youtube') }}" target="_blank" class="social-icon"
-                                title="YouTube">
-                                <i class="fab fa-youtube"></i>
-                            </a>
-                        @endif
-
-                        {{-- ✅ TAMBAHKAN INI --}}
-                        @if (setting('social_tiktok'))
-                            <a href="{{ setting('social_tiktok') }}" target="_blank" class="social-icon"
-                                title="TikTok">
-                                <i class="fab fa-tiktok"></i>
-                            </a>
-                        @endif
+            <div class="footer-main">
+                <div class="footer-grid">
+                    <!-- Brand -->
+                    <div class="footer-brand">
+                        <h3 class="footer-brand-name">{{ setting('site_name', 'Masjid Agung Al Azhar') }}</h3>
+                        <p class="footer-brand-desc">
+                            {{ setting('site_description', 'Pusat kegiatan keagamaan, pendidikan, dan dakwah Islam di Jakarta.') }}
+                        </p>
+                        <div class="social-links">
+                            @if (setting('social_facebook'))
+                                <a href="{{ setting('social_facebook') }}" target="_blank" rel="noopener"
+                                    class="social-link" title="Facebook">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            @endif
+                            @if (setting('social_instagram'))
+                                <a href="{{ setting('social_instagram') }}" target="_blank" rel="noopener"
+                                    class="social-link" title="Instagram">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            @endif
+                            @if (setting('social_twitter'))
+                                <a href="{{ setting('social_twitter') }}" target="_blank" rel="noopener"
+                                    class="social-link" title="Twitter">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            @endif
+                            @if (setting('social_youtube'))
+                                <a href="{{ setting('social_youtube') }}" target="_blank" rel="noopener"
+                                    class="social-link" title="YouTube">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            @endif
+                            @if (setting('social_tiktok'))
+                                <a href="{{ setting('social_tiktok') }}" target="_blank" rel="noopener"
+                                    class="social-link" title="TikTok">
+                                    <i class="fab fa-tiktok"></i>
+                                </a>
+                            @endif
+                        </div>
                     </div>
-                </div>
 
-                <div class="footer-widget">
-                    <h3>Menu Cepat</h3>
-                    <ul>
-                        <li><a href="{{ route('about') }}"><i class="fas fa-chevron-right"
-                                    style="font-size: 0.8rem; margin-right: 8px;"></i>Tentang Kami</a></li>
-                        <li><a href="{{ route('programs') }}"><i class="fas fa-chevron-right"
-                                    style="font-size: 0.8rem; margin-right: 8px;"></i>Program</a></li>
-                        <li><a href="{{ route('blog') }}"><i class="fas fa-chevron-right"
-                                    style="font-size: 0.8rem; margin-right: 8px;"></i>Berita</a></li>
-                        <li><a href="{{ route('gallery') }}"><i class="fas fa-chevron-right"
-                                    style="font-size: 0.8rem; margin-right: 8px;"></i>Galeri</a></li>
-                        <li><a href="{{ route('contact') }}"><i class="fas fa-chevron-right"
-                                    style="font-size: 0.8rem; margin-right: 8px;"></i>Hubungi Kami</a></li>
-                    </ul>
-                </div>
+                    <!-- Quick Links -->
+                    <div class="footer-widget">
+                        <h4 class="footer-widget-title">Menu Cepat</h4>
+                        <nav class="footer-links">
+                            <a href="{{ route('about') }}" class="footer-link">
+                                <i class="fas fa-chevron-right"></i>
+                                Tentang Kami
+                            </a>
+                            <a href="{{ route('programs') }}" class="footer-link">
+                                <i class="fas fa-chevron-right"></i>
+                                Program
+                            </a>
+                            <a href="{{ route('blog') }}" class="footer-link">
+                                <i class="fas fa-chevron-right"></i>
+                                Berita
+                            </a>
+                            <a href="{{ route('gallery') }}" class="footer-link">
+                                <i class="fas fa-chevron-right"></i>
+                                Galeri
+                            </a>
+                            <a href="{{ route('contact') }}" class="footer-link">
+                                <i class="fas fa-chevron-right"></i>
+                                Hubungi Kami
+                            </a>
+                        </nav>
+                    </div>
 
-                <div class="footer-widget">
-                    <h3>Kontak</h3>
-                    <ul>
-                        <li>
-                            <i class="fas fa-map-marker-alt" style="margin-right: 10px; color: white;"></i>
-                            {{ setting('contact_address', 'Jakarta, Indonesia') }}
-                        </li>
-                        <li>
-                            <i class="fas fa-phone" style="margin-right: 10px; color: white;"></i>
-                            {{ setting('contact_phone', '(+62) 217397267') }}
-                        </li>
-                        <li>
-                            <i class="fas fa-envelope" style="margin-right: 10px; color: white;"></i>
-                            {{ setting('contact_email', 'masjidagungalazhar@gmail.com') }}
-                        </li>
-                        <li>
-                            <i class="fab fa-whatsapp" style="margin-right: 10px; color: white;"></i>
-                            {{ setting('contact_whatsapp', '0882-1211-4771') }}
-                        </li>
-                    </ul>
-                </div>
+                    <!-- Contact -->
+                    <div class="footer-widget">
+                        <h4 class="footer-widget-title">Kontak</h4>
+                        <address class="contact-list" style="font-style: normal;">
+                            <div class="contact-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ setting('contact_address', 'Jakarta, Indonesia') }}</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <span>{{ setting('contact_phone', '(+62) 217397267') }}</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>{{ setting('contact_email', 'masjidagungalazhar@gmail.com') }}</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>{{ setting('contact_whatsapp', '0882-1211-4771') }}</span>
+                            </div>
+                        </address>
+                    </div>
 
-                <div class="footer-widget">
-                    <h3>Jam Operasional</h3>
-                    <ul>
-                        <li><i class="fas fa-clock" style="margin-right: 10px; color: white;"></i>Senin - Sabtu: 08:00
-                            - 15:00</li>
-                        <li><i class="fas fa-clock" style="margin-right: 10px; color: white;"></i>Ahad :
-                            Janji Temu</li>
-                        <li><i class="fas fa-mosque" style="margin-right: 10px; color: white;"></i>Jumat: 11:30 -
-                            12:30 (Sholat Jumat)</li>
-                    </ul>
+                    <!-- Hours -->
+                    <div class="footer-widget">
+                        <h4 class="footer-widget-title">Jam Operasional</h4>
+                        <div class="contact-list">
+                            <div class="contact-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Senin - Sabtu: 08:00 - 15:00</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Ahad: Janji Temu</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-mosque"></i>
+                                <span>Jumat: 11:30 - 12:30 (Sholat Jumat)</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="footer-bottom">
-                <p>&copy; {{ date('Y') }} {{ setting('site_name', 'Masjid Agung Al Azhar') }}. All rights
-                    reserved. | Developed with <i class="fas fa-heart" style="color: #ef4444;"></i> by DAL ARMY</p>
+                <p class="footer-copyright">
+                    &copy; {{ date('Y') }} {{ setting('site_name', 'Masjid Agung Al Azhar') }}. All rights
+                    reserved.
+                    | Developed with <i class="fas fa-heart heart"></i> by
+                    <a href="#">DAL ARMY</a>
+                </p>
             </div>
         </div>
     </footer>
 
     <!-- Scroll to Top -->
-    <div class="scroll-top" id="scrollTop">
+    <button class="scroll-top" id="scrollTop" type="button">
         <i class="fas fa-arrow-up"></i>
-    </div>
+    </button>
 
-    <!-- AOS Animation - Load async -->
-    <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
-
+    <!-- Scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            if (typeof AOS !== 'undefined') {
-                AOS.init({
-                    duration: 800,
-                    easing: 'ease-in-out',
-                    once: true,
-                    offset: 100,
-                    disable: 'mobile'
+            // Elements
+            const loader = document.getElementById('pageLoader');
+            const navbar = document.getElementById('navbar');
+            const navbarToggle = document.getElementById('navbarToggle');
+            const navbarMenu = document.getElementById('navbarMenu');
+            const menuOverlay = document.getElementById('menuOverlay');
+            const mobileMenuClose = document.getElementById('mobileMenuClose');
+            const scrollTopBtn = document.getElementById('scrollTop');
+            const dropdowns = document.querySelectorAll('.nav-dropdown');
+            // Hide loader
+            window.addEventListener('load', function() {
+                loader.classList.add('loaded');
+            });
+
+            // Fallback
+            setTimeout(function() {
+                loader.classList.add('loaded');
+            }, 3000);
+
+            // Scroll handler
+            function handleScroll() {
+                const scrollY = window.scrollY;
+
+                if (scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+
+                if (scrollY > 300) {
+                    scrollTopBtn.classList.add('visible');
+                } else {
+                    scrollTopBtn.classList.remove('visible');
+                }
+            }
+
+            window.addEventListener('scroll', handleScroll);
+            handleScroll();
+
+            // Open menu
+            function openMenu() {
+                document.querySelector('.navbar-menu-wrapper').classList.add('active');
+                menuOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Close menu
+            function closeMenu() {
+                document.querySelector('.navbar-menu-wrapper').classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+
+                dropdowns.forEach(function(dropdown) {
+                    dropdown.classList.remove('open');
                 });
             }
-        });
-    </script>
 
-    <!-- Custom JS -->
-    <script>
-        window.addEventListener('load', () => {
-            document.getElementById('loading').classList.add('hide');
-        });
+            // Toggle button click
+            navbarToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                openMenu();
+            });
 
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
+            // Close button click
+            mobileMenuClose.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeMenu();
+            });
 
-        const navbarToggle = document.getElementById('navbarToggle');
-        const navbarMenu = document.getElementById('navbarMenu');
+            // Overlay click
+            menuOverlay.addEventListener('click', closeMenu);
 
-        navbarToggle.addEventListener('click', () => {
-            navbarMenu.classList.toggle('active');
-            const icon = navbarToggle.querySelector('i');
-            icon.classList.toggle('fa-bars');
-            icon.classList.toggle('fa-times');
-        });
+            // Mobile dropdown toggle
+            dropdowns.forEach(function(dropdown) {
+                const link = dropdown.querySelector('.nav-link');
 
-        const scrollTop = document.getElementById('scrollTop');
+                link.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 991) {
+                        e.preventDefault();
 
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                scrollTop.classList.add('show');
-            } else {
-                scrollTop.classList.remove('show');
-            }
-        });
+                        dropdowns.forEach(function(other) {
+                            if (other !== dropdown) {
+                                other.classList.remove('open');
+                            }
+                        });
 
-        scrollTop.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
+                        dropdown.classList.toggle('open');
+                    }
+                });
+            });
+
+            // Close menu on link click
+            const navLinks = document.querySelectorAll(
+                '.navbar-menu > .nav-item > .nav-link:not(.nav-dropdown > .nav-link)');
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 991) {
+                        closeMenu();
+                    }
+                });
+            });
+
+            // Close menu on dropdown item click
+            const dropdownItems = document.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    if (window.innerWidth <= 991) {
+                        closeMenu();
+                    }
+                });
+            });
+
+            // Scroll to top
+            scrollTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && navbarMenu.classList.contains('active')) {
+                    closeMenu();
+                }
+            });
+
+            // Resize handler
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 991 && document.querySelector('.navbar-menu-wrapper').classList
+                    .contains('active')) {
+                    closeMenu();
+                }
             });
         });
-
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.navbar')) {
-                navbarMenu.classList.remove('active');
-                const icon = navbarToggle.querySelector('i');
-                icon.classList.add('fa-bars');
-                icon.classList.remove('fa-times');
-            }
-        });
     </script>
-    <!-- Google tag (gtag.js) -->
+
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7NW9G4G7HM"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -825,7 +1087,6 @@
             dataLayer.push(arguments);
         }
         gtag('js', new Date());
-
         gtag('config', 'G-7NW9G4G7HM');
     </script>
 

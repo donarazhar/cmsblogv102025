@@ -68,14 +68,27 @@ class Post extends Model
         return $this->belongsToMany(Tag::class);
     }
 
-    public function comments(): HasMany
+    public function comments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class)
+            ->latest();
     }
 
-    public function approvedComments(): HasMany
+    public function approvedComments()
     {
-        return $this->hasMany(Comment::class)->where('status', 'approved');
+        return $this->hasMany(Comment::class)
+            ->where('status', 'approved')
+            ->whereNull('parent_id')
+            ->with(['replies' => function ($query) {
+                $query->where('status', 'approved');
+            }])
+            ->latest();
+    }
+
+    public function pendingComments()
+    {
+        return $this->hasMany(Comment::class)
+            ->where('status', 'pending');
     }
 
     // Scopes

@@ -54,6 +54,8 @@ Route::get('/program/{slug}', [LandingController::class, 'programDetail'])->name
 // Blog/News
 Route::get('/blog', [LandingController::class, 'blog'])->name('blog');
 Route::get('/blog/{slug}', [LandingController::class, 'blogDetail'])->name('blog.detail');
+// Route untuk submit comment
+Route::post('/blog/{slug}/comment', [LandingController::class, 'blogCommentSubmit'])->name('blog.comment.submit');
 
 // Gallery
 Route::get('/gallery', [LandingController::class, 'gallery'])->name('gallery');

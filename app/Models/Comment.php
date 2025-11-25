@@ -29,6 +29,9 @@ class Comment extends Model
         'updated_at' => 'datetime',
     ];
 
+    // ✅ ADD APPENDS
+    protected $appends = ['author'];
+
     // Relationships
     public function post(): BelongsTo
     {
@@ -47,7 +50,9 @@ class Comment extends Model
 
     public function replies(): HasMany
     {
-        return $this->hasMany(Comment::class, 'parent_id');
+        return $this->hasMany(Comment::class, 'parent_id')
+            ->where('status', 'approved')
+            ->latest();
     }
 
     // Scopes
@@ -71,6 +76,24 @@ class Comment extends Model
         return $query->orderBy('created_at', 'desc');
     }
 
+    // Accessor - untuk compatibility
+    public function getAuthorAttribute(): string
+    {
+        if ($this->user) {
+            return $this->user->name;
+        }
+        return $this->author_name ?? 'Anonymous';
+    }
+
+    // ✅ ADD EMAIL ACCESSOR
+    public function getEmailAttribute(): ?string
+    {
+        if ($this->user) {
+            return $this->user->email;
+        }
+        return $this->author_email;
+    }
+
     // Methods
     public function approve()
     {
@@ -80,10 +103,5 @@ class Comment extends Model
     public function markAsSpam()
     {
         $this->update(['status' => 'spam']);
-    }
-
-    public function getAuthorAttribute(): string
-    {
-        return $this->user ? $this->user->name : $this->author_name;
     }
 }

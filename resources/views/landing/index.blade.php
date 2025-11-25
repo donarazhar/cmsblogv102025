@@ -1,286 +1,1284 @@
 @extends('landing.layouts.app')
 
-@section('title', $settings['site_name'] ?? 'Masjid Agung Al Azhar')
+@section('title', 'Masjid Agung Al Azhar')
 
+@push('styles')
+    <style>
+        :root {
+            --primary: #0053C5;
+            --primary-dark: #003d94;
+            --primary-light: #e8f0fc;
+            --secondary: #1e293b;
+            --accent: #f59e0b;
+            --text: #334155;
+            --text-light: #64748b;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0, 83, 197, 0.08);
+            --shadow-lg: 0 10px 40px rgba(0, 83, 197, 0.12);
+            --radius: 12px;
+            --radius-lg: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            position: relative;
+            height: 85vh;
+            min-height: 500px;
+            max-height: 800px;
+            overflow: hidden;
+        }
+
+        .hero-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-slide::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0, 53, 197, 0.85) 0%, rgba(0, 53, 197, 0.4) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-text {
+            max-width: 650px;
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            color: var(--white);
+            line-height: 1.15;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.75rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: var(--radius);
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--white);
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--white);
+        }
+
+        /* Hero Controls */
+        .hero-controls {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+
+        .hero-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .hero-dot.active {
+            background: var(--white);
+            transform: scale(1.2);
+        }
+
+        /* ===== ANNOUNCEMENT BAR ===== */
+        .announcement-bar {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 0.75rem 0;
+            overflow: hidden;
+        }
+
+        .announcement-inner {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .announcement-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            color: var(--white);
+            font-weight: 600;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        .announcement-scroll {
+            flex: 1;
+            overflow: hidden;
+            mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent);
+        }
+
+        .announcement-track {
+            display: flex;
+            animation: marquee 25s linear infinite;
+            white-space: nowrap;
+        }
+
+        .announcement-track:hover {
+            animation-play-state: paused;
+        }
+
+        .announcement-item {
+            color: var(--white);
+            font-size: 0.9rem;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .announcement-item::before {
+            content: '•';
+            opacity: 0.5;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* ===== SECTION STYLES ===== */
+        .section {
+            padding: 5rem 1rem;
+        }
+
+        .section-alt {
+            background: var(--bg);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .section-desc {
+            color: var(--text-light);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ===== PROGRAMS GRID ===== */
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .program-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .program-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .program-img {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .program-icon {
+            position: absolute;
+            bottom: -20px;
+            left: 1.25rem;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.25rem;
+            box-shadow: var(--shadow);
+        }
+
+        .program-body {
+            padding: 2rem 1.25rem 1.25rem;
+        }
+
+        .program-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .program-desc {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .program-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .program-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .program-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .program-link:hover {
+            gap: 0.75rem;
+        }
+
+        /* ===== POSTS GRID ===== */
+        .posts-featured {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .post-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .post-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .post-category {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .post-featured-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--accent);
+            color: var(--white);
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .post-body {
+            padding: 1.25rem;
+        }
+
+        .post-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 0.75rem;
+        }
+
+        .post-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .post-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .post-excerpt {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .post-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .post-link:hover {
+            gap: 0.75rem;
+        }
+
+        /* Latest Posts - Compact Grid */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .post-compact {
+            display: flex;
+            gap: 1rem;
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 1rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .post-compact:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .post-compact-img {
+            width: 90px;
+            height: 90px;
+            border-radius: var(--radius);
+            background-size: cover;
+            background-position: center;
+            flex-shrink: 0;
+        }
+
+        .post-compact-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .post-compact-cat {
+            font-size: 0.7rem;
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.35rem;
+        }
+
+        .post-compact-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--secondary);
+            line-height: 1.4;
+            margin-bottom: 0.35rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .post-compact-date {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        /* ===== GALLERY GRID ===== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 53, 197, 0.9) 0%, transparent 100%);
+            opacity: 0;
+            transition: var(--transition);
+            display: flex;
+            align-items: flex-end;
+            padding: 1rem;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-title {
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Albums */
+        .albums-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .album-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .album-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .album-cover {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .album-body {
+            padding: 1.25rem;
+        }
+
+        .album-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .album-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .album-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        /* ===== SCHEDULE SECTION ===== */
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .schedule-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .schedule-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .schedule-header i {
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .schedule-header h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .schedule-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .schedule-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .schedule-item:hover {
+            background: var(--primary-light);
+        }
+
+        .schedule-time {
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--radius);
+            font-size: 0.8rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .schedule-date {
+            text-align: center;
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.5rem;
+            border-radius: var(--radius);
+            min-width: 55px;
+        }
+
+        .schedule-date-day {
+            font-size: 1.25rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .schedule-date-month {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .schedule-info {
+            flex: 1;
+        }
+
+        .schedule-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.35rem;
+        }
+
+        .schedule-detail {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .schedule-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 50px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .schedule-empty {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials-slider {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonials-track {
+            display: flex;
+            gap: 1.5rem;
+            transition: transform 0.5s ease;
+        }
+
+        .testimonial-card {
+            flex: 0 0 calc(33.333% - 1rem);
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .testimonial-quote {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            color: var(--primary-light);
+        }
+
+        .testimonial-rating {
+            display: flex;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-rating i {
+            color: #e5e7eb;
+            font-size: 0.9rem;
+        }
+
+        .testimonial-rating i.active {
+            color: var(--accent);
+        }
+
+        .testimonial-content {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1.25rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .testimonial-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: 700;
+            overflow: hidden;
+        }
+
+        .testimonial-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .testimonial-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .testimonial-role {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* ===== DONATIONS ===== */
+        .donations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .donation-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .donation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .donation-img {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .donation-urgent {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: #dc2626;
+            color: var(--white);
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            animation: pulse-urgent 2s infinite;
+        }
+
+        @keyframes pulse-urgent {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .donation-body {
+            padding: 1.25rem;
+        }
+
+        .donation-category {
+            font-size: 0.75rem;
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .donation-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .donation-desc {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .donation-progress {
+            margin-bottom: 1rem;
+        }
+
+        .donation-progress-bar {
+            height: 8px;
+            background: var(--bg);
+            border-radius: 50px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .donation-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 50px;
+            transition: width 1s ease;
+        }
+
+        .donation-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+        }
+
+        .donation-raised {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .donation-target {
+            color: var(--text-light);
+        }
+
+        .donation-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .donation-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .btn-donate {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn-donate:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* ===== CTA SECTION ===== */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 5rem 1rem;
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .cta-desc {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-cta-primary {
+            background: var(--white);
+            color: var(--primary);
+            padding: 1rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-cta-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-cta-outline {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            padding: 1rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-cta-outline:hover {
+            border-color: var(--white);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ===== LIGHTBOX ===== */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-img {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: var(--radius);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: var(--white);
+            font-size: 2rem;
+            cursor: pointer;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .lightbox-nav:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .lightbox-prev {
+            left: 1rem;
+        }
+
+        .lightbox-next {
+            right: 1rem;
+        }
+
+        /* ===== UTILITIES ===== */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-4 {
+            margin-top: 2.5rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .testimonial-card {
+                flex: 0 0 calc(50% - 0.75rem);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section {
+                padding: 3.5rem 1rem;
+            }
+
+            .hero {
+                height: 70vh;
+                min-height: 450px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .announcement-badge span {
+                display: none;
+            }
+
+            .schedule-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonial-card {
+                flex: 0 0 100%;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* ===== LAZY LOAD ===== */
+        .lazy-bg {
+            background-color: var(--bg);
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @media (prefers-reduced-motion: no-preference) {
+            .fade-up {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.6s ease, transform 0.6s ease;
+            }
+
+            .fade-up.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+@endpush
 @section('content')
-    <!-- Hero Slider -->
-    <section class="hero-slider">
+    <!-- Hero Section -->
+    <section class="hero">
         @foreach ($sliders as $index => $slider)
-            <div class="hero-slide {{ $index === 0 ? 'active' : '' }}"
-                style="background-image: url('{{ asset('storage/' . $slider->image) }}');">
-                <div class="hero-overlay"
-                    style="background-color: {{ $slider->overlay_color }}; opacity: {{ $slider->overlay_opacity / 100 }};">
-                </div>
-                <div class="hero-content" style="text-align: {{ $slider->text_position }};">
-                    <div class="container">
-                        <h1 class="hero-title" data-aos="fade-up">{{ $slider->title }}</h1>
+            <div class="hero-slide {{ $index === 0 ? 'active' : '' }} lazy-bg"
+                data-bg="{{ asset('storage/' . $slider->image) }}">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1 class="hero-title">{{ $slider->title }}</h1>
                         @if ($slider->subtitle)
-                            <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="100">{{ $slider->subtitle }}</p>
+                            <p class="hero-subtitle">{{ $slider->subtitle }}</p>
                         @endif
-                        @if ($slider->description)
-                            <p class="hero-description" data-aos="fade-up" data-aos-delay="200">{{ $slider->description }}
-                            </p>
-                        @endif
-                        <div class="hero-buttons" data-aos="fade-up" data-aos-delay="300">
+                        <div class="hero-buttons">
                             @if ($slider->button_text && $slider->button_link)
                                 <a href="{{ $slider->button_link }}" class="btn btn-primary">
                                     {{ $slider->button_text }}
                                     <i class="fas fa-arrow-right"></i>
                                 </a>
                             @endif
-                            @if ($slider->button_text_2 && $slider->button_link_2)
-                                <a href="{{ $slider->button_link_2 }}" class="btn btn-outline">
-                                    {{ $slider->button_text_2 }}
-                                    <i class="fas fa-arrow-right"></i>
-                                </a>
-                            @endif
+                            <a href="{{ route('contact') }}" class="btn btn-outline">
+                                Hubungi Kami
+                                <i class="fas fa-envelope"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         @endforeach
-
         @if ($sliders->count() > 1)
-            <!-- Slider Controls -->
-            <div class="slider-controls">
-                <button class="slider-prev"><i class="fas fa-chevron-left"></i></button>
-                <button class="slider-next"><i class="fas fa-chevron-right"></i></button>
-            </div>
-            <div class="slider-indicators">
+            <div class="hero-controls">
                 @foreach ($sliders as $index => $slider)
-                    <span class="indicator {{ $index === 0 ? 'active' : '' }}" data-slide="{{ $index }}"></span>
+                    <button class="hero-dot {{ $index === 0 ? 'active' : '' }}" data-slide="{{ $index }}"></button>
                 @endforeach
             </div>
         @endif
     </section>
-
-    <!-- Announcements with Running Text Animation -->
+    <!-- Announcements -->
     @if ($announcements->count() > 0)
-        <section class="announcement-bar">
-            <div class="container">
-                <div class="announcement-wrapper">
-                    <!-- Icon -->
-                    <div class="announcement-icon">
-                        <i class="fas fa-bullhorn"></i>
-                        <span class="announcement-label">Pengumuman</span>
-                    </div>
-
-                    <!-- Running Text Container -->
-                    <div class="announcement-content">
-                        <div class="announcement-marquee">
-                            <div class="announcement-track">
-                                @foreach ($announcements as $announcement)
-                                    <span class="announcement-item">
-                                        <i class="fas fa-circle" style="font-size: 6px; margin: 0 15px;"></i>
-                                        {{ $announcement->title }}
-                                    </span>
-                                @endforeach
-                                <!-- Duplicate untuk seamless loop -->
-                                @foreach ($announcements as $announcement)
-                                    <span class="announcement-item">
-                                        <i class="fas fa-circle" style="font-size: 6px; margin: 0 15px;"></i>
-                                        {{ $announcement->title }}
-                                    </span>
-                                @endforeach
-                            </div>
-                        </div>
+        <div class="announcement-bar">
+            <div class="announcement-inner">
+                <div class="announcement-badge">
+                    <i class="fas fa-bullhorn"></i>
+                    <span>Pengumuman</span>
+                </div>
+                <div class="announcement-scroll">
+                    <div class="announcement-track">
+                        @foreach ($announcements as $item)
+                            <span class="announcement-item">{{ $item->title }}</span>
+                        @endforeach
+                        @foreach ($announcements as $item)
+                            <span class="announcement-item">{{ $item->title }}</span>
+                        @endforeach
                     </div>
                 </div>
             </div>
-        </section>
-
-        <style>
-            .announcement-bar {
-                background: linear-gradient(135deg, #0053C5 0%, rgb(33, 120, 241) 100%);
-                padding: 0;
-                position: relative;
-                overflow: hidden;
-                box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
-                z-index: 100;
-            }
-
-            .announcement-bar::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: -100%;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-                animation: shine 3s infinite;
-            }
-
-            @keyframes shine {
-                0% {
-                    left: -100%;
-                }
-
-                100% {
-                    left: 100%;
-                }
-            }
-
-            .announcement-wrapper {
-                display: flex;
-                align-items: center;
-                gap: 20px;
-                padding: 15px 0;
-                position: relative;
-            }
-
-            .announcement-icon {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                flex-shrink: 0;
-                color: white;
-                background: rgba(255, 255, 255, 0.2);
-                padding: 12px 20px;
-                border-radius: 50px;
-                backdrop-filter: blur(10px);
-            }
-
-            .announcement-icon i {
-                font-size: 1.3rem;
-                animation: pulse 2s ease-in-out infinite;
-            }
-
-            @keyframes pulse {
-
-                0%,
-                100% {
-                    transform: scale(1);
-                }
-
-                50% {
-                    transform: scale(1.1);
-                }
-            }
-
-            .announcement-label {
-                font-weight: 700;
-                font-size: 0.9rem;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-            }
-
-            .announcement-content {
-                flex: 1;
-                overflow: hidden;
-                position: relative;
-                mask-image: linear-gradient(to right,
-                        transparent 0%,
-                        black 5%,
-                        black 95%,
-                        transparent 100%);
-                -webkit-mask-image: linear-gradient(to right,
-                        transparent 0%,
-                        black 5%,
-                        black 95%,
-                        transparent 100%);
-            }
-
-            .announcement-marquee {
-                display: flex;
-                overflow: hidden;
-            }
-
-            .announcement-track {
-                display: flex;
-                animation: scroll 30s linear infinite;
-                will-change: transform;
-            }
-
-            .announcement-track:hover {
-                animation-play-state: paused;
-            }
-
-            @keyframes scroll {
-                0% {
-                    transform: translateX(0);
-                }
-
-                100% {
-                    transform: translateX(-50%);
-                }
-            }
-
-            .announcement-item {
-                color: white;
-                font-weight: 600;
-                font-size: 1rem;
-                white-space: nowrap;
-                display: inline-flex;
-                align-items: center;
-            }
-
-            /* Responsive */
-            @media (max-width: 768px) {
-                .announcement-wrapper {
-                    gap: 10px;
-                    padding: 12px 0;
-                }
-
-                .announcement-icon {
-                    padding: 10px 15px;
-                    gap: 8px;
-                }
-
-                .announcement-icon i {
-                    font-size: 1.1rem;
-                }
-
-                .announcement-label {
-                    display: none;
-                }
-
-                .announcement-item {
-                    font-size: 0.9rem;
-                }
-
-                .announcement-track {
-                    animation-duration: 20s;
-                }
-
-                .announcement-close {
-                    width: 30px;
-                    height: 30px;
-                }
-            }
-
-            /* Hidden state */
-            .announcement-bar.hidden {
-                display: none;
-            }
-        </style>
+        </div>
     @endif
-
     <!-- Programs Section -->
     <section class="section">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <div class="section-subtitle">Program Kami</div>
+            <div class="section-header fade-up">
+                <span class="section-badge">Program Kami</span>
                 <h2 class="section-title">Program & Kegiatan</h2>
-                <p class="section-description">
-                    Ikuti berbagai program kegiatan keagamaan yang kami selenggarakan
-                </p>
+                <p class="section-desc">Ikuti berbagai program kegiatan keagamaan yang kami selenggarakan</p>
             </div>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+            <div class="programs-grid">
                 @foreach ($programs as $program)
-                    <div class="program-card" data-aos="fade-up">
-                        @if ($program->image)
-                            <div class="program-image"
-                                style="background-image: url('{{ asset('storage/' . $program->image) }}');"></div>
-                        @endif
-                        <div class="program-content">
+                    <div class="program-card fade-up">
+                        <div class="program-img lazy-bg"
+                            data-bg="{{ $program->image ? asset('storage/' . $program->image) : '' }}">
                             @if ($program->icon)
-                                <div class="program-icon">
-                                    <i class="{{ $program->icon }}"></i>
-                                </div>
+                                <div class="program-icon"><i class="{{ $program->icon }}"></i></div>
                             @endif
+                        </div>
+                        <div class="program-body">
                             <h3 class="program-title">{{ $program->name }}</h3>
-                            <p class="program-description">{{ Str::limit($program->description, 100) }}</p>
+                            <p class="program-desc">{{ Str::limit($program->description, 80) }}</p>
                             <div class="program-meta">
                                 <span><i class="fas fa-calendar"></i> {{ $program->frequency }}</span>
                                 @if ($program->location)
@@ -295,46 +1293,38 @@
                 @endforeach
             </div>
 
-            <div style="text-align: center; margin-top: 40px;" data-aos="fade-up">
-                <a href="{{ route('programs') }}" class="btn btn-primary">
-                    Lihat Semua Program
-                    <i class="fas fa-arrow-right"></i>
+            <div class="text-center mt-4 fade-up">
+                <a href="{{ route('programs') }}" class="btn btn-primary"
+                    style="background: var(--primary); color: var(--white);">
+                    Lihat Semua Program <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
     </section>
-
-    <!-- Latest Posts/News Section -->
-    <section class="section" style="background: var(--light);">
+    <!-- Posts Section -->
+    <section class="section section-alt">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <div class="section-subtitle">Berita & Artikel</div>
+            <div class="section-header fade-up">
+                <span class="section-badge">Berita & Artikel</span>
                 <h2 class="section-title">Berita Terbaru</h2>
-                <p class="section-description">
-                    Ikuti perkembangan dan kegiatan terbaru dari Masjid Al Azhar
-                </p>
+                <p class="section-desc">Ikuti perkembangan dan kegiatan terbaru dari Masjid Al Azhar</p>
             </div>
-
-            <!-- Featured Posts -->
             @if ($featuredPosts->count() > 0)
-                <div
-                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-bottom: 50px;">
+                <div class="posts-featured">
                     @foreach ($featuredPosts as $post)
-                        <article class="post-card featured" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
-                            <div class="post-image"
-                                style="background-image: url('{{ $post->featured_image ? asset('storage/' . $post->featured_image) : 'https://via.placeholder.com/800x500' }}');">
-                                <div class="post-badge">Featured</div>
-                                <div class="post-category">{{ $post->category->name }}</div>
+                        <article class="post-card fade-up">
+                            <div class="post-img lazy-bg"
+                                data-bg="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : '' }}">
+                                <span class="post-category">{{ $post->category->name }}</span>
+                                <span class="post-featured-badge">Featured</span>
                             </div>
-                            <div class="post-content">
+                            <div class="post-body">
                                 <div class="post-meta">
                                     <span><i class="fas fa-user"></i> {{ $post->author->name }}</span>
-                                    <span><i class="fas fa-calendar"></i>
-                                        {{ $post->published_at->format('d M Y') }}</span>
-                                    <span><i class="fas fa-eye"></i> {{ number_format($post->views_count) }}</span>
+                                    <span><i class="fas fa-calendar"></i> {{ $post->published_at->format('d M Y') }}</span>
                                 </div>
                                 <h3 class="post-title">{{ $post->title }}</h3>
-                                <p class="post-excerpt">{{ Str::limit(strip_tags($post->excerpt), 120) }}</p>
+                                <p class="post-excerpt">{{ Str::limit(strip_tags($post->excerpt), 100) }}</p>
                                 <a href="{{ route('blog.detail', $post->slug) }}" class="post-link">
                                     Baca Selengkapnya <i class="fas fa-arrow-right"></i>
                                 </a>
@@ -344,350 +1334,375 @@
                 </div>
             @endif
 
-            <!-- Latest Posts Grid -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
+            <div class="posts-grid">
                 @foreach ($latestPosts->take(6) as $post)
-                    <article class="post-card-small" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
-                        <div class="post-image-small"
-                            style="background-image: url('{{ $post->featured_image ? asset('storage/' . $post->featured_image) : 'https://via.placeholder.com/400x300' }}');">
+                    <a href="{{ route('blog.detail', $post->slug) }}" class="post-compact fade-up">
+                        <div class="post-compact-img lazy-bg"
+                            data-bg="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : '' }}"></div>
+                        <div class="post-compact-body">
+                            <span class="post-compact-cat">{{ $post->category->name }}</span>
+                            <h4 class="post-compact-title">{{ Str::limit($post->title, 50) }}</h4>
+                            <span class="post-compact-date">{{ $post->published_at->format('d M Y') }}</span>
                         </div>
-                        <div class="post-content-small">
-                            <div class="post-category-small">{{ $post->category->name }}</div>
-                            <h4 class="post-title-small">{{ Str::limit($post->title, 60) }}</h4>
-                            <div class="post-meta-small">
-                                <span><i class="fas fa-calendar"></i> {{ $post->published_at->format('d M Y') }}</span>
-                            </div>
-                        </div>
-                    </article>
+                    </a>
                 @endforeach
             </div>
 
-            <div style="text-align: center; margin-top: 40px;" data-aos="fade-up">
-                <a href="{{ route('blog') }}" class="btn btn-primary">
-                    Lihat Semua Berita
-                    <i class="fas fa-arrow-right"></i>
+            <div class="text-center mt-4 fade-up">
+                <a href="{{ route('blog') }}" class="btn btn-primary"
+                    style="background: var(--primary); color: var(--white);">
+                    Lihat Semua Berita <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
     </section>
-
     <!-- Gallery Section -->
     <section class="section">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <div class="section-subtitle">Galeri</div>
+            <div class="section-header fade-up">
+                <span class="section-badge">Galeri</span>
                 <h2 class="section-title">Dokumentasi Kegiatan</h2>
-                <p class="section-description">
-                    Lihat dokumentasi berbagai kegiatan yang telah kami laksanakan
-                </p>
+                <p class="section-desc">Lihat dokumentasi berbagai kegiatan yang telah kami laksanakan</p>
             </div>
-
             <div class="gallery-grid">
                 @foreach ($galleries as $index => $gallery)
-                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="{{ $index * 50 }}"
-                        onclick="openLightbox({{ $index }})">
-                        <img src="{{ $gallery->image ? asset('storage/' . $gallery->image) : 'https://via.placeholder.com/600x400' }}"
+                    <div class="gallery-item fade-up" onclick="openLightbox({{ $index }})">
+                        <img src="{{ $gallery->image ? asset('storage/' . $gallery->image) : '' }}"
                             alt="{{ $gallery->title }}" loading="lazy">
                         <div class="gallery-overlay">
-                            <div class="gallery-info">
-                                <h4>{{ $gallery->title }}</h4>
-                                <p>{{ $gallery->description }}</p>
-                            </div>
-                            <div class="gallery-icon">
-                                <i class="fas fa-search-plus"></i>
-                            </div>
+                            <span class="gallery-title">{{ $gallery->title }}</span>
                         </div>
                     </div>
                 @endforeach
             </div>
 
-            <!-- Gallery Albums -->
             @if ($albums->count() > 0)
-                <div style="margin-top: 60px;">
-                    <h3 style="font-size: 2rem; font-weight: 700; text-align: center; margin-bottom: 40px;"
-                        data-aos="fade-up">Album Kegiatan</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
-                        @foreach ($albums as $album)
-                            <a href="{{ route('gallery.album', $album->slug) }}" class="album-card" data-aos="fade-up"
-                                data-aos-delay="{{ $loop->index * 100 }}">
-                                <div class="album-cover"
-                                    style="background-image: url('{{ $album->cover_image ? asset('storage/' . $album->cover_image) : 'https://via.placeholder.com/600x400' }}');">
+                <div class="albums-grid">
+                    @foreach ($albums as $album)
+                        <a href="{{ route('gallery.album', $album->slug) }}" class="album-card fade-up">
+                            <div class="album-cover lazy-bg"
+                                data-bg="{{ $album->cover_image ? asset('storage/' . $album->cover_image) : '' }}"></div>
+                            <div class="album-body">
+                                <h4 class="album-title">{{ $album->name }}</h4>
+                                <div class="album-meta">
+                                    <span><i class="fas fa-images"></i> {{ $album->galleries_count }} Foto</span>
+                                    <span><i class="fas fa-calendar"></i>
+                                        {{ $album->event_date?->format('d M Y') ?? '-' }}</span>
                                 </div>
-                                <div class="album-info">
-                                    <h4 class="album-title">{{ $album->name }}</h4>
-                                    <div class="album-meta">
-                                        <span><i class="fas fa-images"></i> {{ $album->galleries_count }} Foto</span>
-                                        <span><i class="fas fa-calendar"></i>
-                                            {{ $album->event_date ? $album->event_date->format('d M Y') : '-' }}</span>
-                                    </div>
-                                </div>
-                            </a>
-                        @endforeach
-                    </div>
+                            </div>
+                        </a>
+                    @endforeach
                 </div>
             @endif
 
-            <div style="text-align: center; margin-top: 40px;" data-aos="fade-up">
-                <a href="{{ route('gallery') }}" class="btn btn-primary">
-                    Lihat Semua Galeri
-                    <i class="fas fa-arrow-right"></i>
+            <div class="text-center mt-4 fade-up">
+                <a href="{{ route('gallery') }}" class="btn btn-primary"
+                    style="background: var(--primary); color: var(--white);">
+                    Lihat Semua Galeri <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
     </section>
-
-    <!-- Lightbox -->
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <span class="lightbox-close">&times;</span>
-        <img class="lightbox-content" id="lightbox-img">
-        <div class="lightbox-caption" id="lightbox-caption"></div>
-        <button class="lightbox-prev" onclick="event.stopPropagation(); changeLightboxImage(-1)">&#10094;</button>
-        <button class="lightbox-next" onclick="event.stopPropagation(); changeLightboxImage(1)">&#10095;</button>
-    </div>
-
-    <!-- Schedules Section -->
-    <section class="section" style="background: var(--light);">
+    <!-- Schedule Section -->
+    <section class="section section-alt">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <div class="section-subtitle">Jadwal</div>
+            <div class="section-header fade-up">
+                <span class="section-badge">Jadwal</span>
                 <h2 class="section-title">Jadwal Kegiatan</h2>
-                <p class="section-description">
-                    Ikuti jadwal kegiatan dan kajian rutin di Masjid Al Azhar
-                </p>
+                <p class="section-desc">Ikuti jadwal kegiatan dan kajian rutin di Masjid Al Azhar</p>
             </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+            <div class="schedule-grid">
                 <!-- Today's Schedule -->
-                <div class="schedule-box" data-aos="fade-right">
-                    <h3
-                        style="font-size: 1.5rem; font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
-                        <i class="fas fa-calendar-day" style="color: var(--primary);"></i>
-                        Jadwal Hari Ini
-                    </h3>
+                <div class="schedule-card fade-up">
+                    <div class="schedule-header">
+                        <i class="fas fa-calendar-day"></i>
+                        <h3>Jadwal Hari Ini</h3>
+                    </div>
                     @if ($todaySchedules->count() > 0)
                         <div class="schedule-list">
                             @foreach ($todaySchedules as $schedule)
                                 <div class="schedule-item">
                                     <div class="schedule-time">{{ $schedule->formatted_time }}</div>
-                                    <div class="schedule-details">
-                                        <h4>{{ $schedule->title }}</h4>
+                                    <div class="schedule-info">
+                                        <h4 class="schedule-title">{{ $schedule->title }}</h4>
                                         @if ($schedule->location)
-                                            <p><i class="fas fa-map-marker-alt"></i> {{ $schedule->location }}</p>
-                                        @endif
-                                        @if ($schedule->imam || $schedule->speaker)
-                                            <p><i class="fas fa-user"></i> {{ $schedule->imam ?? $schedule->speaker }}</p>
+                                            <p class="schedule-detail"><i class="fas fa-map-marker-alt"></i>
+                                                {{ $schedule->location }}</p>
                                         @endif
                                     </div>
-                                    <div class="schedule-badge" style="background: {{ $schedule->color }};">
+                                    <span class="schedule-badge"
+                                        style="background: {{ $schedule->color ?? 'var(--primary)' }};">
                                         {{ ucfirst($schedule->type) }}
-                                    </div>
+                                    </span>
                                 </div>
                             @endforeach
                         </div>
                     @else
-                        <p style="text-align: center; color: #9ca3af; padding: 40px;">Tidak ada jadwal untuk hari ini</p>
+                        <p class="schedule-empty">Tidak ada jadwal untuk hari ini</p>
                     @endif
                 </div>
 
                 <!-- Upcoming Events -->
-                <div class="schedule-box" data-aos="fade-left">
-                    <h3
-                        style="font-size: 1.5rem; font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
-                        <i class="fas fa-calendar-alt" style="color: var(--primary);"></i>
-                        Event Mendatang
-                    </h3>
+                <div class="schedule-card fade-up">
+                    <div class="schedule-header">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>Event Mendatang</h3>
+                    </div>
                     @if ($upcomingEvents->count() > 0)
                         <div class="schedule-list">
                             @foreach ($upcomingEvents as $event)
                                 <div class="schedule-item">
                                     <div class="schedule-date">
-                                        <div class="date-day">{{ $event->date->format('d') }}</div>
-                                        <div class="date-month">{{ $event->date->format('M') }}</div>
+                                        <div class="schedule-date-day">{{ $event->date->format('d') }}</div>
+                                        <div class="schedule-date-month">{{ $event->date->format('M') }}</div>
                                     </div>
-                                    <div class="schedule-details">
-                                        <h4>{{ $event->title }}</h4>
-                                        <p><i class="fas fa-clock"></i> {{ $event->formatted_time }}</p>
+                                    <div class="schedule-info">
+                                        <h4 class="schedule-title">{{ $event->title }}</h4>
+                                        <p class="schedule-detail"><i class="fas fa-clock"></i>
+                                            {{ $event->formatted_time }}</p>
                                         @if ($event->location)
-                                            <p><i class="fas fa-map-marker-alt"></i> {{ $event->location }}</p>
+                                            <p class="schedule-detail"><i class="fas fa-map-marker-alt"></i>
+                                                {{ $event->location }}</p>
                                         @endif
                                     </div>
                                 </div>
                             @endforeach
                         </div>
                     @else
-                        <p style="text-align: center; color: #9ca3af; padding: 40px;">Belum ada event mendatang</p>
+                        <p class="schedule-empty">Belum ada event mendatang</p>
                     @endif
                 </div>
             </div>
         </div>
     </section>
-
     <!-- Testimonials Section -->
-    <section class="section">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <div class="section-subtitle">Testimonial</div>
-                <h2 class="section-title">Apa Kata Mereka</h2>
-                <p class="section-description">
-                    Testimoni dari jamaah dan peserta program Masjid Al Azhar
-                </p>
-            </div>
-
-            <div class="testimonial-slider" data-aos="fade-up">
-                <div class="testimonial-track">
-                    @foreach ($testimonials as $testimonial)
-                        <div class="testimonial-card">
-                            <div class="testimonial-rating">
-                                @for ($i = 1; $i <= 5; $i++)
-                                    <i class="fas fa-star {{ $i <= $testimonial->rating ? 'active' : '' }}"></i>
-                                @endfor
+    @if ($testimonials->count() > 0)
+        <section class="section">
+            <div class="container">
+                <div class="section-header fade-up">
+                    <span class="section-badge">Testimonial</span>
+                    <h2 class="section-title">Apa Kata Mereka</h2>
+                    <p class="section-desc">Testimoni dari jamaah dan peserta program Masjid Al Azhar</p>
+                </div>
+                <div class="testimonials-slider fade-up">
+                    <div class="testimonials-track" id="testimonialTrack">
+                        @foreach ($testimonials as $testimonial)
+                            <div class="testimonial-card">
+                                <i class="fas fa-quote-right testimonial-quote"></i>
+                                <div class="testimonial-rating">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <i class="fas fa-star {{ $i <= $testimonial->rating ? 'active' : '' }}"></i>
+                                    @endfor
+                                </div>
+                                <p class="testimonial-content">"{{ Str::limit($testimonial->content, 150) }}"</p>
+                                <div class="testimonial-author">
+                                    <div class="testimonial-avatar">
+                                        @if ($testimonial->photo)
+                                            <img src="{{ asset('storage/' . $testimonial->photo) }}"
+                                                alt="{{ $testimonial->name }}" loading="lazy">
+                                        @else
+                                            {{ strtoupper(substr($testimonial->name, 0, 1)) }}
+                                        @endif
+                                    </div>
+                                    <div>
+                                        <h4 class="testimonial-name">{{ $testimonial->name }}</h4>
+                                        <p class="testimonial-role">{{ $testimonial->role }}</p>
+                                    </div>
+                                </div>
                             </div>
-                            <p class="testimonial-content">"{{ $testimonial->content }}"</p>
-                            <div class="testimonial-author">
-                                <div class="author-avatar">
-                                    @if ($testimonial->photo)
-                                        <img src="{{ asset('storage/' . $testimonial->photo) }}"
-                                            alt="{{ $testimonial->name }}" loading="lazy">
-                                    @else
-                                        <div class="avatar-placeholder">{{ strtoupper(substr($testimonial->name, 0, 1)) }}
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
+    <!-- Donations Section -->
+    @if ($donations->count() > 0)
+        <section class="section section-alt">
+            <div class="container">
+                <div class="section-header fade-up">
+                    <span class="section-badge">Donasi</span>
+                    <h2 class="section-title">Salurkan Donasi Anda</h2>
+                    <p class="section-desc">Ikut berpartisipasi dalam kegiatan dakwah dan sosial melalui donasi Anda</p>
+                </div>
+                <div class="donations-grid">
+                    @foreach ($donations as $donation)
+                        <div class="donation-card fade-up">
+                            @if ($donation->is_urgent ?? false)
+                                <div class="donation-urgent"><i class="fas fa-exclamation-circle"></i> URGENT</div>
+                            @endif
+                            <div class="donation-img lazy-bg"
+                                data-bg="{{ $donation->image ? asset('storage/' . $donation->image) : '' }}"></div>
+                            <div class="donation-body">
+                                <span
+                                    class="donation-category">{{ ucfirst(str_replace('_', ' ', $donation->category)) }}</span>
+                                <h3 class="donation-title">{{ $donation->campaign_name }}</h3>
+                                <p class="donation-desc">{{ Str::limit($donation->description, 80) }}</p>
+
+                                @if ($donation->target_amount)
+                                    Coba lagiUntuk menjalankan kode, aktifkan eksekusi kode dan pembuatan file di Pengaturan
+                                    > Kemampuan.ZLanjutkan <div class="donation-progress">
+                                        <div class="donation-progress-bar">
+                                            <div class="donation-progress-fill"
+                                                style="width: {{ min($donation->percentage ?? 0, 100) }}%;"></div>
                                         </div>
+                                        <div class="donation-stats">
+                                            <span class="donation-raised">Rp
+                                                {{ number_format($donation->current_amount, 0, ',', '.') }}</span>
+                                            <span class="donation-target">dari Rp
+                                                {{ number_format($donation->target_amount, 0, ',', '.') }}</span>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <div class="donation-meta">
+                                    <span><i class="fas fa-users"></i> {{ number_format($donation->donor_count) }}
+                                        Donatur</span>
+                                    @if ($donation->days_left ?? false)
+                                        <span><i class="fas fa-clock"></i> {{ $donation->days_left }} hari lagi</span>
                                     @endif
                                 </div>
-                                <div class="author-info">
-                                    <h4>{{ $testimonial->name }}</h4>
-                                    <p>{{ $testimonial->role }}{{ $testimonial->company ? ' - ' . $testimonial->company : '' }}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="testimonial-quote">
-                                <i class="fas fa-quote-right"></i>
+
+                                <a href="{{ route('donations.show', $donation->slug) }}" class="btn-donate">
+                                    Donasi Sekarang <i class="fas fa-heart"></i>
+                                </a>
                             </div>
                         </div>
                     @endforeach
                 </div>
 
-                @if ($testimonials->count() > 1)
-                    <div class="testimonial-controls">
-                        <button class="testimonial-prev"><i class="fas fa-chevron-left"></i></button>
-                        <button class="testimonial-next"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                @endif
+                <div class="text-center mt-4 fade-up">
+                    <a href="{{ route('donations') }}" class="btn btn-outline"
+                        style="border: 2px solid var(--primary); color: var(--primary);">
+                        Lihat Semua Program Donasi <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Donations Section -->
-    <section class="section">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <div class="section-subtitle">Donasi</div>
-                <h2 class="section-title">Salurkan Donasi Anda</h2>
-                <p class="section-description">
-                    Ikut berpartisipasi dalam kegiatan dakwah dan sosial melalui donasi Anda
-                </p>
-            </div>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 30px;">
-                @foreach ($donations as $donation)
-                    <div class="donation-card" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
-                        @if ($donation->is_urgent)
-                            <div class="donation-urgent">
-                                <i class="fas fa-exclamation-circle"></i> URGENT
-                            </div>
-                        @endif
-
-                        <div class="donation-image"
-                            style="background-image: url('{{ $donation->image ? asset('storage/' . $donation->image) : 'https://via.placeholder.com/600x400' }}');">
-                        </div>
-
-                        <div class="donation-content">
-                            <div class="donation-category">{{ ucfirst(str_replace('_', ' ', $donation->category)) }}</div>
-                            <h3 class="donation-title">{{ $donation->campaign_name }}</h3>
-                            <p class="donation-description">{{ Str::limit($donation->description, 100) }}</p>
-
-                            @if ($donation->target_amount)
-                                <div class="donation-progress">
-                                    <div class="progress-info">
-                                        <span class="progress-label">Terkumpul</span>
-                                        <span
-                                            class="progress-percentage">{{ number_format($donation->percentage, 1) }}%</span>
-                                    </div>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill"
-                                            style="width: {{ min($donation->percentage, 100) }}%;"></div>
-                                    </div>
-                                    <div class="progress-stats">
-                                        <span class="amount-raised">Rp
-                                            {{ number_format($donation->current_amount, 0, ',', '.') }}</span>
-                                        <span class="amount-target">dari Rp
-                                            {{ number_format($donation->target_amount, 0, ',', '.') }}</span>
-                                    </div>
-                                </div>
-                            @else
-                                <div class="donation-amount">
-                                    <span class="amount-label">Terkumpul</span>
-                                    <span class="amount-value">Rp
-                                        {{ number_format($donation->current_amount, 0, ',', '.') }}</span>
-                                </div>
-                            @endif
-
-                            <div class="donation-meta">
-                                <span><i class="fas fa-users"></i> {{ number_format($donation->donor_count) }}
-                                    Donatur</span>
-                                @if ($donation->days_left)
-                                    <span><i class="fas fa-clock"></i> {{ $donation->days_left }} hari lagi</span>
-                                @endif
-                            </div>
-
-                            <a href="{{ route('donations.show', $donation->slug) }}" class="btn btn-primary"
-                                style="width: 100%; justify-content: center;">
-                                Donasi Sekarang
-                                <i class="fas fa-heart"></i>
-                            </a>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-
-            <div style="text-align: center; margin-top: 40px;" data-aos="fade-up">
-                <a href="{{ route('donations') }}" class="btn btn-outline"
-                    style="border: 2px solid var(--primary); color: var(--primary);">
-                    Lihat Semua Program Donasi
-                    <i class="fas fa-arrow-right"></i>
+        </section>
+    @endif
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content fade-up">
+            <h2 class="cta-title">Mari Bergabung Bersama Kami</h2>
+            <p class="cta-desc">Ikuti berbagai program kegiatan dan dakwah Islam di Masjid Agung Al Azhar. Bersama kita
+                membangun umat yang lebih baik.</p>
+            <div class="cta-buttons">
+                <a href="{{ route('programs') }}" class="btn-cta-primary">
+                    <i class="fas fa-calendar-check"></i> Lihat Program
+                </a>
+                <a href="{{ route('contact') }}" class="btn-cta-outline">
+                    <i class="fas fa-envelope"></i> Hubungi Kami
                 </a>
             </div>
         </div>
     </section>
-
-    <!-- CTA Section -->
-    <section class="section cta-section">
-        <div class="container">
-            <div style="max-width: 800px; margin: 0 auto; text-align: center;" data-aos="zoom-in">
-                <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 20px; color: white;">
-                    Mari Bergabung Bersama Kami
-                </h2>
-                <p style="font-size: 1.2rem; margin-bottom: 40px; opacity: 0.95; color: white;">
-                    Ikuti berbagai program kegiatan dan dakwah Islam di Masjid Agung Al Azhar.
-                    Bersama kita membangun umat yang lebih baik.
-                </p>
-                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                    <a href="{{ route('programs') }}" class="btn cta-btn-primary">
-                        <i class="fas fa-calendar-check"></i>
-                        Lihat Program
-                    </a>
-                    <a href="{{ route('contact') }}" class="btn cta-btn-outline">
-                        <i class="fas fa-envelope"></i>
-                        Hubungi Kami
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {{-- Include all CSS styles from original file --}}
-    @include('landing.layouts.index-styles')
-
-    {{-- Include all JavaScript from original file --}}
-    @include('landing.layouts.index-scripts')
-
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <button class="lightbox-nav lightbox-prev" onclick="changeLightbox(-1)">&#10094;</button>
+        <img class="lightbox-img" id="lightboxImg" src="" alt="">
+        <button class="lightbox-nav lightbox-next" onclick="changeLightbox(1)">&#10095;</button>
+    </div>
 @endsection
+@push('scripts')
+    <script>
+        // Lazy Load Background Images
+        document.addEventListener('DOMContentLoaded', () => {
+            const lazyBgs = document.querySelectorAll('.lazy-bg[data-bg]');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const bg = entry.target.dataset.bg;
+                        if (bg) entry.target.style.backgroundImage = `url('${bg}')`;
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                rootMargin: '100px'
+            });
+
+            lazyBgs.forEach(el => observer.observe(el));
+        });
+
+        // Fade Up Animation
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    fadeObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '50px'
+        });
+
+        document.querySelectorAll('.fade-up').forEach(el => fadeObserver.observe(el));
+
+        // Hero Slider
+        const heroSlides = document.querySelectorAll('.hero-slide');
+        const heroDots = document.querySelectorAll('.hero-dot');
+        let heroIndex = 0;
+        let heroInterval;
+
+        function showHeroSlide(index) {
+            heroSlides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            heroDots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            heroIndex = index;
+        }
+
+        function nextHeroSlide() {
+            showHeroSlide((heroIndex + 1) % heroSlides.length);
+        }
+
+        function startHeroSlider() {
+            heroInterval = setInterval(nextHeroSlide, 5000);
+        }
+
+        heroDots.forEach((dot, i) => {
+            dot.addEventListener('click', () => {
+                clearInterval(heroInterval);
+                showHeroSlide(i);
+                startHeroSlider();
+            });
+        });
+
+        if (heroSlides.length > 1) startHeroSlider();
+
+        // Gallery Lightbox
+        const galleryImages = @json($galleries->pluck('image')->map(fn($img) => asset('storage/' . $img)));
+        let lightboxIndex = 0;
+
+        function openLightbox(index) {
+            lightboxIndex = index;
+            document.getElementById('lightboxImg').src = galleryImages[index];
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function changeLightbox(dir) {
+            lightboxIndex = (lightboxIndex + dir + galleryImages.length) % galleryImages.length;
+            document.getElementById('lightboxImg').src = galleryImages[lightboxIndex];
+        }
+
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target.id === 'lightbox') closeLightbox();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!document.getElementById('lightbox').classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') changeLightbox(-1);
+            if (e.key === 'ArrowRight') changeLightbox(1);
+        });
+    </script>
+@endpush

@@ -3,35 +3,31 @@
 @section('title', 'Berita & Artikel - ' . ($settings['site_name'] ?? 'Masjid Agung Al Azhar'))
 
 @section('content')
-    <!-- Page Header -->
-    <section
-        style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); padding: 100px 0 60px; color: white;">
+    <!-- Compact Page Header -->
+    <section class="page-header">
         <div class="container">
-            <div style="text-align: center; max-width: 800px; margin: 0 auto;" data-aos="fade-up">
-                <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 20px;">Berita & Artikel</h1>
-                <p style="font-size: 1.2rem; opacity: 0.95;">
-                    Ikuti perkembangan dan kegiatan terbaru dari Masjid Al Azhar
-                </p>
+            <div class="header-content" data-aos="fade-up">
+                <h1>Berita & Artikel</h1>
+                <p>Ikuti perkembangan dan kegiatan terbaru dari Masjid Al Azhar</p>
             </div>
         </div>
     </section>
 
     <!-- Blog Content -->
-    <section class="section">
+    <section class="blog-section">
         <div class="container">
-            <div style="display: grid; grid-template-columns: 2.5fr 1fr; gap: 40px;">
+            <div class="blog-layout">
                 <!-- Main Content -->
-                <div>
-                    <!-- Search & Filter -->
-                    <div style="margin-bottom: 30px;" data-aos="fade-up">
+                <div class="main-content">
+                    <!-- Compact Search & Filter -->
+                    <div class="search-box" data-aos="fade-up">
                         <form method="GET" action="{{ route('blog') }}">
-                            <div style="display: flex; gap: 15px;">
+                            <div class="search-wrapper">
+                                <i class="fas fa-search search-icon"></i>
                                 <input type="text" name="search" placeholder="Cari artikel..."
-                                    value="{{ request('search') }}"
-                                    style="flex: 1; padding: 15px 20px; border: 2px solid var(--border); border-radius: 50px; font-size: 1rem;">
-                                <button type="submit"
-                                    style="padding: 15px 30px; background: var(--primary); color: white; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 10px;">
-                                    <i class="fas fa-search"></i> Cari
+                                    value="{{ request('search') }}" class="search-input">
+                                <button type="submit" class="search-btn">
+                                    <span>Cari</span>
                                 </button>
                             </div>
                         </form>
@@ -39,103 +35,84 @@
 
                     <!-- Posts Grid -->
                     @if ($posts->count() > 0)
-                        @foreach ($posts as $post)
-                            <article class="blog-post-card" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
-                                <a href="{{ route('blog.detail', $post->slug) }}" class="post-image-link">
-                                    <div class="post-image-horizontal"
-                                        style="background-image: url('{{ $post->featured_image ? asset('storage/' . $post->featured_image) : 'https://via.placeholder.com/800x500' }}');">
-                                    </div>
-                                </a>
+                        <div class="posts-grid">
+                            @foreach ($posts as $post)
+                                <article class="post-card" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
+                                    <a href="{{ route('blog.detail', $post->slug) }}" class="post-image-wrapper">
+                                        <img src="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : 'https://via.placeholder.com/600x400' }}"
+                                            alt="{{ $post->title }}" class="post-image" loading="lazy">
+                                        <span class="post-category">{{ $post->category->name }}</span>
+                                    </a>
 
-                                <div class="post-content-horizontal">
-                                    <div class="post-meta-horizontal">
-                                        <a href="{{ route('blog') }}?category={{ $post->category->slug }}"
-                                            class="post-category-badge">
-                                            {{ $post->category->name }}
-                                        </a>
-                                        <div class="post-meta-items">
-                                            <span><i class="fas fa-user"></i> {{ $post->author->name }}</span>
-                                            <span><i class="fas fa-calendar"></i>
+                                    <div class="post-body">
+                                        <div class="post-meta">
+                                            <span><i class="far fa-calendar"></i>
                                                 {{ $post->published_at->format('d M Y') }}</span>
-                                            <span><i class="fas fa-eye"></i> {{ number_format($post->views_count) }}</span>
-                                            <span><i class="fas fa-clock"></i> {{ $post->reading_time }} menit</span>
+                                            <span><i class="far fa-eye"></i> {{ number_format($post->views_count) }}</span>
+                                        </div>
+
+                                        <h2 class="post-title">
+                                            <a href="{{ route('blog.detail', $post->slug) }}">{{ $post->title }}</a>
+                                        </h2>
+
+                                        <p class="post-excerpt">{{ Str::limit(strip_tags($post->excerpt), 120) }}</p>
+
+                                        <div class="post-footer">
+                                            <div class="post-author">
+                                                <i class="far fa-user"></i>
+                                                <span>{{ $post->author->name }}</span>
+                                            </div>
+                                            <a href="{{ route('blog.detail', $post->slug) }}" class="read-more">
+                                                Baca <i class="fas fa-arrow-right"></i>
+                                            </a>
                                         </div>
                                     </div>
+                                </article>
+                            @endforeach
+                        </div>
 
-                                    <h2 class="post-title-horizontal">
-                                        <a href="{{ route('blog.detail', $post->slug) }}">{{ $post->title }}</a>
-                                    </h2>
-
-                                    <p class="post-excerpt-horizontal">{{ Str::limit(strip_tags($post->excerpt), 180) }}
-                                    </p>
-
-                                    <div
-                                        style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-                                        <a href="{{ route('blog.detail', $post->slug) }}" class="read-more-link">
-                                            Baca Selengkapnya <i class="fas fa-arrow-right"></i>
-                                        </a>
-
-                                        @if ($post->tags->count() > 0)
-                                            <div class="post-tags">
-                                                @foreach ($post->tags->take(2) as $tag)
-                                                    <a href="{{ route('blog') }}?tag={{ $tag->slug }}"
-                                                        class="tag-badge">
-                                                        #{{ $tag->name }}
-                                                    </a>
-                                                @endforeach
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div>
-                            </article>
-                        @endforeach
-
-                        <!-- Pagination -->
-                        <div style="margin-top: 50px;">
+                        <!-- Modern Pagination -->
+                        <div class="pagination-wrapper">
                             {{ $posts->links('vendor.pagination.simple') }}
                         </div>
                     @else
-                        <div style="text-align: center; padding: 60px 20px;">
-                            <i class="fas fa-inbox" style="font-size: 4rem; color: #e5e7eb; margin-bottom: 20px;"></i>
-                            <h3 style="font-size: 1.5rem; color: #6b7280; margin-bottom: 10px;">Tidak Ada Artikel</h3>
-                            <p style="color: #9ca3af;">Belum ada artikel yang dipublikasikan.</p>
+                        <div class="empty-state">
+                            <i class="far fa-folder-open"></i>
+                            <h3>Tidak Ada Artikel</h3>
+                            <p>Belum ada artikel yang dipublikasikan.</p>
                         </div>
                     @endif
                 </div>
 
-                <!-- Sidebar -->
-                <div>
-                    <!-- Categories -->
-                    <div class="sidebar-widget" data-aos="fade-left">
+                <!-- Compact Sidebar -->
+                <aside class="sidebar">
+                    <!-- Categories Widget -->
+                    <div class="widget" data-aos="fade-left">
                         <h3 class="widget-title">Kategori</h3>
-                        <ul class="category-list">
+                        <div class="category-list">
                             @foreach ($categories as $category)
-                                <li>
-                                    <a href="{{ route('blog') }}?category={{ $category->slug }}">
-                                        <span>{{ $category->name }}</span>
-                                        <span class="count">{{ $category->posts_count }}</span>
-                                    </a>
-                                </li>
+                                <a href="{{ route('blog') }}?category={{ $category->slug }}" class="category-item">
+                                    <span class="category-name">{{ $category->name }}</span>
+                                    <span class="category-count">{{ $category->posts_count }}</span>
+                                </a>
                             @endforeach
-                        </ul>
+                        </div>
                     </div>
 
-                    <!-- Popular Posts -->
+                    <!-- Popular Posts Widget -->
                     @if ($popularPosts->count() > 0)
-                        <div class="sidebar-widget" data-aos="fade-left" data-aos-delay="100">
-                            <h3 class="widget-title">Artikel Populer</h3>
-                            <div class="popular-posts">
+                        <div class="widget" data-aos="fade-left" data-aos-delay="100">
+                            <h3 class="widget-title">Trending</h3>
+                            <div class="popular-list">
                                 @foreach ($popularPosts as $popular)
-                                    <a href="{{ route('blog.detail', $popular->slug) }}" class="popular-post-item">
-                                        <div class="popular-post-image"
-                                            style="background-image: url('{{ $popular->featured_image ? asset('storage/' . $popular->featured_image) : 'https://via.placeholder.com/100x100' }}');">
-                                        </div>
-                                        <div class="popular-post-content">
-                                            <h4>{{ Str::limit($popular->title, 60) }}</h4>
-                                            <div class="popular-post-meta">
-                                                <span><i class="fas fa-eye"></i>
-                                                    {{ number_format($popular->views_count) }}</span>
-                                            </div>
+                                    <a href="{{ route('blog.detail', $popular->slug) }}" class="popular-item">
+                                        <img src="{{ $popular->featured_image ? asset('storage/' . $popular->featured_image) : 'https://via.placeholder.com/80x80' }}"
+                                            alt="{{ $popular->title }}" loading="lazy">
+                                        <div class="popular-content">
+                                            <h4>{{ Str::limit($popular->title, 50) }}</h4>
+                                            <span class="popular-views">
+                                                <i class="far fa-eye"></i> {{ number_format($popular->views_count) }}
+                                            </span>
                                         </div>
                                     </a>
                                 @endforeach
@@ -143,353 +120,629 @@
                         </div>
                     @endif
 
-                    <!-- Newsletter -->
-                    <div class="sidebar-widget" data-aos="fade-left" data-aos-delay="200"
-                        style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white;">
-                        <h3 class="widget-title" style="color: white;">Newsletter</h3>
-                        <p style="margin-bottom: 20px; opacity: 0.95;">Dapatkan update artikel terbaru langsung ke email
-                            Anda.</p>
+                    <!-- Newsletter Widget -->
+                    <div class="widget widget-newsletter" data-aos="fade-left" data-aos-delay="200">
+                        <i class="far fa-envelope-open newsletter-icon"></i>
+                        <h3 class="widget-title">Newsletter</h3>
+                        <p>Dapatkan update artikel terbaru</p>
                         <form>
-                            <input type="email" placeholder="Email Anda"
-                                style="width: 100%; padding: 12px 15px; border: none; border-radius: 8px; margin-bottom: 10px;">
-                            <button type="submit"
-                                style="width: 100%; padding: 12px; background: white; color: var(--primary); border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
-                                Berlangganan
+                            <input type="email" placeholder="Email Anda" required>
+                            <button type="submit">
+                                <i class="fas fa-paper-plane"></i> Berlangganan
                             </button>
                         </form>
                     </div>
-                </div>
+                </aside>
             </div>
         </div>
     </section>
 
     <style>
-        .blog-post-card {
-            background: white;
-            border-radius: 20px;
+        :root {
+            --primary: #0053C5;
+            --primary-dark: #003d94;
+            --primary-light: #e6f0ff;
+            --dark: #1a1a1a;
+            --gray-900: #2d3748;
+            --gray-700: #4a5568;
+            --gray-500: #718096;
+            --gray-300: #cbd5e0;
+            --gray-100: #f7fafc;
+            --white: #ffffff;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Compact Page Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 80px 0 50px;
+            color: var(--white);
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header-content {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-content h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-content p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+
+        /* Blog Section */
+        .blog-section {
+            padding: 60px 0;
+            background: var(--gray-100);
+        }
+
+        .blog-layout {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 40px;
+            align-items: start;
+        }
+
+        /* Compact Search Box */
+        .search-box {
             margin-bottom: 30px;
+        }
+
+        .search-wrapper {
+            position: relative;
             display: flex;
-            gap: 25px;
-            transition: all 0.3s ease;
+            background: var(--white);
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
         }
 
-        .blog-post-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        .search-wrapper:focus-within {
+            box-shadow: 0 4px 20px rgba(0, 83, 197, 0.15);
+            transform: translateY(-2px);
         }
 
-        .post-image-link {
-            flex-shrink: 0;
-            width: 350px;
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+            z-index: 1;
         }
 
-        .post-image-horizontal {
-            width: 100%;
-            height: 100%;
-            min-height: 280px;
-            background-size: cover;
-            background-position: center;
-            transition: transform 0.5s ease;
-        }
-
-        .blog-post-card:hover .post-image-horizontal {
-            transform: scale(1.05);
-        }
-
-        .post-content-horizontal {
-            padding: 30px 30px 30px 0;
+        .search-input {
             flex: 1;
+            padding: 15px 20px 15px 50px;
+            border: none;
+            outline: none;
+            font-size: 0.95rem;
+            background: transparent;
+        }
+
+        .search-btn {
+            padding: 15px 30px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .search-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Modern Posts Grid */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .post-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
             display: flex;
             flex-direction: column;
+            height: 100%;
         }
 
-        .post-meta-horizontal {
-            margin-bottom: 15px;
+        .post-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
         }
 
-        .post-category-badge {
-            display: inline-block;
+        .post-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            display: block;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .post-card:hover .post-image {
+            transform: scale(1.08);
+        }
+
+        .post-category {
+            position: absolute;
+            top: 15px;
+            left: 15px;
             background: var(--primary);
-            color: white;
-            padding: 6px 18px;
+            color: var(--white);
+            padding: 6px 16px;
             border-radius: 50px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
-            text-decoration: none;
-            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+            z-index: 1;
         }
 
-        .post-meta-items {
+        .post-body {
+            padding: 20px;
             display: flex;
-            gap: 15px;
-            font-size: 0.85rem;
-            color: #9ca3af;
-            flex-wrap: wrap;
-        }
-
-        .post-meta-items i {
-            margin-right: 5px;
-        }
-
-        .post-title-horizontal {
-            font-size: 1.6rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-
-        .post-title-horizontal a {
-            color: var(--dark);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .post-title-horizontal a:hover {
-            color: var(--primary);
-        }
-
-        .post-excerpt-horizontal {
-            color: #6b7280;
-            line-height: 1.6;
-            margin-bottom: 20px;
+            flex-direction: column;
             flex: 1;
         }
 
-        .read-more-link {
+        .post-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.8rem;
+            color: var(--gray-500);
+            margin-bottom: 12px;
+        }
+
+        .post-meta i {
+            margin-right: 4px;
+        }
+
+        .post-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .post-title a {
+            color: var(--dark);
+            text-decoration: none;
+            transition: var(--transition);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .post-title a:hover {
+            color: var(--primary);
+        }
+
+        .post-excerpt {
+            color: var(--gray-700);
+            line-height: 1.6;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            flex: 1;
+        }
+
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--gray-300);
+        }
+
+        .post-author {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: var(--gray-500);
+        }
+
+        .read-more {
             color: var(--primary);
             text-decoration: none;
             font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: gap 0.3s ease;
-        }
-
-        .read-more-link:hover {
-            gap: 12px;
-        }
-
-        .post-tags {
+            font-size: 0.85rem;
             display: flex;
-            gap: 8px;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
         }
 
-        .tag-badge {
-            background: var(--light);
-            color: #6b7280;
-            padding: 5px 12px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            text-decoration: none;
-            transition: all 0.3s ease;
+        .read-more:hover {
+            gap: 10px;
         }
 
-        .tag-badge:hover {
-            background: var(--primary);
-            color: white;
+        /* Compact Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 100px;
         }
 
-        /* Sidebar */
-        .sidebar-widget {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            margin-bottom: 30px;
+        .widget {
+            background: var(--white);
+            padding: 25px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 25px;
         }
 
         .widget-title {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 700;
             margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--border);
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
+        .widget-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        /* Category List */
         .category-list {
-            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .category-list li {
-            border-bottom: 1px solid var(--border);
-        }
-
-        .category-list li:last-child {
-            border-bottom: none;
-        }
-
-        .category-list a {
+        .category-item {
             display: flex;
             justify-content: space-between;
-            padding: 12px 0;
-            color: #6b7280;
+            align-items: center;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
             text-decoration: none;
-            transition: all 0.3s ease;
+            color: var(--gray-700);
+            transition: var(--transition);
+            background: var(--gray-100);
         }
 
-        .category-list a:hover {
+        .category-item:hover {
+            background: var(--primary-light);
             color: var(--primary);
-            padding-left: 10px;
+            transform: translateX(5px);
         }
 
-        .category-list .count {
-            background: var(--light);
+        .category-name {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .category-count {
+            background: var(--white);
+            color: var(--gray-500);
             padding: 3px 10px;
             border-radius: 50px;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: 600;
         }
 
         /* Popular Posts */
-        .popular-posts {
+        .popular-list {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-        }
-
-        .popular-post-item {
-            display: flex;
             gap: 15px;
-            text-decoration: none;
-            transition: transform 0.3s ease;
         }
 
-        .popular-post-item:hover {
+        .popular-item {
+            display: flex;
+            gap: 12px;
+            text-decoration: none;
+            transition: var(--transition);
+            padding: 8px;
+            border-radius: var(--radius-sm);
+        }
+
+        .popular-item:hover {
+            background: var(--gray-100);
             transform: translateX(5px);
         }
 
-        .popular-post-image {
-            width: 80px;
-            height: 80px;
-            background-size: cover;
-            background-position: center;
-            border-radius: 12px;
+        .popular-item img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
             flex-shrink: 0;
         }
 
-        .popular-post-content h4 {
-            font-size: 0.95rem;
+        .popular-content h4 {
+            font-size: 0.9rem;
             font-weight: 600;
             color: var(--dark);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
-        .popular-post-meta {
-            font-size: 0.8rem;
-            color: #9ca3af;
+        .popular-views {
+            font-size: 0.75rem;
+            color: var(--gray-500);
         }
 
-        .popular-post-meta i {
-            margin-right: 5px;
+        .popular-views i {
+            margin-right: 4px;
         }
 
-        /* ✅ PAGINATION STYLING - TAMBAHKAN INI */
-        .pagination {
+        /* Newsletter Widget */
+        .widget-newsletter {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .newsletter-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .widget-newsletter .widget-title {
+            color: var(--white);
+            justify-content: center;
+        }
+
+        .widget-newsletter .widget-title::before {
+            background: var(--white);
+        }
+
+        .widget-newsletter p {
+            margin-bottom: 20px;
+            opacity: 0.95;
+            font-size: 0.9rem;
+        }
+
+        .widget-newsletter input {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: var(--radius-sm);
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .widget-newsletter button {
+            width: 100%;
+            padding: 12px;
+            background: var(--white);
+            color: var(--primary);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .widget-newsletter button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Modern Pagination */
+        .pagination-wrapper {
             display: flex;
             justify-content: center;
-            align-items: center;
+        }
+
+        .pagination {
+            display: flex;
             gap: 8px;
             list-style: none;
             padding: 0;
             margin: 0;
         }
 
-        .pagination .page-item {
-            display: inline-block;
-        }
-
-        .pagination .page-link {
+        .pagination .page-item .page-link {
             display: flex;
             align-items: center;
             justify-content: center;
-            min-width: 45px;
-            height: 45px;
-            padding: 0 15px;
-            background: white;
-            color: var(--dark);
-            border: 2px solid var(--border);
-            border-radius: 12px;
+            min-width: 42px;
+            height: 42px;
+            padding: 0 12px;
+            background: var(--white);
+            color: var(--gray-700);
+            border: 2px solid var(--gray-300);
+            border-radius: var(--radius-sm);
             text-decoration: none;
             font-weight: 600;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
         }
 
-        .pagination .page-link:hover {
+        .pagination .page-item .page-link:hover {
             background: var(--primary);
-            color: white;
+            color: var(--white);
             border-color: var(--primary);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 83, 197, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 83, 197, 0.3);
         }
 
         .pagination .page-item.active .page-link {
             background: var(--primary);
-            color: white;
+            color: var(--white);
             border-color: var(--primary);
-            box-shadow: 0 5px 15px rgba(0, 83, 197, 0.3);
         }
 
         .pagination .page-item.disabled .page-link {
-            background: #f3f4f6;
-            color: #9ca3af;
-            border-color: #e5e7eb;
+            background: var(--gray-100);
+            color: var(--gray-300);
+            border-color: var(--gray-300);
             cursor: not-allowed;
             pointer-events: none;
         }
 
-        /* Previous & Next buttons */
-        .pagination .page-item:first-child .page-link,
-        .pagination .page-item:last-child .page-link {
-            padding: 0 20px;
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            background: var(--white);
+            border-radius: var(--radius-lg);
         }
 
-        /* Dots */
-        .pagination .page-item .page-link[aria-label*="..."] {
-            border: none;
-            background: transparent;
-            pointer-events: none;
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--gray-300);
+            margin-bottom: 20px;
         }
 
+        .empty-state h3 {
+            font-size: 1.5rem;
+            color: var(--gray-700);
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: var(--gray-500);
+        }
+
+        /* Responsive Design */
         @media (max-width: 1024px) {
-            section>div>div[style*="grid-template-columns: 2.5fr 1fr"] {
-                grid-template-columns: 1fr !important;
+            .blog-layout {
+                grid-template-columns: 1fr;
             }
 
-            .blog-post-card {
-                flex-direction: column;
+            .sidebar {
+                position: static;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 25px;
             }
 
-            .post-image-link {
-                width: 100%;
-            }
-
-            .post-content-horizontal {
-                padding: 30px;
+            .posts-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             }
         }
 
         @media (max-width: 768px) {
-            .pagination .page-link {
-                min-width: 40px;
-                height: 40px;
-                padding: 0 12px;
-                font-size: 0.9rem;
+            .page-header {
+                padding: 60px 0 40px;
             }
 
-            .pagination .page-item:first-child .page-link,
-            .pagination .page-item:last-child .page-link {
-                padding: 0 15px;
+            .header-content h1 {
+                font-size: 2rem;
             }
 
-            /* Hide some page numbers on mobile */
-            .pagination .page-item:not(.active):not(:first-child):not(:last-child):not(:nth-child(2)):not(:nth-last-child(2)) {
+            .header-content p {
+                font-size: 1rem;
+            }
+
+            .blog-section {
+                padding: 40px 0;
+            }
+
+            .posts-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .sidebar {
+                grid-template-columns: 1fr;
+            }
+
+            .search-btn span {
                 display: none;
             }
+
+            .search-btn {
+                padding: 15px 20px;
+            }
+
+            .search-btn::after {
+                content: '\f002';
+                font-family: 'Font Awesome 5 Free';
+                font-weight: 900;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .post-image-wrapper {
+                height: 200px;
+            }
+
+            .post-body {
+                padding: 15px;
+            }
+
+            .widget {
+                padding: 20px;
+            }
+        }
+
+        /* Performance: Skeleton Loading */
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        .skeleton {
+            animation: shimmer 2s infinite;
+            background: linear-gradient(to right, #f0f0f0 4%, #e0e0e0 25%, #f0f0f0 36%);
+            background-size: 1000px 100%;
         }
     </style>
 @endsection

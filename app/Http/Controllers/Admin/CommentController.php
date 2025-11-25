@@ -162,13 +162,16 @@ class CommentController extends Controller
     public function reply(Request $request, Comment $comment)
     {
         $validated = $request->validate([
-            'content' => 'required|string',
+            'content' => 'required|string|max:1000',
         ]);
 
+        // ✅ FIX: Use correct field names for admin reply
         Comment::create([
             'post_id' => $comment->post_id,
             'user_id' => auth()->id(),
             'parent_id' => $comment->id,
+            'author_name' => auth()->user()->name,      // ✅ Added
+            'author_email' => auth()->user()->email,    // ✅ Added
             'content' => $validated['content'],
             'status' => 'approved',
             'ip_address' => $request->ip(),

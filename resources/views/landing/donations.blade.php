@@ -1,346 +1,270 @@
 @extends('landing.layouts.app')
 
-@section('title', 'Program Donasi - ' . ($settings['site_name'] ?? 'Masjid Agung Al Azhar'))
+@section('title', 'Program Donasi - ' . setting('site_name', 'Masjid Agung Al Azhar'))
 
-@section('content')
-    <!-- Page Header -->
-    <section
-        style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); padding: 100px 0 60px; color: white;">
-        <div class="container">
-            <div style="text-align: center; max-width: 800px; margin: 0 auto;" data-aos="fade-up">
-                <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 20px;">Program Donasi</h1>
-                <p style="font-size: 1.2rem; opacity: 0.95;">
-                    Salurkan donasi Anda untuk berbagai program kegiatan dan bantuan sosial
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Statistics -->
-    <section class="section" style="background: var(--light); margin-top: -30px;">
-        <div class="container">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
-                <div class="stat-box" data-aos="fade-up">
-                    <div class="stat-icon"
-                        style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);">
-                        <i class="fas fa-hand-holding-heart" style="color: white;"></i>
-                    </div>
-                    <div class="stat-number">Rp {{ number_format($stats['total_collected'] / 1000000, 1) }}M</div>
-                    <div class="stat-label">Total Terkumpul</div>
-                </div>
-                <div class="stat-box" data-aos="fade-up" data-aos-delay="100">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, var(--secondary) 0%, #059669 100%);">
-                        <i class="fas fa-users" style="color: white;"></i>
-                    </div>
-                    <div class="stat-number">{{ number_format($stats['total_donors']) }}</div>
-                    <div class="stat-label">Total Donatur</div>
-                </div>
-                <div class="stat-box" data-aos="fade-up" data-aos-delay="200">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);">
-                        <i class="fas fa-clipboard-list" style="color: white;"></i>
-                    </div>
-                    <div class="stat-number">{{ $stats['active_campaigns'] }}</div>
-                    <div class="stat-label">Campaign Aktif</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
+@push('styles')
     <style>
-        .stat-box {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
+        /* ===== PAGE HEADER ===== */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 80px 0 50px;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
         }
 
-        .stat-box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        .page-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .page-header-content {
+            position: relative;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: clamp(2rem, 5vw, 2.75rem);
+            font-weight: 800;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .page-subtitle {
+            font-size: 1.05rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* ===== STATS SECTION ===== */
+        .stats-section {
+            margin-top: -40px;
+            position: relative;
+            z-index: 10;
+            padding-bottom: 60px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 28px 24px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 83, 197, 0.1);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 83, 197, 0.15);
         }
 
         .stat-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 2rem;
+            margin: 0 auto 16px;
+            font-size: 1.5rem;
+            color: var(--white);
         }
 
-        .stat-number {
-            font-size: 2.5rem;
+        .stat-icon.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        }
+
+        .stat-icon.success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .stat-icon.warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
             font-weight: 800;
-            color: var(--dark);
-            margin-bottom: 10px;
+            color: var(--text-dark);
+            margin-bottom: 4px;
         }
 
         .stat-label {
-            color: #6b7280;
-            font-size: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-light);
             font-weight: 500;
         }
-    </style>
 
-    <!-- Featured Donations -->
-    @if ($featuredDonations->count() > 0)
-        <section class="section">
-            <div class="container">
-                <div class="section-header" data-aos="fade-up">
-                    <div class="section-subtitle">Prioritas</div>
-                    <h2 class="section-title">Campaign Unggulan</h2>
-                </div>
+        /* ===== SECTION STYLES ===== */
+        .section {
+            padding: 60px 0;
+        }
 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 30px;">
-                    @foreach ($featuredDonations as $donation)
-                        <div class="donation-card" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
-                            @if ($donation->is_urgent)
-                                <div class="donation-urgent">
-                                    <i class="fas fa-exclamation-circle"></i> URGENT
-                                </div>
-                            @endif
+        .section-light {
+            background: var(--bg);
+        }
 
-                            <div class="donation-image"
-                                style="background-image: url('{{ $donation->image ? asset('storage/' . $donation->image) : 'https://via.placeholder.com/600x400' }}');">
-                            </div>
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
 
-                            <div class="donation-content">
-                                <div class="donation-category">{{ ucfirst(str_replace('_', ' ', $donation->category)) }}
-                                </div>
-                                <h3 class="donation-title">{{ $donation->campaign_name }}</h3>
-                                <p class="donation-description">{{ Str::limit($donation->description, 100) }}</p>
+        .section-badge {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
 
-                                @if ($donation->target_amount)
-                                    <div class="donation-progress">
-                                        <div class="progress-info">
-                                            <span class="progress-label">Terkumpul</span>
-                                            <span
-                                                class="progress-percentage">{{ number_format($donation->percentage, 1) }}%</span>
-                                        </div>
-                                        <div class="progress-bar">
-                                            <div class="progress-fill"
-                                                style="width: {{ min($donation->percentage, 100) }}%;"></div>
-                                        </div>
-                                        <div class="progress-stats">
-                                            <span class="amount-raised">Rp
-                                                {{ number_format($donation->current_amount, 0, ',', '.') }}</span>
-                                            <span class="amount-target">dari Rp
-                                                {{ number_format($donation->target_amount, 0, ',', '.') }}</span>
-                                        </div>
-                                    </div>
-                                @else
-                                    <div class="donation-amount">
-                                        <span class="amount-label">Terkumpul</span>
-                                        <span class="amount-value">Rp
-                                            {{ number_format($donation->current_amount, 0, ',', '.') }}</span>
-                                    </div>
-                                @endif
+        .section-title {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 800;
+            color: var(--text-dark);
+        }
 
-                                <div class="donation-meta">
-                                    <span><i class="fas fa-users"></i> {{ number_format($donation->donor_count) }}
-                                        Donatur</span>
-                                    @if ($donation->days_left)
-                                        <span><i class="fas fa-clock"></i> {{ $donation->days_left }} hari lagi</span>
-                                    @endif
-                                </div>
+        /* ===== DONATION GRID ===== */
+        .donation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
 
-                                <a href="{{ route('donations.show', $donation->slug) }}" class="btn btn-primary"
-                                    style="width: 100%; justify-content: center;">
-                                    Donasi Sekarang
-                                    <i class="fas fa-heart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </section>
-    @endif
-
-    <!-- All Donations -->
-    <section class="section" style="background: var(--light);">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">Semua Program Donasi</h2>
-            </div>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 30px;">
-                @foreach ($donations as $donation)
-                    <div class="donation-card" data-aos="fade-up">
-                        @if ($donation->is_urgent)
-                            <div class="donation-urgent">
-                                <i class="fas fa-exclamation-circle"></i> URGENT
-                            </div>
-                        @endif
-
-                        <div class="donation-image"
-                            style="background-image: url('{{ $donation->image ? asset('storage/' . $donation->image) : 'https://via.placeholder.com/600x400' }}');">
-                        </div>
-
-                        <div class="donation-content">
-                            <div class="donation-category">{{ ucfirst(str_replace('_', ' ', $donation->category)) }}</div>
-                            <h3 class="donation-title">{{ $donation->campaign_name }}</h3>
-                            <p class="donation-description">{{ Str::limit($donation->description, 100) }}</p>
-
-                            @if ($donation->target_amount)
-                                <div class="donation-progress">
-                                    <div class="progress-info">
-                                        <span class="progress-label">Terkumpul</span>
-                                        <span
-                                            class="progress-percentage">{{ number_format($donation->percentage, 1) }}%</span>
-                                    </div>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" style="width: {{ min($donation->percentage, 100) }}%;">
-                                        </div>
-                                    </div>
-                                    <div class="progress-stats">
-                                        <span class="amount-raised">Rp
-                                            {{ number_format($donation->current_amount, 0, ',', '.') }}</span>
-                                        <span class="amount-target">dari Rp
-                                            {{ number_format($donation->target_amount, 0, ',', '.') }}</span>
-                                    </div>
-                                </div>
-                            @else
-                                <div class="donation-amount">
-                                    <span class="amount-label">Terkumpul</span>
-                                    <span class="amount-value">Rp
-                                        {{ number_format($donation->current_amount, 0, ',', '.') }}</span>
-                                </div>
-                            @endif
-
-                            <div class="donation-meta">
-                                <span><i class="fas fa-users"></i> {{ number_format($donation->donor_count) }}
-                                    Donatur</span>
-                                @if ($donation->days_left)
-                                    <span><i class="fas fa-clock"></i> {{ $donation->days_left }} hari lagi</span>
-                                @endif
-                            </div>
-
-                            <a href="{{ route('donations.show', $donation->slug) }}" class="btn btn-primary"
-                                style="width: 100%; justify-content: center;">
-                                Donasi Sekarang
-                                <i class="fas fa-heart"></i>
-                            </a>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-
-            <!-- Pagination -->
-            <div style="margin-top: 40px; display: flex; justify-content: center;">
-                {{ $donations->links() }}
-            </div>
-        </div>
-    </section>
-
-    <style>
+        /* ===== DONATION CARD ===== */
         .donation-card {
-            background: white;
-            border-radius: 20px;
+            background: var(--white);
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 83, 197, 0.08);
+            transition: var(--transition);
             position: relative;
         }
 
         .donation-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(0, 83, 197, 0.15);
         }
 
-        .donation-urgent {
+        .donation-badge {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            background: var(--danger);
-            color: white;
-            padding: 8px 20px;
+            top: 12px;
+            right: 12px;
+            background: #dc2626;
+            color: var(--white);
+            padding: 6px 14px;
             border-radius: 50px;
+            font-size: 0.7rem;
             font-weight: 700;
-            font-size: 0.85rem;
-            z-index: 10;
-            animation: pulse 2s infinite;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            z-index: 5;
+            animation: pulse-badge 2s ease infinite;
         }
 
-        @keyframes pulse {
+        @keyframes pulse-badge {
 
             0%,
             100% {
-                transform: scale(1);
+                opacity: 1;
             }
 
             50% {
-                transform: scale(1.05);
+                opacity: 0.8;
             }
         }
 
         .donation-image {
             width: 100%;
-            height: 220px;
-            background-size: cover;
-            background-position: center;
+            height: 180px;
+            object-fit: cover;
+            background: var(--bg);
         }
 
-        .donation-content {
-            padding: 30px;
+        .donation-body {
+            padding: 20px;
         }
 
         .donation-category {
             display: inline-block;
             background: var(--primary);
-            color: white;
-            padding: 6px 18px;
+            color: var(--white);
+            padding: 4px 12px;
             border-radius: 50px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: 600;
             text-transform: uppercase;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .donation-title {
-            font-size: 1.4rem;
+            font-size: 1.125rem;
             font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 10px;
+            color: var(--text-dark);
+            margin-bottom: 8px;
             line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
-        .donation-description {
-            color: #6b7280;
-            margin-bottom: 20px;
+        .donation-desc {
+            font-size: 0.875rem;
+            color: var(--text-light);
             line-height: 1.6;
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
+        /* Progress */
         .donation-progress {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
-        .progress-info {
+        .progress-header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-bottom: 8px;
         }
 
         .progress-label {
-            font-size: 0.9rem;
-            color: #6b7280;
-            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            font-weight: 500;
         }
 
-        .progress-percentage {
-            font-size: 1.1rem;
-            color: var(--primary);
+        .progress-percent {
+            font-size: 0.9rem;
             font-weight: 700;
+            color: var(--primary);
         }
 
         .progress-bar {
             width: 100%;
-            height: 10px;
-            background: #e5e7eb;
+            height: 8px;
+            background: var(--bg);
             border-radius: 50px;
             overflow: hidden;
             margin-bottom: 10px;
@@ -348,84 +272,431 @@
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(90deg, var(--primary) 0%, #10b981 100%);
             border-radius: 50px;
             transition: width 1s ease;
         }
 
-        .progress-stats {
+        .progress-amounts {
             display: flex;
             justify-content: space-between;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
 
-        .amount-raised {
+        .amount-current {
             font-weight: 700;
-            color: var(--dark);
+            color: var(--text-dark);
         }
 
         .amount-target {
-            color: #9ca3af;
+            color: var(--text-light);
         }
 
-        .donation-amount {
-            background: var(--light);
-            padding: 20px;
+        /* Amount Box (for no target) */
+        .donation-amount-box {
+            background: var(--bg);
+            padding: 16px;
             border-radius: 12px;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
-        .amount-label {
-            display: block;
-            font-size: 0.9rem;
-            color: #6b7280;
-            margin-bottom: 5px;
+        .amount-box-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 4px;
         }
 
-        .amount-value {
-            display: block;
-            font-size: 1.5rem;
+        .amount-box-value {
+            font-size: 1.25rem;
             font-weight: 700;
             color: var(--primary);
         }
 
+        /* Meta */
         .donation-meta {
             display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            color: #9ca3af;
+            gap: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            margin-bottom: 16px;
         }
 
-        .donation-meta i {
-            margin-right: 5px;
-        }
-
-        .btn {
-            padding: 15px 35px;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-flex;
+        .meta-item {
+            display: flex;
             align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-            border: none;
-            cursor: pointer;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--text-light);
         }
 
-        .btn-primary {
+        .meta-item i {
+            font-size: 0.75rem;
+            color: var(--primary);
+        }
+
+        /* Button */
+        .btn-donate {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 14px 20px;
             background: var(--primary);
-            color: white;
-            box-shadow: 0 10px 30px rgba(0, 83, 197, 0.3);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
         }
 
-        .btn-primary:hover {
+        .btn-donate:hover {
             background: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(0, 83, 197, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 83, 197, 0.3);
+        }
+
+        .btn-donate i {
+            font-size: 0.85rem;
+        }
+
+        /* ===== PAGINATION ===== */
+        .pagination-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .pagination-wrapper nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .pagination-wrapper .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            height: 40px;
+            padding: 0 12px;
+            background: var(--white);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .pagination-wrapper .page-link:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .pagination-wrapper .page-item.active .page-link {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        .pagination-wrapper .page-item.disabled .page-link {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 20px;
+        }
+
+        .empty-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .empty-text {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 60px 0 40px;
+            }
+
+            .stats-section {
+                margin-top: -30px;
+                padding-bottom: 40px;
+            }
+
+            .stat-card {
+                padding: 24px 20px;
+            }
+
+            .stat-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .section {
+                padding: 40px 0;
+            }
+
+            .donation-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .donation-image {
+                height: 160px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
+@endpush
+
+@section('content')
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="page-header-content">
+                <h1 class="page-title">Program Donasi</h1>
+                <p class="page-subtitle">Salurkan donasi Anda untuk berbagai program kegiatan dan bantuan sosial</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon primary">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <div class="stat-value">Rp {{ number_format($stats['total_collected'] / 1000000, 1) }}M</div>
+                    <div class="stat-label">Total Terkumpul</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon success">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value">{{ number_format($stats['total_donors']) }}</div>
+                    <div class="stat-label">Total Donatur</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon warning">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="stat-value">{{ $stats['active_campaigns'] }}</div>
+                    <div class="stat-label">Campaign Aktif</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Donations -->
+    @if ($featuredDonations->count() > 0)
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-badge">Prioritas</span>
+                    <h2 class="section-title">Campaign Unggulan</h2>
+                </div>
+
+                <div class="donation-grid">
+                    @foreach ($featuredDonations as $donation)
+                        <article class="donation-card">
+                            @if ($donation->is_urgent ?? false)
+                                <div class="donation-badge">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    URGENT
+                                </div>
+                            @endif
+
+                            <img src="{{ $donation->image ? asset('storage/' . $donation->image) : asset('assets/img/placeholder-donation.jpg') }}"
+                                alt="{{ $donation->campaign_name }}" class="donation-image" loading="lazy">
+
+                            <div class="donation-body">
+                                <span
+                                    class="donation-category">{{ ucfirst(str_replace('_', ' ', $donation->category)) }}</span>
+                                <h3 class="donation-title">{{ $donation->campaign_name }}</h3>
+                                <p class="donation-desc">{{ Str::limit($donation->description, 80) }}</p>
+
+                                @if ($donation->target_amount)
+                                    <div class="donation-progress">
+                                        <div class="progress-header">
+                                            <span class="progress-label">Terkumpul</span>
+                                            <span
+                                                class="progress-percent">{{ number_format($donation->percentage ?? 0, 1) }}%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill"
+                                                style="width: {{ min($donation->percentage ?? 0, 100) }}%;"></div>
+                                        </div>
+                                        <div class="progress-amounts">
+                                            <span class="amount-current">Rp
+                                                {{ number_format($donation->current_amount, 0, ',', '.') }}</span>
+                                            <span class="amount-target">dari Rp
+                                                {{ number_format($donation->target_amount, 0, ',', '.') }}</span>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="donation-amount-box">
+                                        <div class="amount-box-label">Terkumpul</div>
+                                        <div class="amount-box-value">Rp
+                                            {{ number_format($donation->current_amount, 0, ',', '.') }}</div>
+                                    </div>
+                                @endif
+
+                                <div class="donation-meta">
+                                    <span class="meta-item">
+                                        <i class="fas fa-users"></i>
+                                        {{ number_format($donation->donor_count) }} Donatur
+                                    </span>
+                                    @if ($donation->days_left ?? false)
+                                        <span class="meta-item">
+                                            <i class="fas fa-clock"></i>
+                                            {{ $donation->days_left }} hari lagi
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <a href="{{ route('donations.show', $donation->slug) }}" class="btn-donate">
+                                    Donasi Sekarang
+                                    <i class="fas fa-heart"></i>
+                                </a>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
+    <!-- All Donations -->
+    <section class="section section-light">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Semua Program Donasi</h2>
+            </div>
+
+            @if ($donations->count() > 0)
+                <div class="donation-grid">
+                    @foreach ($donations as $donation)
+                        <article class="donation-card">
+                            @if ($donation->is_urgent ?? false)
+                                <div class="donation-badge">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    URGENT
+                                </div>
+                            @endif
+
+                            <img src="{{ $donation->image ? asset('storage/' . $donation->image) : asset('assets/img/placeholder-donation.jpg') }}"
+                                alt="{{ $donation->campaign_name }}" class="donation-image" loading="lazy">
+
+                            <div class="donation-body">
+                                <span
+                                    class="donation-category">{{ ucfirst(str_replace('_', ' ', $donation->category)) }}</span>
+                                <h3 class="donation-title">{{ $donation->campaign_name }}</h3>
+                                <p class="donation-desc">{{ Str::limit($donation->description, 80) }}</p>
+
+                                @if ($donation->target_amount)
+                                    <div class="donation-progress">
+                                        <div class="progress-header">
+                                            <span class="progress-label">Terkumpul</span>
+                                            <span
+                                                class="progress-percent">{{ number_format($donation->percentage ?? 0, 1) }}%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill"
+                                                style="width: {{ min($donation->percentage ?? 0, 100) }}%;"></div>
+                                        </div>
+                                        <div class="progress-amounts">
+                                            <span class="amount-current">Rp
+                                                {{ number_format($donation->current_amount, 0, ',', '.') }}</span>
+                                            <span class="amount-target">dari Rp
+                                                {{ number_format($donation->target_amount, 0, ',', '.') }}</span>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="donation-amount-box">
+                                        <div class="amount-box-label">Terkumpul</div>
+                                        <div class="amount-box-value">Rp
+                                            {{ number_format($donation->current_amount, 0, ',', '.') }}</div>
+                                    </div>
+                                @endif
+
+                                <div class="donation-meta">
+                                    <span class="meta-item">
+                                        <i class="fas fa-users"></i>
+                                        {{ number_format($donation->donor_count) }} Donatur
+                                    </span>
+                                    @if ($donation->days_left ?? false)
+                                        <span class="meta-item">
+                                            <i class="fas fa-clock"></i>
+                                            {{ $donation->days_left }} hari lagi
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <a href="{{ route('donations.show', $donation->slug) }}" class="btn-donate">
+                                    Donasi Sekarang
+                                    <i class="fas fa-heart"></i>
+                                </a>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+
+                <!-- Pagination -->
+                @if ($donations->hasPages())
+                    <div class="pagination-wrapper">
+                        {{ $donations->links() }}
+                    </div>
+                @endif
+            @else
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <h3 class="empty-title">Belum Ada Program Donasi</h3>
+                    <p class="empty-text">Program donasi akan segera tersedia. Silakan kunjungi halaman ini kembali.</p>
+                </div>
+            @endif
+        </div>
+    </section>
 @endsection
