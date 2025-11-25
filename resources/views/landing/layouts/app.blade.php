@@ -219,6 +219,51 @@
             transform: scale(1.1);
         }
 
+        /* Dropdown Menu */
+        .nav-item-dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            min-width: 220px;
+            padding: 10px 0;
+            list-style: none;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .nav-item-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu li a {
+            padding: 12px 20px;
+            color: var(--dark);
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-menu li a:hover {
+            background: var(--light);
+            color: var(--primary);
+            padding-left: 25px;
+        }
+
+        .dropdown-menu li a::after {
+            display: none;
+        }
+
         /* Mobile Menu */
         @media (max-width: 768px) {
             .navbar-menu {
@@ -537,17 +582,49 @@
             <ul class="navbar-menu" id="navbarMenu">
                 <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a>
                 </li>
-                <li><a href="{{ route('about') }}"
-                        class="{{ request()->routeIs('about') ? 'active' : '' }}">Tentang</a>
-                </li>
-                <li><a href="{{ route('programs') }}"
-                        class="{{ request()->routeIs('programs') ? 'active' : '' }}">Program</a></li>
-                <li><a href="{{ route('blog') }}" class="{{ request()->routeIs('blog*') ? 'active' : '' }}">Berita</a>
-                </li>
-                <li><a href="{{ route('gallery') }}"
-                        class="{{ request()->routeIs('gallery*') ? 'active' : '' }}">Galeri</a></li>
-                <li><a href="{{ route('contact') }}"
-                        class="{{ request()->routeIs('contact') ? 'active' : '' }}">Kontak</a></li>
+
+                @php
+                    $pages = \App\Models\Page::published()->inMenu()->whereNull('parent_id')->with('children')->get();
+                @endphp
+
+                @foreach ($pages as $page)
+                    @if ($page->children->where('status', 'published')->where('show_in_menu', true)->count() > 0)
+                        {{-- Page with Children (Dropdown) --}}
+                        <li class="nav-item-dropdown">
+                            <a href="{{ $page->custom_url ?? route('page.show', $page->slug) }}"
+                                class="{{ request()->is($page->slug) || request()->is($page->slug . '/*') || ($page->custom_url && request()->fullUrl() == $page->custom_url) ? 'active' : '' }}">
+                                @if ($page->icon)
+                                    <i class="{{ $page->icon }}"></i>
+                                @endif
+                                {{ $page->title }}
+                                <i class="fas fa-chevron-down" style="font-size: 0.7rem; margin-left: 5px;"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                @foreach ($page->children->where('status', 'published')->where('show_in_menu', true) as $child)
+                                    <li>
+                                        <a href="{{ $child->custom_url ?? route('page.show', $child->slug) }}">
+                                            @if ($child->icon)
+                                                <i class="{{ $child->icon }}"></i>
+                                            @endif
+                                            {{ $child->title }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </li>
+                    @else
+                        {{-- Regular Page --}}
+                        <li>
+                            <a href="{{ $page->custom_url ?? route('page.show', $page->slug) }}"
+                                class="{{ request()->is($page->slug) || ($page->custom_url && request()->fullUrl() == $page->custom_url) ? 'active' : '' }}">
+                                @if ($page->icon)
+                                    <i class="{{ $page->icon }}"></i>
+                                @endif
+                                {{ $page->title }}
+                            </a>
+                        </li>
+                    @endif
+                @endforeach
             </ul>
 
             <button class="navbar-toggle" id="navbarToggle">

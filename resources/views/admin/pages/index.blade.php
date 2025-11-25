@@ -1,32 +1,36 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Manajemen Halaman')
+@section('title', 'Kelola Halaman')
 
 @section('content')
     <div class="page-header">
-        <h1 class="page-title">Manajemen Halaman</h1>
-        <p class="page-subtitle">Kelola halaman statis website masjid</p>
-        <div class="breadcrumb">
-            <a href="{{ route('admin.dashboard') }}">Dashboard</a>
-            <span>/</span>
-            <span>Halaman</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+            <div>
+                <h1 class="page-title">Kelola Halaman</h1>
+                <div class="breadcrumb">
+                    <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                    <span>/</span>
+                    <span>Halaman</span>
+                </div>
+            </div>
+            <a href="{{ route('admin.pages.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+                Tambah Halaman
+            </a>
         </div>
     </div>
 
-    <!-- Filter & Search Card -->
-    <div class="card mb-4">
-        <div class="card-header">
-            <h3 class="card-title">Filter & Pencarian</h3>
-        </div>
+    <!-- Filters -->
+    <div class="card" style="margin-bottom: 20px;">
         <div class="card-body">
-            <form action="{{ route('admin.pages.index') }}" method="GET">
-                <div class="filter-grid">
-                    <div class="filter-item">
-                        <input type="text" name="search" class="form-control" placeholder="Cari halaman..."
-                            value="{{ request('search') }}">
+            <form method="GET" action="{{ route('admin.pages.index') }}">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div>
+                        <input type="text" name="search" placeholder="Cari halaman..." value="{{ request('search') }}"
+                            class="form-control">
                     </div>
-                    <div class="filter-item">
-                        <select name="status" class="form-select">
+                    <div>
+                        <select name="status" class="form-control">
                             <option value="">Semua Status</option>
                             <option value="published" {{ request('status') == 'published' ? 'selected' : '' }}>Published
                             </option>
@@ -34,112 +38,106 @@
                             <option value="private" {{ request('status') == 'private' ? 'selected' : '' }}>Private</option>
                         </select>
                     </div>
-                    <div class="filter-item">
-                        <select name="template" class="form-select">
+                    <div>
+                        <select name="template" class="form-control">
                             <option value="">Semua Template</option>
                             <option value="default" {{ request('template') == 'default' ? 'selected' : '' }}>Default
                             </option>
                             <option value="full-width" {{ request('template') == 'full-width' ? 'selected' : '' }}>Full
-                                Width
-                            </option>
+                                Width</option>
                             <option value="sidebar-left" {{ request('template') == 'sidebar-left' ? 'selected' : '' }}>
                                 Sidebar Left</option>
                             <option value="sidebar-right" {{ request('template') == 'sidebar-right' ? 'selected' : '' }}>
                                 Sidebar Right</option>
+                            <option value="contact" {{ request('template') == 'contact' ? 'selected' : '' }}>Contact
+                            </option>
+                            <option value="about" {{ request('template') == 'about' ? 'selected' : '' }}>About</option>
                         </select>
                     </div>
-                    <div class="filter-item">
-                        <select name="parent" class="form-select">
-                            <option value="">Semua Parent</option>
-                            <option value="none" {{ request('parent') == 'none' ? 'selected' : '' }}>Parent Only</option>
-                            @foreach ($parentPages as $parent)
-                                <option value="{{ $parent->id }}"
-                                    {{ request('parent') == $parent->id ? 'selected' : '' }}>
-                                    {{ $parent->title }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="filter-item">
-                        <button type="submit" class="btn btn-primary w-100">
-                            <i class="fas fa-search"></i> Cari
+                    <div style="display: flex; gap: 10px;">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-filter"></i> Filter
                         </button>
+                        <a href="{{ route('admin.pages.index') }}" class="btn btn-secondary">
+                            <i class="fas fa-redo"></i> Reset
+                        </a>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Table Card -->
+    <!-- Pages Table -->
     <div class="card">
-        <div class="card-header">
-            <div class="card-header-flex">
-                <h3 class="card-title">Daftar Halaman</h3>
-                <a href="{{ route('admin.pages.create') }}" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Tambah Halaman
-                </a>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
+        <div class="card-body" style="padding: 0;">
+            <div style="overflow-x: auto;">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th width="5%">No</th>
-                            <th width="25%">Judul</th>
-                            <th width="15%">Slug</th>
-                            <th width="12%">Template</th>
-                            <th width="10%">Parent</th>
-                            <th width="8%">Menu</th>
-                            <th width="8%">Status</th>
-                            <th width="15%">Aksi</th>
+                            <th width="50" style="text-align: center;">
+                                <i class="fas fa-grip-vertical" style="color: #9ca3af;"></i>
+                            </th>
+                            <th>Judul</th>
+                            <th width="120">Status</th>
+                            <th width="120">Template</th>
+                            <th width="100">Menu</th>
+                            <th width="80">Order</th>
+                            <th width="150">Tanggal</th>
+                            <th width="150">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @forelse($pages as $page)
-                            <tr>
-                                <td>{{ $pages->firstItem() + $loop->index }}</td>
+                    <tbody id="sortable-pages">
+                        @forelse ($pages as $page)
+                            <tr data-id="{{ $page->id }}" style="border-bottom: 1px solid var(--border);">
+                                <td style="text-align: center;">
+                                    <i class="fas fa-grip-vertical drag-handle" style="cursor: move; color: #9ca3af;"></i>
+                                </td>
                                 <td>
-                                    <div class="page-title-cell">
-                                        @if ($page->icon)
-                                            <i class="{{ $page->icon }}" style="color: var(--primary)"></i>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        @if ($page->featured_image)
+                                            <img src="{{ asset('storage/' . $page->featured_image) }}"
+                                                alt="{{ $page->title }}"
+                                                style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
                                         @endif
                                         <div>
-                                            <strong>{{ $page->title }}</strong>
-                                            @if ($page->featured_image)
+                                            <strong style="color: var(--dark);">{{ $page->title }}</strong>
+                                            <br>
+                                            @if ($page->custom_url)
+                                                <small style="color: #10b981;">
+                                                    <i class="fas fa-external-link-alt"></i>
+                                                    {{ Str::limit($page->custom_url, 40) }}
+                                                </small>
+                                            @else
+                                                <small style="color: #6b7280;">
+                                                    <i class="fas fa-link"></i> /{{ $page->slug }}
+                                                </small>
+                                            @endif
+                                            @if ($page->parent)
                                                 <br>
-                                                <span class="badge badge-sm badge-info">
-                                                    <i class="fas fa-image"></i> Ada Gambar
-                                                </span>
+                                                <small style="color: #9ca3af;">
+                                                    <i class="fas fa-folder"></i> Parent: {{ $page->parent->title }}
+                                                </small>
                                             @endif
                                         </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <code class="slug-code">{{ $page->slug }}</code>
-                                </td>
-                                <td>
-                                    <span class="badge badge-template">
-                                        {{ ucfirst(str_replace('-', ' ', $page->template)) }}
-                                    </span>
-                                </td>
-                                <td>
-                                    @if ($page->parent)
-                                        <span class="text-muted small">
-                                            <i class="fas fa-level-up-alt"></i>
-                                            {{ $page->parent->title }}
-                                        </span>
+                                    @if ($page->status == 'published')
+                                        <span class="badge badge-success">Published</span>
+                                    @elseif($page->status == 'draft')
+                                        <span class="badge badge-warning">Draft</span>
                                     @else
-                                        <span class="badge badge-secondary">Parent</span>
+                                        <span class="badge badge-secondary">Private</span>
                                     @endif
+                                </td>
+                                <td>
+                                    <span class="badge badge-info">{{ ucfirst($page->template) }}</span>
                                 </td>
                                 <td>
                                     @if ($page->show_in_menu)
                                         <span class="badge badge-success">
                                             <i class="fas fa-check"></i> Ya
                                         </span>
-                                        <br>
-                                        <small class="text-muted">Order: {{ $page->menu_order }}</small>
                                     @else
                                         <span class="badge badge-secondary">
                                             <i class="fas fa-times"></i> Tidak
@@ -147,14 +145,17 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <span class="badge badge-status-{{ $page->status }}">
-                                        {{ ucfirst($page->status) }}
-                                    </span>
+                                    <span class="badge badge-light">{{ $page->menu_order }}</span>
                                 </td>
                                 <td>
-                                    <div class="btn-group">
-                                        <a href="{{ route('admin.pages.show', $page) }}" class="btn btn-sm btn-info"
-                                            title="Detail">
+                                    <small style="color: #6b7280;">
+                                        {{ $page->created_at->format('d M Y') }}
+                                    </small>
+                                </td>
+                                <td>
+                                    <div style="display: flex; gap: 5px;">
+                                        <a href="{{ route('page.show', $page->slug) }}" class="btn btn-sm btn-info"
+                                            target="_blank" title="Lihat">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="{{ route('admin.pages.edit', $page) }}" class="btn btn-sm btn-warning"
@@ -162,11 +163,11 @@
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <form action="{{ route('admin.pages.destroy', $page) }}" method="POST"
-                                            style="display: inline;"
-                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus halaman ini?')">
+                                            style="display: inline-block;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
+                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                onclick="return confirm('Yakin ingin menghapus?')" title="Hapus">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
@@ -175,9 +176,13 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center py-5">
-                                    <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
-                                    <p class="text-muted">Belum ada halaman</p>
+                                <td colspan="8" style="text-align: center; padding: 50px;">
+                                    <i class="fas fa-file-alt"
+                                        style="font-size: 3rem; color: #e5e7eb; margin-bottom: 15px; display: block;"></i>
+                                    <p style="color: #9ca3af; margin-bottom: 15px;">Belum ada halaman</p>
+                                    <a href="{{ route('admin.pages.create') }}" class="btn btn-primary">
+                                        <i class="fas fa-plus"></i> Tambah Halaman Pertama
+                                    </a>
                                 </td>
                             </tr>
                         @endforelse
@@ -185,6 +190,7 @@
                 </table>
             </div>
         </div>
+
         @if ($pages->hasPages())
             <div class="card-footer">
                 {{ $pages->links() }}
@@ -195,64 +201,87 @@
 
 @push('styles')
     <style>
-        .card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border);
-            margin-bottom: 20px;
+        .table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        .card-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .card-header-flex {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .card-title {
-            font-size: 1.1rem;
+        .table th {
+            background: var(--light);
+            padding: 15px;
+            text-align: left;
             font-weight: 600;
             color: var(--dark);
-            margin: 0;
+            font-size: 0.9rem;
+            border-bottom: 2px solid var(--border);
         }
 
-        .card-body {
-            padding: 20px;
+        .table td {
+            padding: 15px;
+            vertical-align: middle;
         }
 
-        .card-footer {
-            padding: 15px 20px;
-            border-top: 1px solid var(--border);
+        .drag-handle {
+            cursor: move;
+        }
+
+        .drag-handle:hover {
+            color: var(--primary) !important;
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-secondary {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .badge-info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-light {
             background: var(--light);
-        }
-
-        .mb-4 {
-            margin-bottom: 1.5rem;
-        }
-
-        .filter-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr auto;
-            gap: 1rem;
+            color: var(--dark);
+            border: 1px solid var(--border);
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.3s ease;
             border: none;
+            font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            transition: all 0.3s ease;
             text-decoration: none;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.85rem;
         }
 
         .btn-primary {
@@ -263,12 +292,15 @@
         .btn-primary:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 83, 197, 0.3);
         }
 
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 0.85rem;
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
         }
 
         .btn-info {
@@ -298,164 +330,75 @@
             background: #dc2626;
         }
 
-        .btn-group {
-            display: flex;
-            gap: 5px;
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
         }
 
-        .form-control,
-        .form-select {
+        .card-body {
+            padding: 25px;
+        }
+
+        .card-footer {
+            padding: 20px 25px;
+            border-top: 1px solid var(--border);
+        }
+
+        .form-control {
             width: 100%;
             padding: 10px 15px;
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
             border-radius: 8px;
             font-size: 0.95rem;
             transition: all 0.3s ease;
         }
 
-        .form-control:focus,
-        .form-select:focus {
-            border-color: var(--primary);
+        .form-control:focus {
             outline: none;
+            border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(0, 83, 197, 0.1);
         }
 
-        .w-100 {
-            width: 100%;
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .table thead th {
-            background: var(--light);
-            color: var(--dark);
-            font-weight: 600;
-            padding: 12px;
-            border-bottom: 2px solid var(--border);
-            font-size: 0.9rem;
-            text-align: left;
-        }
-
-        .table tbody td {
-            padding: 12px;
-            vertical-align: middle;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .table tbody tr:hover {
-            background: var(--light);
-        }
-
-        .page-title-cell {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .page-title-cell i {
-            font-size: 1.2rem;
-        }
-
-        .slug-code {
-            background: var(--light);
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            color: var(--primary);
-            font-family: 'Courier New', monospace;
-        }
-
-        .badge {
-            padding: 5px 12px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            display: inline-block;
-        }
-
-        .badge-sm {
-            padding: 3px 8px;
-            font-size: 0.7rem;
-        }
-
-        .badge-success {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .badge-secondary {
-            background: #e5e7eb;
-            color: #6b7280;
-        }
-
-        .badge-info {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
-        .badge-template {
-            background: #f3e8ff;
-            color: #6b21a8;
-        }
-
-        .badge-status-published {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .badge-status-draft {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .badge-status-private {
-            background: #e5e7eb;
-            color: #374151;
-        }
-
-        .table-responsive {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .text-muted {
-            color: #6b7280;
-        }
-
-        .py-5 {
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-        }
-
-        .mb-3 {
-            margin-bottom: 1rem;
-        }
-
-        .fa-3x {
-            font-size: 3rem;
-        }
-
         @media (max-width: 768px) {
-            .filter-grid {
-                grid-template-columns: 1fr;
+            .table {
+                font-size: 0.85rem;
             }
 
-            .card-header-flex {
-                flex-direction: column;
-                gap: 10px;
-                align-items: flex-start;
-            }
-
-            .btn-group {
-                flex-wrap: wrap;
+            .table th,
+            .table td {
+                padding: 10px;
             }
         }
     </style>
+@endpush
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script>
+        const el = document.getElementById('sortable-pages');
+        if (el) {
+            const sortable = Sortable.create(el, {
+                handle: '.drag-handle',
+                animation: 150,
+                onEnd: function(evt) {
+                    const items = [];
+                    document.querySelectorAll('#sortable-pages tr[data-id]').forEach((row, index) => {
+                        items.push(row.dataset.id);
+                    });
+
+                    fetch('{{ route('admin.pages.reorder') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            items: items
+                        })
+                    });
+                }
+            });
+        }
+    </script>
 @endpush

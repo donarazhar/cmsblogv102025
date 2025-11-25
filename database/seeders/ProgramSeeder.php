@@ -11,9 +11,9 @@ class ProgramSeeder extends Seeder
     {
         $programs = [
             [
-                'name' => 'Kajian Fiqih Sehari-hari',
-                'description' => 'Kajian fiqih praktis untuk kehidupan sehari-hari dengan Ustadz Dr. Ahmad Dahlan',
-                'content' => '<p>Program kajian yang membahas masalah fiqih sehari-hari dengan pendekatan yang mudah dipahami.</p>',
+                'name' => 'MT. Tafsir Senin Pagi',
+                'description' => 'Kajian fiqih praktis untuk kehidupan sehari-hari dengan Ustadz yang sudah berpengalaman',
+                'content' => '<p>Program kajian yang membahas masalah tafsir quran sehari-hari dengan pendekatan yang mudah dipahami.</p>',
                 'type' => 'regular',
                 'frequency' => 'weekly',
                 'start_time' => '19:30:00',
@@ -27,7 +27,7 @@ class ProgramSeeder extends Seeder
                 'order' => 1,
             ],
             [
-                'name' => 'Tahfidz Quran Anak',
+                'name' => 'Shalat Jumat',
                 'description' => 'Program menghafal Al-Quran untuk anak usia 7-12 tahun',
                 'content' => '<p>Program tahfidz dengan metode menyenangkan untuk anak-anak.</p>',
                 'type' => 'course',
@@ -46,7 +46,7 @@ class ProgramSeeder extends Seeder
                 'order' => 2,
             ],
             [
-                'name' => 'Pelatihan Manasik Haji',
+                'name' => 'MT. Ahad Dhuha',
                 'description' => 'Persiapan dan pelatihan manasik haji untuk calon jamaah haji',
                 'type' => 'event',
                 'frequency' => 'once',
@@ -65,7 +65,7 @@ class ProgramSeeder extends Seeder
                 'order' => 3,
             ],
             [
-                'name' => 'Bakti Sosial Ramadhan',
+                'name' => 'Kegiatan Ramadhan Mubarak',
                 'description' => 'Program pembagian sembako untuk keluarga dhuafa',
                 'type' => 'charity',
                 'frequency' => 'once',
@@ -77,7 +77,7 @@ class ProgramSeeder extends Seeder
                 'order' => 4,
             ],
             [
-                'name' => 'Kelas Bahasa Arab',
+                'name' => 'Kelas Kursus Masjid Agung Al Azhar',
                 'description' => 'Belajar bahasa Arab untuk pemula',
                 'type' => 'course',
                 'frequency' => 'weekly',

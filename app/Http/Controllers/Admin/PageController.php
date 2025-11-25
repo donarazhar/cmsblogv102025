@@ -65,6 +65,7 @@ class PageController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:pages,slug',
+            'custom_url' => 'nullable|string|max:500', // ✅ Tambahkan ini
             'content' => 'required|string',
             'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'template' => 'required|in:default,full-width,sidebar-left,sidebar-right,contact,about',
@@ -134,6 +135,7 @@ class PageController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:pages,slug,' . $page->id,
+            'custom_url' => 'nullable|string|max:500', // ✅ Tambahkan ini
             'content' => 'required|string',
             'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'template' => 'required|in:default,full-width,sidebar-left,sidebar-right,contact,about',

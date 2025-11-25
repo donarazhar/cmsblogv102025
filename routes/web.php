@@ -27,11 +27,6 @@ use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 
-
-
-
-
-
 /*
 |--------------------------------------------------------------------------
 | Public Routes - Landing Page
@@ -66,6 +61,9 @@ Route::get('/donation/{slug}', [LandingController::class, 'donationDetail'])->na
 // Contact
 Route::get('/contact', [LandingController::class, 'contact'])->name('contact');
 Route::post('/contact', [LandingController::class, 'contactSubmit'])->name('contact.submit');
+
+// Dynamic Pages Route
+Route::get('/{slug}', [LandingController::class, 'page'])->name('page.show');
 
 /*
 |--------------------------------------------------------------------------

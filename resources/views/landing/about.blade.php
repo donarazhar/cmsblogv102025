@@ -21,7 +21,7 @@
         <div class="container">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-bottom: 80px;">
                 <div data-aos="fade-right">
-                    <img src="https://via.placeholder.com/600x400" alt="Masjid Al Azhar"
+                    <img src="https://placehold.co/600x400/EEE/31343C" alt="Masjid Al Azhar"
                         style="width: 100%; border-radius: 20px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);">
                 </div>
                 <div data-aos="fade-left">

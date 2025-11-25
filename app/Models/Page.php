@@ -16,6 +16,7 @@ class Page extends Model
     protected $fillable = [
         'title',
         'slug',
+        'custom_url', // ✅ Tambahkan ini
         'content',
         'featured_image',
         'template',

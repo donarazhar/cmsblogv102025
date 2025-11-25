@@ -26,7 +26,7 @@ class SliderSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'title' => 'Ramadhan Kareem 1446 H',
+                'title' => 'Ramadhan Kareem 1447 H',
                 'subtitle' => 'Mari Ramaikan Bulan Penuh Berkah',
                 'description' => 'Program spesial Ramadhan: Tarawih, Kajian, Tahfidz, dan Buka Puasa Bersama',
                 'image' => 'slider-2.jpg',

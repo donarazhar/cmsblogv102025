@@ -1,309 +1,231 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Detail Halaman')
+@section('title', 'Detail Halaman - ' . $page->title)
 
 @section('content')
     <div class="page-header">
-        <h1 class="page-title">Detail Halaman</h1>
-        <p class="page-subtitle">Informasi lengkap halaman website</p>
-        <div class="breadcrumb">
-            <a href="{{ route('admin.dashboard') }}">Dashboard</a>
-            <span>/</span>
-            <a href="{{ route('admin.pages.index') }}">Halaman</a>
-            <span>/</span>
-            <span>Detail</span>
-        </div>
-    </div>
-
-    <!-- Action Buttons -->
-    <div class="action-bar mb-4">
-        <a href="{{ route('admin.pages.index') }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Kembali
-        </a>
-        <div class="action-right">
-            <a href="{{ $page->url }}" target="_blank" class="btn btn-info">
-                <i class="fas fa-external-link-alt"></i> Lihat Halaman
-            </a>
-            <a href="{{ route('admin.pages.edit', $page) }}" class="btn btn-warning">
-                <i class="fas fa-edit"></i> Edit
-            </a>
-            <form action="{{ route('admin.pages.destroy', $page) }}" method="POST" style="display: inline;"
-                onsubmit="return confirm('Apakah Anda yakin ingin menghapus halaman ini?')">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger">
-                    <i class="fas fa-trash"></i> Hapus
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <div class="detail-grid">
-        <!-- Main Content -->
-        <div class="detail-main">
-            <!-- Page Header Card -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="page-header-content">
-                        <div class="page-title-section">
-                            @if ($page->icon)
-                                <div class="page-icon">
-                                    <i class="{{ $page->icon }}"></i>
-                                </div>
-                            @endif
-                            <div>
-                                <h2 class="page-title-main">{{ $page->title }}</h2>
-                                <div class="page-meta">
-                                    <span class="badge badge-status-{{ $page->status }}">
-                                        <i class="fas fa-circle"></i>
-                                        {{ ucfirst($page->status) }}
-                                    </span>
-                                    <span class="badge badge-template">
-                                        <i class="fas fa-palette"></i>
-                                        {{ ucfirst(str_replace('-', ' ', $page->template)) }}
-                                    </span>
-                                    @if ($page->show_in_menu)
-                                        <span class="badge badge-menu">
-                                            <i class="fas fa-bars"></i>
-                                            In Menu ({{ $page->menu_order }})
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                        <div class="page-url">
-                            <label>URL:</label>
-                            <code class="url-code">{{ $page->url }}</code>
-                            <button type="button" class="btn-copy" onclick="copyToClipboard('{{ $page->url }}')"
-                                title="Copy URL">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                        </div>
-                    </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+            <div>
+                <h1 class="page-title">Detail Halaman</h1>
+                <div class="breadcrumb">
+                    <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                    <span>/</span>
+                    <a href="{{ route('admin.pages.index') }}">Halaman</a>
+                    <span>/</span>
+                    <span>{{ $page->title }}</span>
                 </div>
             </div>
+            <div style="display: flex; gap: 10px;">
+                <a href="{{ route('page.show', $page->slug) }}" class="btn btn-info" target="_blank">
+                    <i class="fas fa-eye"></i>
+                    Lihat Halaman
+                </a>
+                <a href="{{ route('admin.pages.edit', $page) }}" class="btn btn-warning">
+                    <i class="fas fa-edit"></i>
+                    Edit
+                </a>
+                <a href="{{ route('admin.pages.index') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    Kembali
+                </a>
+            </div>
+        </div>
+    </div>
 
-            <!-- Featured Image Card -->
-            @if ($page->featured_image)
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-image"></i>
-                            Gambar Unggulan
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="featured-image">
-                            <img src="{{ Storage::url($page->featured_image) }}" alt="{{ $page->title }}">
-                        </div>
-                        <div class="image-info">
-                            <i class="fas fa-info-circle"></i>
-                            <span>{{ basename($page->featured_image) }}</span>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-            <!-- Content Card -->
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-8">
+            <!-- Basic Info -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-file-alt"></i>
-                        Konten Halaman
-                    </h3>
+                    <h3 class="card-title">Informasi Halaman</h3>
                 </div>
                 <div class="card-body">
-                    <div class="content-box">
-                        {!! nl2br(e($page->content)) !!}
+                    @if ($page->featured_image)
+                        <div style="margin-bottom: 30px;">
+                            <img src="{{ asset('storage/' . $page->featured_image) }}" alt="{{ $page->title }}"
+                                style="width: 100%; max-height: 400px; object-fit: cover; border-radius: 12px;">
+                        </div>
+                    @endif
+
+                    <div class="info-group">
+                        <label>Judul</label>
+                        <div class="info-value">{{ $page->title }}</div>
+                    </div>
+
+                    <div class="info-group">
+                        <label>Slug (URL)</label>
+                        <div class="info-value">
+                            <code
+                                style="background: var(--light); padding: 5px 10px; border-radius: 6px; color: var(--primary);">
+                                /{{ $page->slug }}
+                            </code>
+                        </div>
+                    </div>
+
+                    <div class="info-group">
+                        <label>Konten</label>
+                        <div class="content-preview">
+                            {!! $page->content !!}
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- SEO Card -->
+            <!-- SEO Info -->
             @if ($page->meta_title || $page->meta_description || $page->meta_keywords)
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-search"></i>
-                            SEO Meta Tags
-                        </h3>
+                        <h3 class="card-title">SEO Information</h3>
                     </div>
                     <div class="card-body">
                         @if ($page->meta_title)
-                            <div class="seo-item">
-                                <label>Meta Title:</label>
-                                <p>{{ $page->meta_title }}</p>
+                            <div class="info-group">
+                                <label>Meta Title</label>
+                                <div class="info-value">{{ $page->meta_title }}</div>
                             </div>
                         @endif
 
                         @if ($page->meta_description)
-                            <div class="seo-item">
-                                <label>Meta Description:</label>
-                                <p>{{ $page->meta_description }}</p>
+                            <div class="info-group">
+                                <label>Meta Description</label>
+                                <div class="info-value">{{ $page->meta_description }}</div>
                             </div>
                         @endif
 
                         @if ($page->meta_keywords)
-                            <div class="seo-item">
-                                <label>Meta Keywords:</label>
-                                <div class="keywords-tags">
-                                    @foreach (explode(',', $page->meta_keywords) as $keyword)
-                                        <span class="keyword-tag">{{ trim($keyword) }}</span>
-                                    @endforeach
+                            <div class="info-group">
+                                <label>Meta Keywords</label>
+                                <div class="info-value">
+                                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                        @foreach (explode(',', $page->meta_keywords) as $keyword)
+                                            <span class="keyword-tag">{{ trim($keyword) }}</span>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         @endif
+                    </div>
+                </div>
+            @endif
+
+            <!-- Child Pages -->
+            @if ($page->children->count() > 0)
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Sub Halaman ({{ $page->children->count() }})</h3>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: grid; gap: 15px;">
+                            @foreach ($page->children as $child)
+                                <div class="child-page-item">
+                                    <div style="display: flex; align-items: center; gap: 15px;">
+                                        @if ($child->featured_image)
+                                            <img src="{{ asset('storage/' . $child->featured_image) }}"
+                                                alt="{{ $child->title }}"
+                                                style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                                        @else
+                                            <div
+                                                style="width: 60px; height: 60px; background: var(--light); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-file-alt" style="font-size: 1.5rem; color: #9ca3af;"></i>
+                                            </div>
+                                        @endif
+                                        <div style="flex: 1;">
+                                            <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 5px;">
+                                                {{ $child->title }}
+                                            </h4>
+                                            <div style="display: flex; gap: 15px; font-size: 0.85rem; color: #6b7280;">
+                                                <span>
+                                                    <i class="fas fa-link"></i> /{{ $child->slug }}
+                                                </span>
+                                                @if ($child->status == 'published')
+                                                    <span class="badge badge-success">Published</span>
+                                                @else
+                                                    <span class="badge badge-warning">{{ ucfirst($child->status) }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div style="display: flex; gap: 5px;">
+                                            <a href="{{ route('admin.pages.show', $child) }}" class="btn btn-sm btn-info"
+                                                title="Detail">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{{ route('admin.pages.edit', $child) }}"
+                                                class="btn btn-sm btn-warning" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             @endif
         </div>
 
         <!-- Sidebar -->
-        <div class="detail-sidebar">
-            <!-- Page Info Card -->
+        <div class="col-4">
+            <!-- Status Card -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-info-circle"></i>
-                        Informasi Halaman
-                    </h3>
+                    <h3 class="card-title">Status & Pengaturan</h3>
                 </div>
                 <div class="card-body">
-                    <div class="info-row">
-                        <div class="info-label">
-                            <i class="fas fa-calendar-plus"></i>
-                            Dibuat
-                        </div>
+                    <div class="info-group">
+                        <label>Status</label>
                         <div class="info-value">
-                            {{ $page->created_at->format('d M Y, H:i') }}
+                            @if ($page->status == 'published')
+                                <span class="badge badge-success">
+                                    <i class="fas fa-check-circle"></i> Published
+                                </span>
+                            @elseif($page->status == 'draft')
+                                <span class="badge badge-warning">
+                                    <i class="fas fa-edit"></i> Draft
+                                </span>
+                            @else
+                                <span class="badge badge-secondary">
+                                    <i class="fas fa-lock"></i> Private
+                                </span>
+                            @endif
                         </div>
                     </div>
-                    <div class="info-row">
-                        <div class="info-label">
-                            <i class="fas fa-calendar-check"></i>
-                            Diperbarui
-                        </div>
+
+                    <div class="info-group">
+                        <label>Template</label>
                         <div class="info-value">
-                            {{ $page->updated_at->format('d M Y, H:i') }}
+                            <span class="badge badge-info">{{ ucfirst(str_replace('-', ' ', $page->template)) }}</span>
                         </div>
                     </div>
-                    <div class="info-row">
-                        <div class="info-label">
-                            <i class="fas fa-link"></i>
-                            Slug
-                        </div>
+
+                    <div class="info-group">
+                        <label>URL</label>
                         <div class="info-value">
-                            <code>{{ $page->slug }}</code>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Template Info Card -->
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-palette"></i>
-                        Template & Layout
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <div class="template-display">
-                        <div class="template-icon">
-                            @switch($page->template)
-                                @case('full-width')
-                                    <i class="fas fa-window-maximize"></i>
-                                @break
-
-                                @case('sidebar-left')
-                                    <i class="fas fa-columns"></i>
-                                @break
-
-                                @case('sidebar-right')
-                                    <i class="fas fa-columns"></i>
-                                @break
-
-                                @case('contact')
-                                    <i class="fas fa-envelope"></i>
-                                @break
-
-                                @case('about')
-                                    <i class="fas fa-info-circle"></i>
-                                @break
-
-                                @default
-                                    <i class="fas fa-th-large"></i>
-                            @endswitch
-                        </div>
-                        <div class="template-name">
-                            {{ ucfirst(str_replace('-', ' ', $page->template)) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Hierarchy Card -->
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-sitemap"></i>
-                        Hierarki
-                    </h3>
-                </div>
-                <div class="card-body">
-                    @if ($page->parent)
-                        <div class="hierarchy-item parent">
-                            <i class="fas fa-level-up-alt"></i>
-                            <div>
-                                <label>Parent:</label>
-                                <a href="{{ route('admin.pages.show', $page->parent) }}">
-                                    {{ $page->parent->title }}
+                            @if ($page->custom_url)
+                                <a href="{{ $page->custom_url }}" target="_blank"
+                                    style="color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    {{ $page->custom_url }}
                                 </a>
-                            </div>
+                                <small style="color: #9ca3af; display: block; margin-top: 5px;">
+                                    Custom URL (External/Route)
+                                </small>
+                            @else
+                                <a href="{{ route('page.show', $page->slug) }}" target="_blank"
+                                    style="color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fas fa-link"></i>
+                                    /{{ $page->slug }}
+                                </a>
+                                <small style="color: #9ca3af; display: block; margin-top: 5px;">
+                                    Page Slug
+                                </small>
+                            @endif
                         </div>
-                    @else
-                        <div class="hierarchy-item root">
-                            <i class="fas fa-home"></i>
-                            <div>
-                                <label>Level:</label>
-                                <span>Parent / Root Page</span>
-                            </div>
-                        </div>
-                    @endif
+                    </div>
 
-                    @if ($page->children->count() > 0)
-                        <div class="children-list">
-                            <label>Sub-halaman ({{ $page->children->count() }}):</label>
-                            <ul>
-                                @foreach ($page->children as $child)
-                                    <li>
-                                        <i class="fas fa-angle-right"></i>
-                                        <a href="{{ route('admin.pages.show', $child) }}">
-                                            {{ $child->title }}
-                                        </a>
-                                        <span class="badge badge-sm badge-status-{{ $child->status }}">
-                                            {{ ucfirst($child->status) }}
-                                        </span>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-                </div>
-            </div>
-
-            <!-- Menu Settings Card -->
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-bars"></i>
-                        Pengaturan Menu
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <div class="setting-row">
-                        <div class="setting-label">Tampil di Menu</div>
-                        <div class="setting-value">
+                    <div class="info-group">
+                        <label>Tampil di Menu</label>
+                        <div class="info-value">
                             @if ($page->show_in_menu)
                                 <span class="badge badge-success">
                                     <i class="fas fa-check"></i> Ya
@@ -316,59 +238,91 @@
                         </div>
                     </div>
 
-                    @if ($page->show_in_menu)
-                        <div class="setting-row">
-                            <div class="setting-label">Urutan Menu</div>
-                            <div class="setting-value">
-                                <span class="badge badge-info">
-                                    <i class="fas fa-sort-numeric-down"></i>
-                                    {{ $page->menu_order }}
-                                </span>
+                    <div class="info-group">
+                        <label>Menu Order</label>
+                        <div class="info-value">
+                            <span class="badge badge-light">{{ $page->menu_order }}</span>
+                        </div>
+                    </div>
+
+                    @if ($page->parent)
+                        <div class="info-group">
+                            <label>Parent Page</label>
+                            <div class="info-value">
+                                <a href="{{ route('admin.pages.show', $page->parent) }}"
+                                    style="color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fas fa-folder"></i>
+                                    {{ $page->parent->title }}
+                                </a>
                             </div>
                         </div>
                     @endif
 
                     @if ($page->icon)
-                        <div class="setting-row">
-                            <div class="setting-label">Icon</div>
-                            <div class="setting-value">
-                                <div class="icon-display">
-                                    <i class="{{ $page->icon }}"></i>
-                                    <code>{{ $page->icon }}</code>
-                                </div>
+                        <div class="info-group">
+                            <label>Icon</label>
+                            <div class="info-value">
+                                <i class="{{ $page->icon }}" style="font-size: 1.5rem; color: var(--primary);"></i>
+                                <code
+                                    style="margin-left: 10px; background: var(--light); padding: 3px 8px; border-radius: 4px; font-size: 0.85rem;">
+                                    {{ $page->icon }}
+                                </code>
                             </div>
                         </div>
                     @endif
                 </div>
             </div>
 
-            <!-- Quick Actions Card -->
+            <!-- Timestamps Card -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-bolt"></i>
-                        Quick Actions
-                    </h3>
+                    <h3 class="card-title">Timeline</h3>
                 </div>
                 <div class="card-body">
-                    <a href="{{ $page->url }}" target="_blank" class="quick-action-btn">
+                    <div class="info-group">
+                        <label>Dibuat</label>
+                        <div class="info-value">
+                            <i class="fas fa-calendar-plus" style="color: var(--success);"></i>
+                            {{ $page->created_at->format('d M Y, H:i') }}
+                            <br>
+                            <small style="color: #9ca3af;">{{ $page->created_at->diffForHumans() }}</small>
+                        </div>
+                    </div>
+
+                    <div class="info-group">
+                        <label>Terakhir Diupdate</label>
+                        <div class="info-value">
+                            <i class="fas fa-calendar-check" style="color: var(--info);"></i>
+                            {{ $page->updated_at->format('d M Y, H:i') }}
+                            <br>
+                            <small style="color: #9ca3af;">{{ $page->updated_at->diffForHumans() }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions Card -->
+            <div class="card">
+                <div class="card-body">
+                    <a href="{{ route('page.show', $page->slug) }}" class="btn btn-info"
+                        style="width: 100%; margin-bottom: 10px;" target="_blank">
                         <i class="fas fa-eye"></i>
-                        <span>Preview Halaman</span>
+                        Lihat Halaman
                     </a>
-                    <a href="{{ route('admin.pages.edit', $page) }}" class="quick-action-btn">
+                    <a href="{{ route('admin.pages.edit', $page) }}" class="btn btn-warning"
+                        style="width: 100%; margin-bottom: 10px;">
                         <i class="fas fa-edit"></i>
-                        <span>Edit Halaman</span>
+                        Edit Halaman
                     </a>
-                    <button type="button" class="quick-action-btn" onclick="copyToClipboard('{{ $page->url }}')">
-                        <i class="fas fa-copy"></i>
-                        <span>Copy URL</span>
-                    </button>
-                    @if ($page->featured_image)
-                        <a href="{{ Storage::url($page->featured_image) }}" target="_blank" class="quick-action-btn">
-                            <i class="fas fa-download"></i>
-                            <span>Download Gambar</span>
-                        </a>
-                    @endif
+                    <form action="{{ route('admin.pages.destroy', $page) }}" method="POST"
+                        onsubmit="return confirm('Yakin ingin menghapus halaman ini?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" style="width: 100%;">
+                            <i class="fas fa-trash"></i>
+                            Hapus Halaman
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -377,34 +331,202 @@
 
 @push('styles')
     <style>
-        .mb-4 {
-            margin-bottom: 1.5rem;
+        .row {
+            display: flex;
+            gap: 20px;
+            margin: 0 -10px;
         }
 
-        .action-bar {
-            display: flex;
-            justify-content: space-between;
+        .col-8 {
+            flex: 0 0 66.666667%;
+            max-width: 66.666667%;
+            padding: 0 10px;
+        }
+
+        .col-4 {
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+            padding: 0 10px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin: 0;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .info-group {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-group:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .info-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-size: 1rem;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .content-preview {
+            background: var(--light);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #374151;
+        }
+
+        .content-preview h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 20px 0 15px;
+            color: var(--dark);
+        }
+
+        .content-preview h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 15px 0 10px;
+            color: var(--dark);
+        }
+
+        .content-preview p {
+            margin-bottom: 15px;
+        }
+
+        .content-preview ul,
+        .content-preview ol {
+            margin-bottom: 15px;
+            padding-left: 25px;
+        }
+
+        .content-preview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .keyword-tag {
+            background: var(--light);
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+        }
+
+        .child-page-item {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .child-page-item:hover {
+            background: #e5e7eb;
+            transform: translateX(5px);
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
             align-items: center;
-            gap: 1rem;
+            gap: 5px;
         }
 
-        .action-right {
-            display: flex;
-            gap: 10px;
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-secondary {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .badge-info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-light {
+            background: var(--light);
+            color: var(--dark);
+            border: 1px solid var(--border);
         }
 
         .btn {
             padding: 10px 20px;
             border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.3s ease;
             border: none;
+            font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
+            transition: all 0.3s ease;
             text-decoration: none;
             font-size: 0.95rem;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
         }
 
         .btn-secondary {
@@ -414,8 +536,6 @@
 
         .btn-secondary:hover {
             background: #4b5563;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
         }
 
         .btn-info {
@@ -425,8 +545,6 @@
 
         .btn-info:hover {
             background: #2563eb;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
 
         .btn-warning {
@@ -436,8 +554,6 @@
 
         .btn-warning:hover {
             background: #d97706;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
         }
 
         .btn-danger {
@@ -448,533 +564,18 @@
         .btn-danger:hover {
             background: #dc2626;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-        }
-
-        .detail-grid {
-            display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 20px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border);
-            margin-bottom: 20px;
-        }
-
-        .card-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--dark);
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .card-body {
-            padding: 20px;
-        }
-
-        .page-header-content {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .page-title-section {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-        }
-
-        .page-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: white;
-            flex-shrink: 0;
-        }
-
-        .page-title-main {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 12px;
-        }
-
-        .page-meta {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .page-url {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px;
-            background: var(--light);
-            border-radius: 8px;
-        }
-
-        .page-url label {
-            font-weight: 600;
-            color: var(--dark);
-            font-size: 0.9rem;
-        }
-
-        .url-code {
-            flex: 1;
-            background: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            color: var(--primary);
-            font-family: 'Courier New', monospace;
-            border: 1px solid var(--border);
-        }
-
-        .btn-copy {
-            background: var(--primary);
-            color: white;
-            border: none;
-            width: 35px;
-            height: 35px;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .btn-copy:hover {
-            background: var(--primary-dark);
-            transform: scale(1.05);
-        }
-
-        .featured-image {
-            border-radius: 8px;
-            overflow: hidden;
-            border: 2px solid var(--border);
-            margin-bottom: 10px;
-        }
-
-        .featured-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .image-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #6b7280;
-            font-size: 0.85rem;
-        }
-
-        .content-box {
-            background: var(--light);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 25px;
-            line-height: 1.8;
-            color: #374151;
-            font-size: 0.95rem;
-            min-height: 200px;
-        }
-
-        .seo-item {
-            margin-bottom: 20px;
-        }
-
-        .seo-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .seo-item label {
-            display: block;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-        }
-
-        .seo-item p {
-            color: #374151;
-            line-height: 1.6;
-            margin: 0;
-        }
-
-        .keywords-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .keyword-tag {
-            background: var(--primary);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .info-row:last-child {
-            border-bottom: none;
-        }
-
-        .info-label {
-            font-weight: 500;
-            color: #6b7280;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .info-label i {
-            width: 20px;
-            text-align: center;
-        }
-
-        .info-value {
-            font-weight: 500;
-            color: var(--dark);
-            font-size: 0.9rem;
-            text-align: right;
-        }
-
-        .info-value code {
-            background: var(--light);
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            color: var(--primary);
-        }
-
-        .template-display {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .template-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 15px;
-        }
-
-        .template-icon i {
-            font-size: 2.5rem;
-            color: #6b21a8;
-        }
-
-        .template-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .hierarchy-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            background: var(--light);
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-
-        .hierarchy-item i {
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-
-        .hierarchy-item label {
-            display: block;
-            font-size: 0.8rem;
-            color: #6b7280;
-            margin-bottom: 4px;
-        }
-
-        .hierarchy-item span,
-        .hierarchy-item a {
-            font-weight: 500;
-            color: var(--dark);
-            font-size: 0.95rem;
-        }
-
-        .hierarchy-item a {
-            text-decoration: none;
-            color: var(--primary);
-        }
-
-        .hierarchy-item a:hover {
-            text-decoration: underline;
-        }
-
-        .children-list {
-            margin-top: 15px;
-        }
-
-        .children-list label {
-            display: block;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 10px;
-        }
-
-        .children-list ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .children-list li {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            background: var(--light);
-            border-radius: 6px;
-            margin-bottom: 6px;
-        }
-
-        .children-list li:last-child {
-            margin-bottom: 0;
-        }
-
-        .children-list li i {
-            color: var(--primary);
-        }
-
-        .children-list li a {
-            flex: 1;
-            color: var(--dark);
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-
-        .children-list li a:hover {
-            color: var(--primary);
-        }
-
-        .setting-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .setting-row:last-child {
-            border-bottom: none;
-        }
-
-        .setting-label {
-            font-weight: 500;
-            color: #6b7280;
-            font-size: 0.9rem;
-        }
-
-        .icon-display {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .icon-display i {
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-
-        .icon-display code {
-            background: var(--light);
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            color: #6b7280;
-        }
-
-        .quick-action-btn {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 15px;
-            background: var(--light);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            text-decoration: none;
-            color: var(--dark);
-            transition: all 0.3s ease;
-            margin-bottom: 10px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .quick-action-btn:last-child {
-            margin-bottom: 0;
-        }
-
-        .quick-action-btn:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            transform: translateX(5px);
-        }
-
-        .quick-action-btn i {
-            width: 20px;
-            text-align: center;
-        }
-
-        .badge {
-            padding: 5px 12px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .badge-sm {
-            padding: 3px 8px;
-            font-size: 0.7rem;
-        }
-
-        .badge-success {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .badge-secondary {
-            background: #e5e7eb;
-            color: #6b7280;
-        }
-
-        .badge-info {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
-        .badge-template {
-            background: #f3e8ff;
-            color: #6b21a8;
-        }
-
-        .badge-menu {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .badge-status-published {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .badge-status-draft {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .badge-status-private {
-            background: #e5e7eb;
-            color: #374151;
-        }
-
-        .badge i.fa-circle {
-            font-size: 0.5rem;
         }
 
         @media (max-width: 1024px) {
-            .detail-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .action-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .action-right {
-                width: 100%;
-            }
-
-            .btn {
-                flex: 1;
-                justify-content: center;
-            }
-
-            .page-title-section {
+            .row {
                 flex-direction: column;
             }
 
-            .page-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 1.5rem;
-            }
-
-            .page-title-main {
-                font-size: 1.4rem;
-            }
-
-            .page-url {
-                flex-direction: column;
-                align-items: stretch;
+            .col-8,
+            .col-4 {
+                flex: 0 0 100%;
+                max-width: 100%;
             }
         }
     </style>
-@endpush
-
-@push('scripts')
-    <script>
-        // Copy to clipboard function
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(function() {
-                // Show success message
-                const btn = event.currentTarget;
-                const originalHTML = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i>';
-                btn.style.background = '#10b981';
-
-                setTimeout(function() {
-                    btn.innerHTML = originalHTML;
-                    btn.style.background = '';
-                }, 2000);
-            }, function(err) {
-                alert('Gagal menyalin: ' + err);
-            });
-        }
-    </script>
 @endpush

@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\{
     Announcement,
     Category,
+    Contact,
     Donation,
     DonationTransaction,
     Gallery,
     GalleryAlbum,
+    Page,
     Post,
     Program,
     Schedule,
@@ -21,9 +23,6 @@ use Illuminate\Support\Facades\Cache;
 
 class LandingController extends Controller
 {
-    /**
-     * Display landing page with optimized caching
-     */
     public function index()
     {
         // Cache ALL data in one go - 5 minutes cache
@@ -135,17 +134,14 @@ class LandingController extends Controller
             ];
         });
 
-        return view('landing.index', $data, [
+        return view('landing.index', array_merge($data, [
             'pageTitle' => 'Beranda',
             'pageDescription' => 'Masjid Agung Al Azhar - Pusat Kegiatan Keagamaan dan Dakwah Islam di Jakarta',
             'pageKeywords' => 'masjid al azhar, masjid jakarta, kajian islam, sholat jumat',
             'breadcrumb' => [],
-        ]);
+        ]));
     }
 
-    /**
-     * Show about page
-     */
     public function about()
     {
         $data = Cache::remember('about_page_data_v2', 300, function () {
@@ -160,9 +156,6 @@ class LandingController extends Controller
         return view('landing.about', $data);
     }
 
-    /**
-     * Show programs page
-     */
     public function programs()
     {
         $programs = Program::active()
@@ -173,9 +166,6 @@ class LandingController extends Controller
         return view('landing.programs', compact('programs'));
     }
 
-    /**
-     * Show single program
-     */
     public function programDetail($slug)
     {
         $data = Cache::remember("program_detail_{$slug}_v2", 600, function () use ($slug) {
@@ -196,9 +186,6 @@ class LandingController extends Controller
         return view('landing.program-detail', $data);
     }
 
-    /**
-     * Show blog/news page
-     */
     public function blog(Request $request)
     {
         $query = Post::published()
@@ -257,9 +244,6 @@ class LandingController extends Controller
         return view('landing.blog', array_merge(compact('posts'), $sidebarData));
     }
 
-    /**
-     * Show single blog post
-     */
     public function blogDetail($slug)
     {
         $post = Post::where('slug', $slug)
@@ -294,9 +278,6 @@ class LandingController extends Controller
         return view('landing.blog-detail', compact('post', 'relatedPosts'));
     }
 
-    /**
-     * Show gallery page
-     */
     public function gallery()
     {
         $albums = GalleryAlbum::active()
@@ -308,9 +289,6 @@ class LandingController extends Controller
         return view('landing.gallery', compact('albums'));
     }
 
-    /**
-     * Show gallery album
-     */
     public function galleryAlbum($slug)
     {
         $data = Cache::remember("gallery_album_{$slug}_v2", 600, function () use ($slug) {
@@ -330,17 +308,11 @@ class LandingController extends Controller
         return view('landing.gallery-album', $data);
     }
 
-    /**
-     * Show contact page
-     */
     public function contact()
     {
         return view('landing.contact');
     }
 
-    /**
-     * Handle contact form submission
-     */
     public function contactSubmit(Request $request)
     {
         $request->validate([
@@ -357,7 +329,7 @@ class LandingController extends Controller
             'message.required' => 'Pesan harus diisi',
         ]);
 
-        \App\Models\Contact::create([
+        Contact::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
@@ -371,9 +343,6 @@ class LandingController extends Controller
         return back()->with('success', 'Terima kasih! Pesan Anda telah terkirim. Kami akan segera menghubungi Anda.');
     }
 
-    /**
-     * Show donations page
-     */
     public function donations()
     {
         $donations = Donation::active()
@@ -403,9 +372,6 @@ class LandingController extends Controller
         return view('landing.donations', array_merge(compact('donations'), $cachedData));
     }
 
-    /**
-     * Show single donation campaign
-     */
     public function donationDetail($slug)
     {
         $donation = Donation::where('slug', $slug)
@@ -433,9 +399,23 @@ class LandingController extends Controller
         return view('landing.donation-detail', compact('donation', 'recentDonations', 'relatedDonations'));
     }
 
-    /**
-     * Clear all landing page cache
-     */
+    public function page($slug)
+    {
+        $page = Page::where('slug', $slug)
+            ->where('status', 'published')
+            ->firstOrFail();
+
+        return view('landing.pages', [
+            'page' => $page,
+            'pageTitle' => $page->meta_title ?? $page->title,
+            'pageDescription' => $page->meta_description,
+            'pageKeywords' => $page->meta_keywords,
+            'breadcrumb' => [
+                $page->title => route('page.show', $page->slug),
+            ],
+        ]);
+    }
+
     public function clearCache()
     {
         $cacheKeys = [

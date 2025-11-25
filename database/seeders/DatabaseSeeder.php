@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             StaffSeeder::class,
             TestimonialSeeder::class,
             DonationSeeder::class,
-            DonationTransactionSeeder::class,
+            // DonationTransactionSeeder::class,
             ContactSeeder::class,
         ]);
     }
