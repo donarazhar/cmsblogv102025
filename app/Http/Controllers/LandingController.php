@@ -40,7 +40,7 @@ class LandingController extends Controller
                 'sliders' => Slider::active()
                     ->ordered()
                     ->select('id', 'title', 'subtitle', 'image', 'button_text', 'button_link', 'text_position')
-                    ->limit(3) // Kurangi dari 5 ke 3 untuk loading lebih cepat
+                    ->limit(4) // Kurangi dari 5 ke 3 untuk loading lebih cepat
                     ->get(),
 
                 'announcements' => Announcement::active()
