@@ -57,7 +57,10 @@
 
                         <div class="form-group">
                             <label for="content">Konten <span class="required">*</span></label>
-                            <textarea id="content" name="content" class="form-control @error('content') is-invalid @enderror" required>{{ old('content') }}</textarea>
+                            <textarea id="content" name="content" class="form-control @error('content') is-invalid @enderror">{{ old('content') }}</textarea>
+                            <small class="form-text text-danger" id="contentError" style="display: none;">
+                                <i class="fas fa-exclamation-circle"></i> Konten wajib diisi!
+                            </small>
                             @error('content')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
