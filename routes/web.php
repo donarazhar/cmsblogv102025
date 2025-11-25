@@ -24,7 +24,11 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\RobotsController;
 use App\Http\Controllers\SitemapController;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -101,6 +105,22 @@ Route::middleware('auth')->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        // ✅ CACHE CLEAR ROUTE - ADD THIS
+        Route::post('/cache/clear', function () {
+            try {
+                // Clear all caches
+                Cache::flush();
+                Artisan::call('cache:clear');
+                Artisan::call('view:clear');
+                Artisan::call('config:clear');
+                Artisan::call('route:clear');
+
+                return back()->with('success', 'Cache berhasil dibersihkan! Perubahan akan terlihat di landing page.');
+            } catch (\Exception $e) {
+                return back()->with('error', 'Gagal membersihkan cache: ' . $e->getMessage());
+            }
+        })->name('cache.clear');
 
         // Posts Routes
         Route::resource('posts', PostController::class);

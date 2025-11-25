@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ProgramRegistration extends Model
 {
-    use HasFactory;
+    use HasFactory, ClearsCache;
 
     protected $fillable = [
         'program_id',

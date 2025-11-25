@@ -81,6 +81,33 @@
             font-size: 0.9rem;
             margin-top: 5px;
         }
+
+        /* ✅ ADD THIS - Cache Button Style */
+    .cache-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+
+    .cache-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+        background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    }
+
+    .cache-btn i {
+        font-size: 1rem;
+    }
     </style>
 
     <!-- Statistics Grid -->
@@ -131,6 +158,25 @@
                     <i class="fas fa-envelope"></i>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="page-header">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+            <div>
+                <h1 class="page-title">Dashboard</h1>
+                <p class="page-subtitle">Selamat datang di Admin Panel</p>
+            </div>
+
+            {{-- ✅ ADD CACHE CLEAR BUTTON HERE --}}
+            <form action="{{ route('admin.cache.clear') }}" method="POST">
+                @csrf
+                <button type="submit" class="cache-btn"
+                    onclick="return confirm('Clear semua cache? Data terbaru akan langsung muncul di landing page.')">
+                    <i class="fas fa-sync-alt"></i>
+                    Clear Cache
+                </button>
+            </form>
         </div>
     </div>
 

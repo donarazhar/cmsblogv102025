@@ -3,16 +3,17 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Traits\ClearsCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Activitylog\Traits\LogsActivity; // ✅ TAMBAHKAN
 use Spatie\Activitylog\LogOptions; // ✅ TAMBAHKAN
+use Spatie\Activitylog\Traits\LogsActivity; // ✅ TAMBAHKAN
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, LogsActivity;
+    use HasFactory, Notifiable, LogsActivity, ClearsCache;
 
     /**
      * The attributes that are mass assignable.

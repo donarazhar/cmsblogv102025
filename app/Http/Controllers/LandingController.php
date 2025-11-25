@@ -28,9 +28,9 @@ class LandingController extends Controller
     /**
      * Cache duration constants
      */
-    private const CACHE_SHORT = 180;  // 3 menit
-    private const CACHE_MEDIUM = 600; // 10 menit
-    private const CACHE_LONG = 1800;  // 30 menit
+    private const CACHE_SHORT = 60;   // ✅ 1 minute (was 3 minutes)
+    private const CACHE_MEDIUM = 300; // ✅ 5 minutes (was 10 minutes)
+    private const CACHE_LONG = 600;   // ✅ 10 minutes (was 30 minutes)
 
     public function index()
     {
