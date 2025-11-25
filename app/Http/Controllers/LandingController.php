@@ -54,21 +54,21 @@ class LandingController extends Controller
                     ->featured()
                     ->ordered()
                     ->select('id', 'name', 'slug', 'description', 'image', 'icon', 'frequency', 'location')
-                    ->limit(4)
+                    ->limit(6)
                     ->get(),
 
                 'latestPosts' => Post::published()
                     ->with(['category:id,name,slug', 'author:id,name'])
                     ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'published_at', 'category_id', 'author_id', 'views_count')
                     ->latest('published_at')
-                    ->limit(6)
+                    ->limit(8)
                     ->get(),
 
                 'featuredPosts' => Post::published()
                     ->featured()
                     ->with(['category:id,name,slug', 'author:id,name'])
                     ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'published_at', 'category_id', 'author_id')
-                    ->limit(2) // Kurangi dari 3 ke 2
+                    ->limit(3) // Kurangi dari 3 ke 2
                     ->get(),
 
                 'galleries' => Gallery::active()
@@ -90,7 +90,7 @@ class LandingController extends Controller
                     ->today()
                     ->orderBy('start_time')
                     ->select('id', 'title', 'type', 'start_time', 'end_time', 'location', 'speaker', 'color')
-                    ->limit(4)
+                    ->limit(6)
                     ->get(),
 
                 'upcomingEvents' => Schedule::active()
