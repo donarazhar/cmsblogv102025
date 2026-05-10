@@ -137,23 +137,17 @@ class LandingController extends Controller
 
     public function profileSejarah()
     {
-        $title = 'Sejarah Masjid';
-        $content = Setting::get('profile_sejarah', 'Belum ada konten sejarah.');
-        return view('landing.profile', compact('title', 'content'));
+        return view('landing.profile.sejarah', ['title' => 'Sejarah Masjid']);
     }
 
     public function profileVisiMisi()
     {
-        $title = 'Visi & Misi';
-        $content = Setting::get('profile_visi_misi', 'Belum ada konten visi dan misi.');
-        return view('landing.profile', compact('title', 'content'));
+        return view('landing.profile.visi-misi', ['title' => 'Visi & Misi']);
     }
 
     public function profileStruktur()
     {
-        $title = 'Struktur Organisasi';
-        $content = Setting::get('profile_struktur_organisasi', 'Belum ada konten struktur organisasi.');
-        return view('landing.profile', compact('title', 'content'));
+        return view('landing.profile.struktur-organisasi', ['title' => 'Struktur Organisasi']);
     }
 
     public function programs()
