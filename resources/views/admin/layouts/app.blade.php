@@ -822,7 +822,7 @@
                 <div class="menu-section-header">
                     <div class="menu-section-title">
                         <i class="fas fa-users"></i>
-                        <span>Personalia</span>
+                        <span>Personalia & Profil</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
@@ -839,6 +839,32 @@
                         <span>Testimoni</span>
                         <span class="menu-item-tooltip">Testimoni</span>
                     </a>
+                    
+                    {{-- Profil Masjid Submenu --}}
+                    <div class="menu-item has-submenu {{ request()->routeIs('admin.profile.*') ? 'active' : '' }}">
+                        <i class="fas fa-mosque"></i>
+                        <span>Profil Masjid</span>
+                        <i class="fas fa-chevron-down submenu-icon"></i>
+                        <span class="menu-item-tooltip">Profil Masjid</span>
+                    </div>
+                    <div class="submenu {{ request()->routeIs('admin.profile.*') ? 'show' : '' }}">
+                        <a href="{{ route('admin.profile.index') }}" class="submenu-item {{ request()->routeIs('admin.profile.index') ? 'active' : '' }}">
+                            <i class="fas fa-circle"></i>
+                            <span>Overview Profil</span>
+                        </a>
+                        <a href="{{ route('admin.profile.sejarah') }}" class="submenu-item {{ request()->routeIs('admin.profile.sejarah') ? 'active' : '' }}">
+                            <i class="fas fa-circle"></i>
+                            <span>Sejarah Masjid</span>
+                        </a>
+                        <a href="{{ route('admin.profile.visi-misi') }}" class="submenu-item {{ request()->routeIs('admin.profile.visi-misi') ? 'active' : '' }}">
+                            <i class="fas fa-circle"></i>
+                            <span>Visi & Misi</span>
+                        </a>
+                        <a href="{{ route('admin.profile.struktur-organisasi') }}" class="submenu-item {{ request()->routeIs('admin.profile.struktur-organisasi') ? 'active' : '' }}">
+                            <i class="fas fa-circle"></i>
+                            <span>Struktur Organisasi</span>
+                        </a>
+                    </div>
                 </div>
             </div>
 

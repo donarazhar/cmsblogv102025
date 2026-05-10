@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\GalleryAlbumController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ProgramController;
 use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\Admin\SettingController;
@@ -262,6 +263,17 @@ Route::middleware('auth')->group(function () {
             ->name('users.change-password');
         Route::put('users/{user}/update-password', [UserController::class, 'updatePassword'])
             ->name('users.update-password');
+
+        // Profile Routes
+        Route::prefix('profile')->name('profile.')->group(function () {
+            Route::get('/', [ProfileController::class, 'index'])->name('index');
+            Route::get('/sejarah', [ProfileController::class, 'sejarah'])->name('sejarah');
+            Route::put('/sejarah', [ProfileController::class, 'updateSejarah'])->name('sejarah.update');
+            Route::get('/visi-misi', [ProfileController::class, 'visiMisi'])->name('visi-misi');
+            Route::put('/visi-misi', [ProfileController::class, 'updateVisiMisi'])->name('visi-misi.update');
+            Route::get('/struktur-organisasi', [ProfileController::class, 'strukturOrganisasi'])->name('struktur-organisasi');
+            Route::put('/struktur-organisasi', [ProfileController::class, 'updateStrukturOrganisasi'])->name('struktur-organisasi.update');
+        });
 
         // Activity Logs Routes
         Route::prefix('activity-logs')->name('activity-logs.')->group(function () {
