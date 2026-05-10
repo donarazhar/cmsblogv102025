@@ -50,6 +50,11 @@ Route::get('robots.txt', [RobotsController::class, 'index']);
 // Home
 Route::get('/', [LandingController::class, 'index'])->name('home');
 
+// Profile
+Route::get('/profil/sejarah', [LandingController::class, 'profileSejarah'])->name('frontend.profile.sejarah');
+Route::get('/profil/visi-misi', [LandingController::class, 'profileVisiMisi'])->name('frontend.profile.visi-misi');
+Route::get('/profil/struktur-organisasi', [LandingController::class, 'profileStruktur'])->name('frontend.profile.struktur-organisasi');
+
 // About
 Route::get('/about', [LandingController::class, 'about'])->name('about');
 

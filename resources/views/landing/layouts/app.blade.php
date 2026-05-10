@@ -742,6 +742,34 @@
                         </a>
                     </li>
 
+                    <li class="nav-item nav-dropdown">
+                        <a href="javascript:void(0)"
+                            class="nav-link {{ request()->routeIs('frontend.profile.*') ? 'active' : '' }}">
+                            Profil
+                            <i class="fas fa-chevron-down dropdown-icon"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{{ route('frontend.profile.sejarah') }}"
+                                    class="dropdown-item {{ request()->routeIs('frontend.profile.sejarah') ? 'active' : '' }}">
+                                    Sejarah Masjid
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('frontend.profile.visi-misi') }}"
+                                    class="dropdown-item {{ request()->routeIs('frontend.profile.visi-misi') ? 'active' : '' }}">
+                                    Visi & Misi
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('frontend.profile.struktur-organisasi') }}"
+                                    class="dropdown-item {{ request()->routeIs('frontend.profile.struktur-organisasi') ? 'active' : '' }}">
+                                    Struktur Organisasi
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
                     @php
                         $pages = \App\Models\Page::published()
                             ->inMenu()

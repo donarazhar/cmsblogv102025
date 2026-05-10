@@ -17,7 +17,8 @@ use App\Models\{
     Schedule,
     Slider,
     Staff,
-    Testimonial
+    Testimonial,
+    Setting // ✅ Tambahkan ini
 };
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -132,6 +133,27 @@ class LandingController extends Controller
         });
 
         return view('landing.about', $data);
+    }
+
+    public function profileSejarah()
+    {
+        $title = 'Sejarah Masjid';
+        $content = Setting::get('profile_sejarah', 'Belum ada konten sejarah.');
+        return view('landing.profile', compact('title', 'content'));
+    }
+
+    public function profileVisiMisi()
+    {
+        $title = 'Visi & Misi';
+        $content = Setting::get('profile_visi_misi', 'Belum ada konten visi dan misi.');
+        return view('landing.profile', compact('title', 'content'));
+    }
+
+    public function profileStruktur()
+    {
+        $title = 'Struktur Organisasi';
+        $content = Setting::get('profile_struktur_organisasi', 'Belum ada konten struktur organisasi.');
+        return view('landing.profile', compact('title', 'content'));
     }
 
     public function programs()
