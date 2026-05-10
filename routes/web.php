@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\TestimonialController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\RobotsController;
@@ -254,6 +255,13 @@ Route::middleware('auth')->group(function () {
             ->name('contacts.bulk-action');
         Route::get('contacts/export/csv', [ContactController::class, 'exportCsv'])
             ->name('contacts.export-csv');
+
+        // Users Routes
+        Route::resource('users', UserController::class);
+        Route::get('users/{user}/change-password', [UserController::class, 'changePassword'])
+            ->name('users.change-password');
+        Route::put('users/{user}/update-password', [UserController::class, 'updatePassword'])
+            ->name('users.update-password');
 
         // Activity Logs Routes
         Route::prefix('activity-logs')->name('activity-logs.')->group(function () {

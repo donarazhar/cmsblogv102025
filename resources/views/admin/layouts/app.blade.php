@@ -880,6 +880,12 @@
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
                 <div class="menu-section-content">
+                    <a href="{{ route('admin.users.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                        <i class="fas fa-user-shield"></i>
+                        <span>Kelola User</span>
+                        <span class="menu-item-tooltip">Kelola User</span>
+                    </a>
                     <a href="{{ route('admin.contacts.index') }}"
                         class="menu-item {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
                         <i class="fas fa-envelope"></i>
