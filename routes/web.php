@@ -54,9 +54,8 @@ Route::get('/', [LandingController::class, 'index'])->name('home');
 Route::get('/profil/sejarah', [LandingController::class, 'profileSejarah'])->name('frontend.profile.sejarah');
 Route::get('/profil/visi-misi', [LandingController::class, 'profileVisiMisi'])->name('frontend.profile.visi-misi');
 Route::get('/profil/struktur-organisasi', [LandingController::class, 'profileStruktur'])->name('frontend.profile.struktur-organisasi');
-
-// About
-Route::get('/about', [LandingController::class, 'about'])->name('about');
+Route::get('/profil/pengurus-staf', [LandingController::class, 'profilePengurusStaf'])->name('frontend.profile.pengurus-staf');
+Route::get('/profil/fasilitas', [LandingController::class, 'profileFasilitas'])->name('frontend.profile.fasilitas');
 
 // Programs
 Route::get('/programs', [LandingController::class, 'programs'])->name('programs');

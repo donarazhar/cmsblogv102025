@@ -121,20 +121,6 @@ class LandingController extends Controller
         return view('landing.index', $data);
     }
 
-    public function about()
-    {
-        $data = Cache::remember('about_page_v3', self::CACHE_MEDIUM, function () {
-            return [
-                'staff' => Staff::active()
-                    ->ordered()
-                    ->select('id', 'name', 'slug', 'position', 'department', 'photo')
-                    ->get(),
-            ];
-        });
-
-        return view('landing.about', $data);
-    }
-
     public function profileSejarah()
     {
         return view('landing.profile.sejarah', ['title' => 'Sejarah Masjid']);
@@ -148,6 +134,21 @@ class LandingController extends Controller
     public function profileStruktur()
     {
         return view('landing.profile.struktur-organisasi', ['title' => 'Struktur Organisasi']);
+    }
+
+    public function profilePengurusStaf()
+    {
+        $staff = Staff::active()
+            ->ordered()
+            ->select('id', 'name', 'slug', 'position', 'department', 'photo')
+            ->get();
+
+        return view('landing.profile.pengurus-staf', ['title' => 'Pengurus & Staf', 'staff' => $staff]);
+    }
+
+    public function profileFasilitas()
+    {
+        return view('landing.profile.fasilitas', ['title' => 'Fasilitas']);
     }
 
     public function programs()

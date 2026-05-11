@@ -765,6 +765,12 @@
                         @endif
                         <span class="menu-item-tooltip">Komentar</span>
                     </a>
+                    <a href="{{ route('admin.testimonials.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">
+                        <i class="fas fa-star"></i>
+                        <span>Testimoni</span>
+                        <span class="menu-item-tooltip">Testimoni</span>
+                    </a>
                 </div>
             </div>
 
@@ -817,54 +823,46 @@
                 </div>
             </div>
 
-            <!-- People Section -->
-            <div class="menu-section" data-section="people">
+            <!-- Tentang Kami Section -->
+            <div class="menu-section" data-section="tentang-kami">
                 <div class="menu-section-header">
                     <div class="menu-section-title">
-                        <i class="fas fa-users"></i>
-                        <span>Personalia & Profil</span>
+                        <i class="fas fa-info-circle"></i>
+                        <span>Tentang Kami</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
                 <div class="menu-section-content">
+                    <a href="{{ route('admin.profile.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.profile.index') ? 'active' : '' }}">
+                        <i class="fas fa-building"></i>
+                        <span>Overview Profil</span>
+                        <span class="menu-item-tooltip">Overview Profil</span>
+                    </a>
+                    <a href="{{ route('admin.profile.sejarah') }}"
+                        class="menu-item {{ request()->routeIs('admin.profile.sejarah') ? 'active' : '' }}">
+                        <i class="fas fa-history"></i>
+                        <span>Sejarah Masjid</span>
+                        <span class="menu-item-tooltip">Sejarah Masjid</span>
+                    </a>
+                    <a href="{{ route('admin.profile.visi-misi') }}"
+                        class="menu-item {{ request()->routeIs('admin.profile.visi-misi') ? 'active' : '' }}">
+                        <i class="fas fa-bullseye"></i>
+                        <span>Visi & Misi</span>
+                        <span class="menu-item-tooltip">Visi & Misi</span>
+                    </a>
+                    <a href="{{ route('admin.profile.struktur-organisasi') }}"
+                        class="menu-item {{ request()->routeIs('admin.profile.struktur-organisasi') ? 'active' : '' }}">
+                        <i class="fas fa-sitemap"></i>
+                        <span>Struktur Organisasi</span>
+                        <span class="menu-item-tooltip">Struktur Organisasi</span>
+                    </a>
                     <a href="{{ route('admin.staff.index') }}"
                         class="menu-item {{ request()->routeIs('admin.staff.*') ? 'active' : '' }}">
                         <i class="fas fa-user-tie"></i>
                         <span>Pengurus & Staf</span>
                         <span class="menu-item-tooltip">Pengurus & Staf</span>
                     </a>
-                    <a href="{{ route('admin.testimonials.index') }}"
-                        class="menu-item {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">
-                        <i class="fas fa-star"></i>
-                        <span>Testimoni</span>
-                        <span class="menu-item-tooltip">Testimoni</span>
-                    </a>
-                    
-                    {{-- Profil Masjid Submenu --}}
-                    <div class="menu-item has-submenu {{ request()->routeIs('admin.profile.*') ? 'active' : '' }}">
-                        <i class="fas fa-mosque"></i>
-                        <span>Profil Masjid</span>
-                        <i class="fas fa-chevron-down submenu-icon"></i>
-                        <span class="menu-item-tooltip">Profil Masjid</span>
-                    </div>
-                    <div class="submenu {{ request()->routeIs('admin.profile.*') ? 'show' : '' }}">
-                        <a href="{{ route('admin.profile.index') }}" class="submenu-item {{ request()->routeIs('admin.profile.index') ? 'active' : '' }}">
-                            <i class="fas fa-circle"></i>
-                            <span>Overview Profil</span>
-                        </a>
-                        <a href="{{ route('admin.profile.sejarah') }}" class="submenu-item {{ request()->routeIs('admin.profile.sejarah') ? 'active' : '' }}">
-                            <i class="fas fa-circle"></i>
-                            <span>Sejarah Masjid</span>
-                        </a>
-                        <a href="{{ route('admin.profile.visi-misi') }}" class="submenu-item {{ request()->routeIs('admin.profile.visi-misi') ? 'active' : '' }}">
-                            <i class="fas fa-circle"></i>
-                            <span>Visi & Misi</span>
-                        </a>
-                        <a href="{{ route('admin.profile.struktur-organisasi') }}" class="submenu-item {{ request()->routeIs('admin.profile.struktur-organisasi') ? 'active' : '' }}">
-                            <i class="fas fa-circle"></i>
-                            <span>Struktur Organisasi</span>
-                        </a>
-                    </div>
                 </div>
             </div>
 

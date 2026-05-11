@@ -745,7 +745,7 @@
                     <li class="nav-item nav-dropdown">
                         <a href="javascript:void(0)"
                             class="nav-link {{ request()->routeIs('frontend.profile.*') ? 'active' : '' }}">
-                            Profil
+                            Tentang Kami
                             <i class="fas fa-chevron-down dropdown-icon"></i>
                         </a>
                         <ul class="dropdown-menu">
@@ -767,7 +767,25 @@
                                     Struktur Organisasi
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ route('frontend.profile.pengurus-staf') }}"
+                                    class="dropdown-item {{ request()->routeIs('frontend.profile.pengurus-staf') ? 'active' : '' }}">
+                                    Pengurus & Staf
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('frontend.profile.fasilitas') }}"
+                                    class="dropdown-item {{ request()->routeIs('frontend.profile.fasilitas') ? 'active' : '' }}">
+                                    Fasilitas
+                                </a>
+                            </li>
                         </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('programs') }}" class="nav-link {{ request()->routeIs('programs') || request()->routeIs('program.*') ? 'active' : '' }}">
+                            Program
+                        </a>
                     </li>
 
                     @php
@@ -883,10 +901,6 @@
                     <div class="footer-widget">
                         <h4 class="footer-widget-title">Menu Cepat</h4>
                         <nav class="footer-links">
-                            <a href="{{ route('about') }}" class="footer-link">
-                                <i class="fas fa-chevron-right"></i>
-                                Tentang Kami
-                            </a>
                             <a href="{{ route('programs') }}" class="footer-link">
                                 <i class="fas fa-chevron-right"></i>
                                 Program

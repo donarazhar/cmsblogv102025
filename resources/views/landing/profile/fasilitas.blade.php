@@ -1,6 +1,6 @@
 @extends('landing.layouts.app')
 
-@section('title', 'Tentang Kami - ' . setting('site_name', 'Masjid Agung Al Azhar'))
+@section('title', 'Fasilitas - ' . setting('site_name', 'Masjid Agung Al Azhar'))
 
 @push('styles')
     @include('landing.partials.about-styles')
@@ -11,61 +11,17 @@
     <header class="page-header">
         <div class="container">
             <div class="page-header-content">
-                <h1 class="page-title">Tentang Kami</h1>
-                <p class="page-subtitle">Mengenal lebih dekat Masjid Agung Al Azhar</p>
+                <h1 class="page-title">Fasilitas Masjid</h1>
+                <div class="breadcrumb justify-content-center text-white-50" style="color: rgba(255,255,255,0.8); display:flex; gap:10px; justify-content: center;">
+                    <a href="{{ route('home') }}" style="color: white; text-decoration: none;">Beranda</a>
+                    <span>/</span>
+                    <span>Profil</span>
+                    <span>/</span>
+                    <span>Fasilitas</span>
+                </div>
             </div>
         </div>
     </header>
-
-    <!-- History Section -->
-    @include('landing.partials.sejarah')
-
-    <!-- Vision & Mission Section -->
-    @include('landing.partials.visi-misi')
-
-    <!-- Values Section -->
-    <section class="section">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-badge">Nilai-Nilai</span>
-                <h2 class="section-title">Nilai & Prinsip Kami</h2>
-            </div>
-
-            <div class="values-grid">
-                <div class="value-card">
-                    <div class="value-icon">
-                        <i class="fas fa-quran"></i>
-                    </div>
-                    <h4 class="value-title">Islamiyah</h4>
-                    <p class="value-text">Berpegang teguh pada Al-Quran dan As-Sunnah</p>
-                </div>
-
-                <div class="value-card">
-                    <div class="value-icon">
-                        <i class="fas fa-hands-helping"></i>
-                    </div>
-                    <h4 class="value-title">Ukhuwah</h4>
-                    <p class="value-text">Membangun persaudaraan yang kuat sesama muslim</p>
-                </div>
-
-                <div class="value-card">
-                    <div class="value-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <h4 class="value-title">Ilmiyah</h4>
-                    <p class="value-text">Mengedepankan ilmu dan pendidikan berkualitas</p>
-                </div>
-
-                <div class="value-card">
-                    <div class="value-icon">
-                        <i class="fas fa-lightbulb"></i>
-                    </div>
-                    <h4 class="value-title">Inovatif</h4>
-                    <p class="value-text">Berinovasi dalam dakwah dan pelayanan umat</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Facilities Section -->
     <section class="section section-light">
@@ -127,9 +83,6 @@
         </div>
     </section>
 
-    <!-- Staff Section -->
-    @include('landing.partials.struktur-organisasi')
-
     <!-- Statistics Section -->
     <section class="section section-light">
         <div class="container">
@@ -165,35 +118,11 @@
             </div>
         </div>
     </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2 class="cta-title">Bergabunglah Bersama Kami</h2>
-                <p class="cta-text">
-                    Mari bersama-sama membangun umat yang lebih baik melalui kegiatan ibadah, pendidikan, dan dakwah.
-                </p>
-                <div class="cta-buttons">
-                    <a href="{{ route('programs') }}" class="btn-cta btn-cta-primary">
-                        <i class="fas fa-calendar-check"></i>
-                        Lihat Program
-                    </a>
-                    <a href="{{ route('contact') }}" class="btn-cta btn-cta-outline">
-                        <i class="fas fa-envelope"></i>
-                        Hubungi Kami
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
 @endsection
 
 @push('scripts')
     <script>
-        // AOS Animation (optional - if you want to add animations)
         document.addEventListener('DOMContentLoaded', function() {
-            // Fade in elements on scroll
             const observerOptions = {
                 threshold: 0.1,
                 rootMargin: '0px 0px -50px 0px'
@@ -208,8 +137,7 @@
                 });
             }, observerOptions);
 
-            // Observe all cards
-            document.querySelectorAll('.value-card, .facility-card, .staff-card, .vm-card').forEach(card => {
+            document.querySelectorAll('.facility-card').forEach(card => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(20px)';
                 card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';

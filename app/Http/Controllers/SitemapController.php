@@ -40,7 +40,9 @@ class SitemapController extends Controller
         }
 
         // Static pages
-        $sitemap .= $this->addUrl(route('about'), now(), 'monthly', '0.7');
+        $sitemap .= $this->addUrl(route('frontend.profile.sejarah'), now(), 'monthly', '0.7');
+        $sitemap .= $this->addUrl(route('frontend.profile.visi-misi'), now(), 'monthly', '0.7');
+        $sitemap .= $this->addUrl(route('frontend.profile.struktur-organisasi'), now(), 'monthly', '0.7');
         $sitemap .= $this->addUrl(route('contact'), now(), 'monthly', '0.7');
 
         $sitemap .= '</urlset>';
