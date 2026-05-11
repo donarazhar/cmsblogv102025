@@ -728,12 +728,12 @@
                 <span class="menu-item-tooltip">Beranda</span>
             </a>
 
-            <!-- Content Section -->
-            <div class="menu-section" data-section="content">
+            <!-- Berita Section -->
+            <div class="menu-section" data-section="berita">
                 <div class="menu-section-header">
                     <div class="menu-section-title">
                         <i class="fas fa-newspaper"></i>
-                        <span>Konten</span>
+                        <span>Berita</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
@@ -774,12 +774,28 @@
                 </div>
             </div>
 
-            <!-- Landing Page Section -->
-            <div class="menu-section" data-section="landing">
+            <!-- Program Masjid (Standalone) -->
+            <a href="{{ route('admin.programs.index') }}"
+                class="menu-dashboard {{ request()->routeIs('admin.programs.*') ? 'active' : '' }}">
+                <i class="fas fa-calendar-check"></i>
+                <span>Program Masjid</span>
+                <span class="menu-item-tooltip">Program Masjid</span>
+            </a>
+
+            <!-- Galeri (Standalone) -->
+            <a href="{{ route('admin.gallery.albums.index') }}"
+                class="menu-dashboard {{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
+                <i class="fas fa-photo-video"></i>
+                <span>Galeri</span>
+                <span class="menu-item-tooltip">Galeri</span>
+            </a>
+
+            <!-- Konten Section -->
+            <div class="menu-section" data-section="konten">
                 <div class="menu-section-header">
                     <div class="menu-section-title">
                         <i class="fas fa-globe"></i>
-                        <span>Halaman Utama</span>
+                        <span>Konten</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
@@ -787,26 +803,14 @@
                     <a href="{{ route('admin.sliders.index') }}"
                         class="menu-item {{ request()->routeIs('admin.sliders.*') ? 'active' : '' }}">
                         <i class="fas fa-images"></i>
-                        <span>Banner Slider</span>
-                        <span class="menu-item-tooltip">Banner Slider</span>
+                        <span>Hero Banner</span>
+                        <span class="menu-item-tooltip">Hero Banner</span>
                     </a>
                     <a href="{{ route('admin.pages.index') }}"
                         class="menu-item {{ request()->routeIs('admin.pages.*') ? 'active' : '' }}">
                         <i class="fas fa-file-alt"></i>
                         <span>Halaman</span>
                         <span class="menu-item-tooltip">Halaman</span>
-                    </a>
-                    <a href="{{ route('admin.programs.index') }}"
-                        class="menu-item {{ request()->routeIs('admin.programs.*') ? 'active' : '' }}">
-                        <i class="fas fa-calendar-check"></i>
-                        <span>Program Masjid</span>
-                        <span class="menu-item-tooltip">Program Masjid</span>
-                    </a>
-                    <a href="{{ route('admin.gallery.albums.index') }}"
-                        class="menu-item {{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
-                        <i class="fas fa-photo-video"></i>
-                        <span>Galeri</span>
-                        <span class="menu-item-tooltip">Galeri</span>
                     </a>
                     <a href="{{ route('admin.schedules.index') }}"
                         class="menu-item {{ request()->routeIs('admin.schedules.*') ? 'active' : '' }}">
