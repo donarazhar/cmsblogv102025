@@ -114,6 +114,25 @@
             object-fit: cover;
         }
 
+        /* Featured Video Embed */
+        .article-featured-video {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .article-featured-video iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
         .article-body {
             padding: 32px;
         }
@@ -1013,7 +1032,19 @@
                 <!-- Main Content -->
                 <main>
                     <article class="article-card">
-                        @if ($post->featured_image)
+                        @if ($post->featured_video)
+                            {{-- Featured Video (YouTube/Vimeo) --}}
+                            <div class="article-featured-video">
+                                <iframe
+                                    src="{{ \App\Helpers\VideoHelper::getEmbedUrl($post->featured_video) }}"
+                                    title="{{ $post->title }}"
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen
+                                    loading="lazy">
+                                </iframe>
+                            </div>
+                        @elseif ($post->featured_image)
                             <img src="{{ asset('storage/' . $post->featured_image) }}" alt="{{ $post->title }}"
                                 class="article-featured-image" loading="eager">
                         @endif
