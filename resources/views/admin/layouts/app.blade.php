@@ -43,6 +43,10 @@
             --header-height: 70px;
         }
 
+        html {
+            zoom: 0.9;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background: var(--light);
