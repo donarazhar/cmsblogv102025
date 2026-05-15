@@ -193,32 +193,18 @@
                     </div>
                 </div>
 
-                <!-- Overlay Settings -->
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Overlay Settings</h3>
                     </div>
                     <div class="card-body">
-                        <!-- Overlay Color -->
-                        <div class="form-group">
-                            <label for="overlay_color">Warna Overlay</label>
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                <input type="color" name="overlay_color" id="overlay_color" class="form-control-color"
-                                    value="{{ old('overlay_color', '#000000') }}" style="width: 60px; height: 40px;">
-                                <input type="text" id="overlay_color_text" class="form-control"
-                                    value="{{ old('overlay_color', '#000000') }}" readonly>
-                            </div>
-                            @error('overlay_color')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-                        </div>
-
                         <!-- Overlay Opacity -->
                         <div class="form-group">
                             <label for="overlay_opacity">Opacity Overlay (<span id="opacity_value">50</span>%)</label>
                             <input type="range" name="overlay_opacity" id="overlay_opacity" class="form-range"
                                 min="0" max="100" value="{{ old('overlay_opacity', 50) }}"
                                 oninput="document.getElementById('opacity_value').textContent = this.value">
+                            <small class="form-text">Atur tingkat kegelapan overlay pada gambar slider (0% = transparan, 100% = gelap)</small>
                             @error('overlay_opacity')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -559,11 +545,6 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
-
-        // Color Picker Sync
-        document.getElementById('overlay_color').addEventListener('input', function() {
-            document.getElementById('overlay_color_text').value = this.value;
-        });
 
         // Set initial opacity value
         document.getElementById('opacity_value').textContent = document.getElementById('overlay_opacity').value;
