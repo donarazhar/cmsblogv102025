@@ -10,24 +10,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
-            // SettingSeeder::class,
-            // CategorySeeder::class,
-            // TagSeeder::class,
-            // PostSeeder::class,
-            // CommentSeeder::class,
-            // SliderSeeder::class,
-            // PageSeeder::class,
-            // ProgramSeeder::class,
-            // GalleryAlbumSeeder::class,
-            // GallerySeeder::class,
-            // ScheduleSeeder::class,
-            // AnnouncementSeeder::class,
-            // StaffSeeder::class,
-            // TestimonialSeeder::class,
-            // DonationSeeder::class,
-            // DonationTransactionSeeder::class,
-            // ContactSeeder::class,
+            SettingSeeder::class,
             ProfileSeeder::class,
+            ProgramSeeder::class,
+            SliderSeeder::class,
         ]);
     }
 }
