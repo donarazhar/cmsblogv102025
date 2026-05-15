@@ -1366,18 +1366,13 @@
     <section class="hero">
         @foreach ($sliders as $index => $slider)
             @php
-                $overlayColor = $slider->overlay_color ?? '#000000';
                 $overlayOpacity = ($slider->overlay_opacity ?? 50) / 100;
-                // Convert hex to RGB for rgba()
-                $r = hexdec(substr($overlayColor, 1, 2));
-                $g = hexdec(substr($overlayColor, 3, 2));
-                $b = hexdec(substr($overlayColor, 5, 2));
                 $textPos = $slider->text_position ?? 'left';
             @endphp
             <div class="hero-slide {{ $index === 0 ? 'active' : '' }} lazy-bg"
                 data-bg="{{ asset('storage/' . $slider->image) }}">
-                {{-- Dynamic Overlay --}}
-                <div class="hero-overlay" style="background: linear-gradient(135deg, rgba({{ $r }},{{ $g }},{{ $b }},{{ $overlayOpacity }}) 0%, rgba({{ $r }},{{ $g }},{{ $b }},{{ $overlayOpacity * 0.5 }}) 100%);"></div>
+                {{-- Dynamic Overlay (primary blue, opacity from admin) --}}
+                <div class="hero-overlay" style="background: linear-gradient(135deg, rgba(0,53,197,{{ $overlayOpacity }}) 0%, rgba(0,61,148,{{ $overlayOpacity * 0.5 }}) 100%);"></div>
                 <div class="hero-content text-{{ $textPos }}">
                     <div class="hero-text">
                         <h1 class="hero-title">{{ $slider->title }}</h1>
