@@ -277,6 +277,8 @@ Route::middleware('auth')->group(function () {
             Route::put('/visi-misi', [ProfileController::class, 'updateVisiMisi'])->name('visi-misi.update');
             Route::get('/struktur-organisasi', [ProfileController::class, 'strukturOrganisasi'])->name('struktur-organisasi');
             Route::put('/struktur-organisasi', [ProfileController::class, 'updateStrukturOrganisasi'])->name('struktur-organisasi.update');
+            Route::get('/fasilitas', [ProfileController::class, 'fasilitas'])->name('fasilitas');
+            Route::put('/fasilitas', [ProfileController::class, 'updateFasilitas'])->name('fasilitas.update');
         });
 
         // Activity Logs Routes
@@ -314,8 +316,10 @@ Route::middleware('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Dynamic Pages Route (MUST BE LAST - Catch-All Route)
+| Fallback Route (MUST BE LAST)
 |--------------------------------------------------------------------------
-| IMPORTANT: This route MUST be at the bottom to avoid catching other routes
+| Redirect any undefined URL back to the home page
 */
-Route::get('/{slug}', [LandingController::class, 'page'])->name('page.show');
+Route::fallback(function () {
+    return redirect()->route('home');
+});

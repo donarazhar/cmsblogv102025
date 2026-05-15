@@ -49,7 +49,14 @@ class Setting extends Model
 
     public static function set($key, $value)
     {
-        $setting = static::firstOrCreate(['key' => $key]);
+        $setting = static::firstOrCreate(
+            ['key' => $key],
+            [
+                'label' => ucwords(str_replace(['_', '-'], ' ', $key)),
+                'type' => 'text',
+                'group' => 'general',
+            ]
+        );
         $setting->value = $value;
         $setting->save();
 

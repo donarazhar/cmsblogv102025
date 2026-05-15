@@ -791,21 +791,21 @@
                     <li class="nav-item">
                         <a href="{{ route('gallery') }}"
                             class="nav-link {{ request()->routeIs('gallery') || request()->routeIs('gallery.*') ? 'active' : '' }}">
-                            <i class="fas fa-images"></i> Galeri
+                            Galeri
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a href="{{ route('blog') }}"
                             class="nav-link {{ request()->routeIs('blog') || request()->routeIs('blog.*') ? 'active' : '' }}">
-                            <i class="fas fa-newspaper"></i> Berita
+                            Berita/Artikel
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a href="{{ route('contact') }}"
                             class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">
-                            <i class="fas fa-envelope"></i> Kontak
+                            Kontak
                         </a>
                     </li>
                 </ul>

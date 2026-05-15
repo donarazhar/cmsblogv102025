@@ -36,7 +36,7 @@
                     @foreach ($galleries as $index => $gallery)
                         <div class="masonry-item" data-aos="zoom-in" data-aos-delay="{{ $index * 30 }}"
                             onclick="openLightbox({{ $index }})">
-                            <img src="{{ $gallery->image ? asset('storage/' . $gallery->image) : 'https://via.placeholder.com/600x400' }}"
+                            <img src="{{ $gallery->image ? asset('storage/' . $gallery->image) : asset('assets/img/placeholder.jpg') }}"
                                 alt="{{ $gallery->title }}">
                             <div class="gallery-item-overlay">
                                 <div class="overlay-content">
@@ -321,7 +321,7 @@
         const galleryImages = [
             @foreach ($galleries as $gallery)
                 {
-                    src: "{{ $gallery->image ? asset('storage/' . $gallery->image) : 'https://via.placeholder.com/600x400' }}",
+                    src: "{{ $gallery->image ? asset('storage/' . $gallery->image) : asset('assets/img/placeholder.jpg') }}",
                     title: "{{ $gallery->title }}",
                     description: "{{ $gallery->description ?? '' }}"
                 }

@@ -52,10 +52,9 @@ class LandingController extends Controller
                     ->get(),
 
                 'programs' => Program::active()
-                    ->featured()
                     ->ordered()
-                    ->select('id', 'name', 'slug', 'description', 'image', 'icon', 'frequency', 'location')
-                    ->limit(6)
+                    ->select('id', 'name', 'slug', 'description', 'image', 'icon', 'frequency', 'location', 'speaker')
+                    ->limit(11)
                     ->get(),
 
                 'latestPosts' => Post::published()
@@ -270,12 +269,15 @@ class LandingController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'comment' => 'required|string|max:1000',
+            'google_verified' => 'required|in:1',
         ], [
             'name.required' => 'Nama harus diisi',
             'email.required' => 'Email harus diisi',
             'email.email' => 'Format email tidak valid',
             'comment.required' => 'Komentar harus diisi',
             'comment.max' => 'Komentar maksimal 1000 karakter',
+            'google_verified.required' => 'Silakan verifikasi akun Google terlebih dahulu',
+            'google_verified.in' => 'Silakan verifikasi akun Google terlebih dahulu',
         ]);
 
         // ✅ FIX: Map to correct field names
@@ -337,16 +339,23 @@ class LandingController extends Controller
             'phone' => 'nullable|string|max:20',
             'subject' => 'required|string|max:255',
             'message' => 'required|string|max:1000',
+            'google_verified' => 'required|in:1',
         ], [
             'name.required' => 'Nama harus diisi',
             'email.required' => 'Email harus diisi',
             'email.email' => 'Format email tidak valid',
             'subject.required' => 'Subjek harus diisi',
             'message.required' => 'Pesan harus diisi',
+            'google_verified.required' => 'Silakan verifikasi akun Google terlebih dahulu',
+            'google_verified.in' => 'Silakan verifikasi akun Google terlebih dahulu',
         ]);
 
         Contact::create([
-            ...$validated,
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'] ?? null,
+            'subject' => $validated['subject'],
+            'message' => $validated['message'],
             'status' => 'new',
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),

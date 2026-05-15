@@ -24,7 +24,7 @@
                             <a href="{{ route('gallery.album', $album->slug) }}" class="album-link">
                                 <!-- Album Cover -->
                                 <div class="album-cover-wrapper">
-                                    <img src="{{ $album->cover_image ? asset('storage/' . $album->cover_image) : 'https://via.placeholder.com/600x400' }}"
+                                    <img src="{{ $album->cover_image ? asset('storage/' . $album->cover_image) : asset('assets/img/placeholder.jpg') }}"
                                         alt="{{ $album->name }}" class="album-cover" loading="lazy">
 
                                     <!-- Hover Overlay -->

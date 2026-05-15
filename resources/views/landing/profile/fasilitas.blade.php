@@ -12,7 +12,8 @@
         <div class="container">
             <div class="page-header-content">
                 <h1 class="page-title">Fasilitas Masjid</h1>
-                <div class="breadcrumb justify-content-center text-white-50" style="color: rgba(255,255,255,0.8); display:flex; gap:10px; justify-content: center;">
+                <div class="breadcrumb justify-content-center text-white-50"
+                    style="color: rgba(255,255,255,0.8); display:flex; gap:10px; justify-content: center;">
                     <a href="{{ route('home') }}" style="color: white; text-decoration: none;">Beranda</a>
                     <span>/</span>
                     <span>Profil</span>
@@ -23,7 +24,7 @@
         </div>
     </header>
 
-    <!-- Facilities Section -->
+    <!-- Fasilitas Content (Dynamic from Admin) -->
     <section class="section section-light">
         <div class="container">
             <div class="section-header">
@@ -31,118 +32,87 @@
                 <h2 class="section-title">Fasilitas Masjid</h2>
             </div>
 
-            <div class="facilities-grid">
-                <div class="facility-card">
-                    <div class="facility-icon">
-                        <i class="fas fa-mosque"></i>
-                    </div>
-                    <h4 class="facility-title">Ruang Sholat Utama</h4>
-                    <p class="facility-text">Kapasitas 5000 jamaah dengan AC</p>
-                </div>
+            <div style="background: var(--white); padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,83,197,0.08); max-width: 900px; margin: 0 auto;">
+                <div class="content-wrapper">
+                    @if(\App\Models\Setting::get('profile_fasilitas'))
+                        {!! \App\Models\Setting::get('profile_fasilitas') !!}
+                    @else
+                        <div class="facilities-grid">
+                            <div class="facility-card">
+                                <div class="facility-icon">
+                                    <i class="fas fa-mosque"></i>
+                                </div>
+                                <h4 class="facility-title">Ruang Sholat Utama</h4>
+                                <p class="facility-text">Kapasitas 5000 jamaah dengan AC</p>
+                            </div>
 
-                <div class="facility-card">
-                    <div class="facility-icon">
-                        <i class="fas fa-water"></i>
-                    </div>
-                    <h4 class="facility-title">Tempat Wudhu</h4>
-                    <p class="facility-text">Terpisah pria & wanita, bersih</p>
-                </div>
+                            <div class="facility-card">
+                                <div class="facility-icon">
+                                    <i class="fas fa-water"></i>
+                                </div>
+                                <h4 class="facility-title">Tempat Wudhu</h4>
+                                <p class="facility-text">Terpisah pria & wanita, bersih</p>
+                            </div>
 
-                <div class="facility-card">
-                    <div class="facility-icon">
-                        <i class="fas fa-book-reader"></i>
-                    </div>
-                    <h4 class="facility-title">Perpustakaan</h4>
-                    <p class="facility-text">Koleksi lengkap buku keislaman</p>
-                </div>
+                            <div class="facility-card">
+                                <div class="facility-icon">
+                                    <i class="fas fa-book-reader"></i>
+                                </div>
+                                <h4 class="facility-title">Perpustakaan</h4>
+                                <p class="facility-text">Koleksi lengkap buku keislaman</p>
+                            </div>
 
-                <div class="facility-card">
-                    <div class="facility-icon">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                    </div>
-                    <h4 class="facility-title">Ruang Kelas</h4>
-                    <p class="facility-text">Untuk kajian dan pendidikan</p>
-                </div>
+                            <div class="facility-card">
+                                <div class="facility-icon">
+                                    <i class="fas fa-chalkboard-teacher"></i>
+                                </div>
+                                <h4 class="facility-title">Ruang Kelas</h4>
+                                <p class="facility-text">Untuk kajian dan pendidikan</p>
+                            </div>
 
-                <div class="facility-card">
-                    <div class="facility-icon">
-                        <i class="fas fa-building"></i>
-                    </div>
-                    <h4 class="facility-title">Aula Serbaguna</h4>
-                    <p class="facility-text">Untuk acara dan kegiatan besar</p>
-                </div>
+                            <div class="facility-card">
+                                <div class="facility-icon">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <h4 class="facility-title">Aula Serbaguna</h4>
+                                <p class="facility-text">Untuk acara dan kegiatan besar</p>
+                            </div>
 
-                <div class="facility-card">
-                    <div class="facility-icon">
-                        <i class="fas fa-parking"></i>
-                    </div>
-                    <h4 class="facility-title">Area Parkir</h4>
-                    <p class="facility-text">Parkir luas mobil dan motor</p>
+                            <div class="facility-card">
+                                <div class="facility-icon">
+                                    <i class="fas fa-parking"></i>
+                                </div>
+                                <h4 class="facility-title">Area Parkir</h4>
+                                <p class="facility-text">Parkir luas mobil dan motor</p>
+                            </div>
+                        </div>
+
+                        <p style="color: var(--text-light); font-style: italic; font-size: 0.85rem; margin-top: 24px; text-align: center;">
+                            <i class="fas fa-info-circle"></i> Konten ini dapat diperbarui melalui menu
+                            <strong>Tentang Kami → Fasilitas</strong> di halaman Admin.
+                        </p>
+                    @endif
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Statistics Section -->
-    <section class="section section-light">
+    <!-- CTA Section -->
+    <section class="cta-section">
         <div class="container">
-            <div class="section-header">
-                <span class="section-badge">Statistik</span>
-                <h2 class="section-title">Dalam Angka</h2>
-            </div>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px;">
-                <div
-                    style="background: var(--white); padding: 32px 24px; border-radius: 14px; text-align: center; box-shadow: 0 4px 15px rgba(0, 83, 197, 0.06);">
-                    <div style="font-size: 3rem; font-weight: 800; color: var(--primary); margin-bottom: 8px;">60+</div>
-                    <div style="font-size: 0.9rem; color: var(--text-light);">Tahun Berdiri</div>
-                </div>
-
-                <div
-                    style="background: var(--white); padding: 32px 24px; border-radius: 14px; text-align: center; box-shadow: 0 4px 15px rgba(0, 83, 197, 0.06);">
-                    <div style="font-size: 3rem; font-weight: 800; color: var(--primary); margin-bottom: 8px;">5K+</div>
-                    <div style="font-size: 0.9rem; color: var(--text-light);">Kapasitas Jamaah</div>
-                </div>
-
-                <div
-                    style="background: var(--white); padding: 32px 24px; border-radius: 14px; text-align: center; box-shadow: 0 4px 15px rgba(0, 83, 197, 0.06);">
-                    <div style="font-size: 3rem; font-weight: 800; color: var(--primary); margin-bottom: 8px;">50+</div>
-                    <div style="font-size: 0.9rem; color: var(--text-light);">Program Rutin</div>
-                </div>
-
-                <div
-                    style="background: var(--white); padding: 32px 24px; border-radius: 14px; text-align: center; box-shadow: 0 4px 15px rgba(0, 83, 197, 0.06);">
-                    <div style="font-size: 3rem; font-weight: 800; color: var(--primary); margin-bottom: 8px;">10K+</div>
-                    <div style="font-size: 0.9rem; color: var(--text-light);">Alumni Pendidikan</div>
+            <div class="cta-content">
+                <h2 class="cta-title">Kunjungi Masjid Kami</h2>
+                <p class="cta-text">Rasakan kenyamanan beribadah di Masjid Agung Al Azhar dengan fasilitas lengkap
+                    dan modern.</p>
+                <div class="cta-buttons">
+                    <a href="{{ route('contact') }}" class="btn-cta btn-cta-primary">
+                        <i class="fas fa-map-marker-alt"></i> Lokasi Kami
+                    </a>
+                    <a href="{{ route('programs') }}" class="btn-cta btn-cta-outline">
+                        <i class="fas fa-calendar-check"></i> Lihat Program
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 @endsection
-
-@push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.facility-card').forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(card);
-            });
-        });
-    </script>
-@endpush

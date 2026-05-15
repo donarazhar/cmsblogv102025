@@ -264,98 +264,221 @@
             margin: 0 auto;
         }
 
-        /* ===== PROGRAMS GRID ===== */
-        .programs-grid {
+        /* ===== PROGRAMS - NEWS LAYOUT ===== */
+
+        /* Row 1: 2 Featured Cards */
+        .programs-featured {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
+            margin-bottom: 1.5rem;
         }
 
-        .program-card {
+        /* Row 2: 2x2 Grid + Sidebar */
+        .programs-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr 340px;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        /* Card Styles */
+        .program-news-card {
+            display: block;
+            text-decoration: none;
             background: var(--white);
-            border-radius: var(--radius-lg);
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: var(--shadow);
+            border: 1px solid #e5e7eb;
             transition: var(--transition);
         }
 
-        .program-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
+        .program-news-card:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
         }
 
-        .program-img {
-            height: 180px;
-            background-size: cover;
-            background-position: center;
-            position: relative;
+        .program-news-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            background: var(--bg);
         }
 
-        .program-icon {
-            position: absolute;
-            bottom: -20px;
-            left: 1.25rem;
-            width: 50px;
-            height: 50px;
-            background: var(--primary);
-            border-radius: var(--radius);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-size: 1.25rem;
-            box-shadow: var(--shadow);
+        .program-news-featured .program-news-img {
+            height: 220px;
         }
 
-        .program-body {
-            padding: 2rem 1.25rem 1.25rem;
+        .program-news-body {
+            padding: 0.85rem 1rem;
         }
 
-        .program-title {
-            font-size: 1.15rem;
+        .program-news-title {
+            font-size: 0.95rem;
             font-weight: 700;
             color: var(--secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        .program-desc {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            line-height: 1.6;
-            margin-bottom: 1rem;
+            line-height: 1.4;
+            margin-bottom: 0.3rem;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
 
-        .program-meta {
-            display: flex;
-            gap: 1rem;
-            font-size: 0.8rem;
-            color: var(--text-light);
-            margin-bottom: 1rem;
+        .program-news-featured .program-news-title {
+            font-size: 1.05rem;
         }
 
-        .program-meta span {
+        .program-news-meta {
+            font-size: 0.78rem;
+            color: var(--text-light);
             display: flex;
             align-items: center;
-            gap: 0.35rem;
+            gap: 0.4rem;
         }
 
-        .program-link {
-            display: inline-flex;
+        .program-news-meta i {
+            color: var(--primary);
+            font-size: 0.7rem;
+        }
+
+        /* Sidebar */
+        .program-sidebar {
+            background: var(--white);
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            grid-column: 3;
+            grid-row: 1 / 3;
+        }
+
+        .program-sidebar-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 0.85rem 1.1rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: flex;
             align-items: center;
             gap: 0.5rem;
+        }
+
+        .program-sidebar-list {
+            padding: 0.4rem;
+        }
+
+        .program-sidebar-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            text-decoration: none;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .program-sidebar-item:last-child {
+            border-bottom: none;
+        }
+
+        .program-sidebar-item:hover {
+            background: var(--primary-light);
+        }
+
+        .program-sidebar-icon {
+            width: 38px;
+            height: 38px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--white);
+            font-size: 0.85rem;
+        }
+
+        .program-sidebar-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .program-sidebar-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--secondary);
+            line-height: 1.35;
+            margin-bottom: 0.15rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .program-sidebar-date {
+            font-size: 0.72rem;
+            color: var(--text-light);
+        }
+
+        .program-sidebar-badge {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 0.15rem 0.45rem;
+            border-radius: 50px;
+            font-size: 0.62rem;
+            font-weight: 600;
+            margin-top: 0.2rem;
+        }
+
+        .program-sidebar-footer {
+            padding: 0.65rem 1rem;
+            border-top: 1px solid #f1f5f9;
+            text-align: center;
+        }
+
+        .program-sidebar-footer a {
             color: var(--primary);
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.82rem;
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
             transition: var(--transition);
         }
 
-        .program-link:hover {
-            gap: 0.75rem;
+        .program-sidebar-footer a:hover {
+            gap: 0.6rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .programs-layout {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .program-sidebar {
+                grid-column: 1 / -1;
+                grid-row: auto;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .programs-featured {
+                grid-template-columns: 1fr;
+            }
+
+            .programs-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .program-news-featured .program-news-img,
+            .program-news-img {
+                height: 180px;
+            }
         }
 
         /* ===== POSTS GRID ===== */
@@ -1259,45 +1382,81 @@
             </div>
         </div>
     @endif
-    <!-- Programs Section -->
+    <!-- Programs Section - News Layout -->
     <section class="section">
         <div class="container">
             <div class="section-header fade-up">
-                <span class="section-badge">Program Kami</span>
-                <h2 class="section-title">Program & Kegiatan</h2>
-                <p class="section-desc">Ikuti berbagai program kegiatan keagamaan yang kami selenggarakan</p>
+                <h2 class="section-title">Program Kami</h2>
             </div>
-            <div class="programs-grid">
-                @foreach ($programs as $program)
-                    <div class="program-card fade-up">
-                        <div class="program-img lazy-bg"
-                            data-bg="{{ $program->image ? asset('storage/' . $program->image) : '' }}">
-                            @if ($program->icon)
-                                <div class="program-icon"><i class="{{ $program->icon }}"></i></div>
-                            @endif
-                        </div>
-                        <div class="program-body">
-                            <h3 class="program-title">{{ $program->name }}</h3>
-                            <p class="program-desc">{{ Str::limit($program->description, 80) }}</p>
-                            <div class="program-meta">
-                                <span><i class="fas fa-calendar"></i> {{ $program->frequency }}</span>
-                                @if ($program->location)
-                                    <span><i class="fas fa-map-marker-alt"></i> {{ $program->location }}</span>
-                                @endif
+
+            <!-- Row 1: 2 Featured Cards -->
+            <div class="programs-featured fade-up">
+                @foreach ($programs->take(2) as $program)
+                    <a href="{{ route('program.detail', $program->slug) }}" class="program-news-card program-news-featured">
+                        <img src="{{ $program->image ? asset('storage/' . $program->image) : asset('assets/img/placeholder.jpg') }}"
+                            alt="{{ $program->name }}" class="program-news-img" loading="lazy"
+                            onerror="this.src='{{ asset('assets/img/placeholder.jpg') }}'">
+                        <div class="program-news-body">
+                            <h3 class="program-news-title">{{ $program->name }}</h3>
+                            <div class="program-news-meta">
+                                <i class="fas fa-calendar"></i>
+                                <span>{{ $program->frequency }}</span>
                             </div>
-                            <a href="{{ route('program.detail', $program->slug) }}" class="program-link">
-                                Lihat Detail <i class="fas fa-arrow-right"></i>
-                            </a>
                         </div>
-                    </div>
+                    </a>
                 @endforeach
             </div>
 
-            <div class="text-center mt-4 fade-up">
-                <a href="{{ route('programs') }}" class="btn btn-primary"
-                    style="background: var(--primary); color: var(--white);">
-                    Lihat Semua Program <i class="fas fa-arrow-right"></i>
-                </a>
+            <!-- Row 2: Grid 2x2 + Sidebar -->
+            <div class="programs-layout fade-up">
+                @foreach ($programs->skip(2)->take(4) as $program)
+                    <a href="{{ route('program.detail', $program->slug) }}" class="program-news-card">
+                        <img src="{{ $program->image ? asset('storage/' . $program->image) : asset('assets/img/placeholder.jpg') }}"
+                            alt="{{ $program->name }}" class="program-news-img" loading="lazy"
+                            onerror="this.src='{{ asset('assets/img/placeholder.jpg') }}'">
+                        <div class="program-news-body">
+                            <h3 class="program-news-title">{{ $program->name }}</h3>
+                            <div class="program-news-meta">
+                                <i class="fas fa-calendar"></i>
+                                <span>{{ $program->frequency }}</span>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+
+                <!-- Right: Sidebar - Sisa Program -->
+                <div class="program-sidebar">
+                    <div class="program-sidebar-header">
+                        <i class="fas fa-list-ul"></i>
+                        Program Kegiatan
+                    </div>
+                    <div class="program-sidebar-list">
+                        @foreach ($programs->skip(6)->take(5) as $program)
+                            <a href="{{ route('program.detail', $program->slug) }}" class="program-sidebar-item">
+                                <div class="program-sidebar-icon">
+                                    <i class="{{ $program->icon ?? 'fas fa-mosque' }}"></i>
+                                </div>
+                                <div class="program-sidebar-info">
+                                    <div class="program-sidebar-title">{{ $program->name }}</div>
+                                    <div class="program-sidebar-date">
+                                        {{ $program->frequency }}
+                                        @if ($program->location)
+                                            · {{ $program->location }}
+                                        @endif
+                                    </div>
+                                    @if ($program->speaker)
+                                        <span class="program-sidebar-badge">{{ $program->speaker }}</span>
+                                    @endif
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                    <div class="program-sidebar-footer">
+                        <a href="{{ route('programs') }}">
+                            Lihat Semua Program <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1305,9 +1464,7 @@
     <section class="section section-alt">
         <div class="container">
             <div class="section-header fade-up">
-                <span class="section-badge">Berita & Artikel</span>
-                <h2 class="section-title">Berita Terbaru</h2>
-                <p class="section-desc">Ikuti perkembangan dan kegiatan terbaru dari Masjid Al Azhar</p>
+                <h2 class="section-title">Berita & Artikel</h2>
             </div>
             @if ($featuredPosts->count() > 0)
                 <div class="posts-featured">
@@ -1360,9 +1517,7 @@
     <section class="section">
         <div class="container">
             <div class="section-header fade-up">
-                <span class="section-badge">Galeri</span>
-                <h2 class="section-title">Dokumentasi Kegiatan</h2>
-                <p class="section-desc">Lihat dokumentasi berbagai kegiatan yang telah kami laksanakan</p>
+                <h2 class="section-title">Galeri Kegiatan</h2>
             </div>
             <div class="gallery-grid">
                 @foreach ($galleries as $index => $gallery)
@@ -1407,9 +1562,7 @@
     <section class="section section-alt">
         <div class="container">
             <div class="section-header fade-up">
-                <span class="section-badge">Jadwal</span>
                 <h2 class="section-title">Jadwal Kegiatan</h2>
-                <p class="section-desc">Ikuti jadwal kegiatan dan kajian rutin di Masjid Al Azhar</p>
             </div>
             <div class="schedule-grid">
                 <!-- Today's Schedule -->
@@ -1480,9 +1633,7 @@
         <section class="section">
             <div class="container">
                 <div class="section-header fade-up">
-                    <span class="section-badge">Testimonial</span>
-                    <h2 class="section-title">Apa Kata Mereka</h2>
-                    <p class="section-desc">Testimoni dari jamaah dan peserta program Masjid Al Azhar</p>
+                    <h2 class="section-title">Testimonial</h2>
                 </div>
                 <div class="testimonials-slider fade-up">
                     <div class="testimonials-track" id="testimonialTrack">
@@ -1521,9 +1672,7 @@
         <section class="section section-alt">
             <div class="container">
                 <div class="section-header fade-up">
-                    <span class="section-badge">Donasi</span>
                     <h2 class="section-title">Salurkan Donasi Anda</h2>
-                    <p class="section-desc">Ikut berpartisipasi dalam kegiatan dakwah dan sosial melalui donasi Anda</p>
                 </div>
                 <div class="donations-grid">
                     @foreach ($donations as $donation)

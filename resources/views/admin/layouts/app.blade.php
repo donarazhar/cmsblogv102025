@@ -720,7 +720,7 @@
         </div>
 
         <nav class="sidebar-menu">
-            <!-- Dashboard (No Accordion) -->
+            <!-- Beranda (No Accordion) -->
             <a href="{{ route('admin.dashboard') }}"
                 class="menu-dashboard {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                 <i class="fas fa-home"></i>
@@ -728,21 +728,33 @@
                 <span class="menu-item-tooltip">Beranda</span>
             </a>
 
-            <!-- Berita Section -->
-            <div class="menu-section" data-section="berita">
+            <!-- Konten Section -->
+            <div class="menu-section" data-section="konten">
                 <div class="menu-section-header">
                     <div class="menu-section-title">
-                        <i class="fas fa-newspaper"></i>
-                        <span>Berita</span>
+                        <i class="fas fa-globe"></i>
+                        <span>Konten</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
                 <div class="menu-section-content">
-                    <a href="{{ route('admin.posts.index') }}"
-                        class="menu-item {{ request()->routeIs('admin.posts.*') ? 'active' : '' }}">
-                        <i class="fas fa-file-alt"></i>
-                        <span>Artikel & Berita</span>
-                        <span class="menu-item-tooltip">Artikel & Berita</span>
+                    <a href="{{ route('admin.sliders.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.sliders.*') ? 'active' : '' }}">
+                        <i class="fas fa-images"></i>
+                        <span>Hero Banner</span>
+                        <span class="menu-item-tooltip">Hero Banner</span>
+                    </a>
+                    <a href="{{ route('admin.schedules.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.schedules.*') ? 'active' : '' }}">
+                        <i class="fas fa-clock"></i>
+                        <span>Jadwal Kegiatan</span>
+                        <span class="menu-item-tooltip">Jadwal Kegiatan</span>
+                    </a>
+                    <a href="{{ route('admin.announcements.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.announcements.*') ? 'active' : '' }}">
+                        <i class="fas fa-bullhorn"></i>
+                        <span>Pengumuman</span>
+                        <span class="menu-item-tooltip">Pengumuman</span>
                     </a>
                     <a href="{{ route('admin.categories.index') }}"
                         class="menu-item {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
@@ -774,54 +786,6 @@
                 </div>
             </div>
 
-            <!-- Program Masjid (Standalone) -->
-            <a href="{{ route('admin.programs.index') }}"
-                class="menu-dashboard {{ request()->routeIs('admin.programs.*') ? 'active' : '' }}">
-                <i class="fas fa-calendar-check"></i>
-                <span>Program Masjid</span>
-                <span class="menu-item-tooltip">Program Masjid</span>
-            </a>
-
-            <!-- Galeri (Standalone) -->
-            <a href="{{ route('admin.gallery.albums.index') }}"
-                class="menu-dashboard {{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
-                <i class="fas fa-photo-video"></i>
-                <span>Galeri</span>
-                <span class="menu-item-tooltip">Galeri</span>
-            </a>
-
-            <!-- Konten Section -->
-            <div class="menu-section" data-section="konten">
-                <div class="menu-section-header">
-                    <div class="menu-section-title">
-                        <i class="fas fa-globe"></i>
-                        <span>Konten</span>
-                    </div>
-                    <i class="fas fa-chevron-down menu-section-icon"></i>
-                </div>
-                <div class="menu-section-content">
-                    <a href="{{ route('admin.sliders.index') }}"
-                        class="menu-item {{ request()->routeIs('admin.sliders.*') ? 'active' : '' }}">
-                        <i class="fas fa-images"></i>
-                        <span>Hero Banner</span>
-                        <span class="menu-item-tooltip">Hero Banner</span>
-                    </a>
-
-                    <a href="{{ route('admin.schedules.index') }}"
-                        class="menu-item {{ request()->routeIs('admin.schedules.*') ? 'active' : '' }}">
-                        <i class="fas fa-clock"></i>
-                        <span>Jadwal Kegiatan</span>
-                        <span class="menu-item-tooltip">Jadwal Kegiatan</span>
-                    </a>
-                    <a href="{{ route('admin.announcements.index') }}"
-                        class="menu-item {{ request()->routeIs('admin.announcements.*') ? 'active' : '' }}">
-                        <i class="fas fa-bullhorn"></i>
-                        <span>Pengumuman</span>
-                        <span class="menu-item-tooltip">Pengumuman</span>
-                    </a>
-                </div>
-            </div>
-
             <!-- Tentang Kami Section -->
             <div class="menu-section" data-section="tentang-kami">
                 <div class="menu-section-header">
@@ -832,12 +796,6 @@
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
                 <div class="menu-section-content">
-                    <a href="{{ route('admin.profile.index') }}"
-                        class="menu-item {{ request()->routeIs('admin.profile.index') ? 'active' : '' }}">
-                        <i class="fas fa-building"></i>
-                        <span>Overview Profil</span>
-                        <span class="menu-item-tooltip">Overview Profil</span>
-                    </a>
                     <a href="{{ route('admin.profile.sejarah') }}"
                         class="menu-item {{ request()->routeIs('admin.profile.sejarah') ? 'active' : '' }}">
                         <i class="fas fa-history"></i>
@@ -862,10 +820,40 @@
                         <span>Pengurus & Staf</span>
                         <span class="menu-item-tooltip">Pengurus & Staf</span>
                     </a>
+                    <a href="{{ route('admin.profile.fasilitas') }}"
+                        class="menu-item {{ request()->routeIs('admin.profile.fasilitas') ? 'active' : '' }}">
+                        <i class="fas fa-building"></i>
+                        <span>Fasilitas</span>
+                        <span class="menu-item-tooltip">Fasilitas</span>
+                    </a>
                 </div>
             </div>
 
-            <!-- Donations Section -->
+            <!-- Program Masjid (Standalone) -->
+            <a href="{{ route('admin.programs.index') }}"
+                class="menu-dashboard {{ request()->routeIs('admin.programs.*') ? 'active' : '' }}">
+                <i class="fas fa-calendar-check"></i>
+                <span>Program Masjid</span>
+                <span class="menu-item-tooltip">Program Masjid</span>
+            </a>
+
+            <!-- Galeri (Standalone) -->
+            <a href="{{ route('admin.gallery.albums.index') }}"
+                class="menu-dashboard {{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
+                <i class="fas fa-photo-video"></i>
+                <span>Galeri</span>
+                <span class="menu-item-tooltip">Galeri</span>
+            </a>
+
+            <!-- Berita/Artikel (Standalone) -->
+            <a href="{{ route('admin.posts.index') }}"
+                class="menu-dashboard {{ request()->routeIs('admin.posts.*') ? 'active' : '' }}">
+                <i class="fas fa-newspaper"></i>
+                <span>Berita / Artikel</span>
+                <span class="menu-item-tooltip">Berita / Artikel</span>
+            </a>
+
+            <!-- Donasi Section -->
             <div class="menu-section" data-section="donations">
                 <div class="menu-section-header">
                     <div class="menu-section-title">
@@ -893,7 +881,18 @@
                 </div>
             </div>
 
-            <!-- Others Section -->
+            <!-- Kontak (Standalone) -->
+            <a href="{{ route('admin.contacts.index') }}"
+                class="menu-dashboard {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
+                <i class="fas fa-envelope"></i>
+                <span>Kontak</span>
+                @if (App\Models\Contact::where('status', 'new')->count() > 0)
+                    <span class="menu-badge">{{ App\Models\Contact::where('status', 'new')->count() }}</span>
+                @endif
+                <span class="menu-item-tooltip">Kontak</span>
+            </a>
+
+            <!-- Lainnya Section -->
             <div class="menu-section" data-section="others">
                 <div class="menu-section-header">
                     <div class="menu-section-title">
@@ -909,22 +908,12 @@
                         <span>Kelola User</span>
                         <span class="menu-item-tooltip">Kelola User</span>
                     </a>
-                    <a href="{{ route('admin.contacts.index') }}"
-                        class="menu-item {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
-                        <i class="fas fa-envelope"></i>
-                        <span>Pesan Masuk</span>
-                        @if (App\Models\Contact::where('status', 'new')->count() > 0)
-                            <span class="menu-badge">{{ App\Models\Contact::where('status', 'new')->count() }}</span>
-                        @endif
-                        <span class="menu-item-tooltip">Pesan Masuk</span>
-                    </a>
                     <a href="{{ route('admin.activity-logs.index') }}"
                         class="menu-item {{ request()->routeIs('admin.activity-logs.*') ? 'active' : '' }}">
                         <i class="fas fa-history"></i>
                         <span>Log Aktivitas</span>
                         <span class="menu-item-tooltip">Log Aktivitas</span>
                     </a>
-
                     <a href="{{ route('admin.backups.index') }}"
                         class="menu-item {{ request()->routeIs('admin.backups.*') ? 'active' : '' }}">
                         <i class="fas fa-database"></i>

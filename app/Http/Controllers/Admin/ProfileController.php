@@ -114,4 +114,35 @@ class ProfileController extends Controller
             ->route('admin.profile.struktur-organisasi')
             ->with('success', 'Struktur Organisasi berhasil diperbarui!');
     }
+
+    /**
+     * Show Fasilitas edit page.
+     */
+    public function fasilitas()
+    {
+        $content = Setting::get('profile_fasilitas', '');
+        return view('admin.profile.fasilitas', compact('content'));
+    }
+
+    /**
+     * Update Fasilitas.
+     */
+    public function updateFasilitas(Request $request)
+    {
+        $request->validate([
+            'content' => 'required|string',
+        ], [
+            'content.required' => 'Konten fasilitas harus diisi.',
+        ]);
+
+        Setting::set('profile_fasilitas', $request->content);
+
+        activity()
+            ->causedBy(auth()->user())
+            ->log('Profil Fasilitas diperbarui');
+
+        return redirect()
+            ->route('admin.profile.fasilitas')
+            ->with('success', 'Fasilitas berhasil diperbarui!');
+    }
 }

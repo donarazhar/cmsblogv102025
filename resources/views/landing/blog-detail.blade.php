@@ -806,6 +806,163 @@
                 text-align: center;
             }
         }
+        /* ===== GOOGLE VERIFY (COMMENT) ===== */
+        .google-verify-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
+            border: 2px dashed var(--primary);
+            border-radius: 10px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .verify-box-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            flex-shrink: 0;
+        }
+
+        .verify-box-text {
+            flex: 1;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            min-width: 150px;
+        }
+
+        .btn-verify-small {
+            padding: 8px 20px;
+            background: var(--white);
+            border: 2px solid #cbd5e0;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.82rem;
+            color: #4a5568;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .btn-verify-small:hover {
+            border-color: #4285F4;
+            color: #4285F4;
+            box-shadow: 0 3px 10px rgba(66, 133, 244, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .comment-verified-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%);
+            border: 2px solid #10b981;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .comment-verified-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px solid #10b981;
+            flex-shrink: 0;
+        }
+
+        .comment-verified-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .comment-verified-avatar i {
+            font-size: 1rem;
+            color: #10b981;
+        }
+
+        .comment-verified-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .comment-verified-name {
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: var(--text-dark);
+        }
+
+        .comment-verified-email {
+            font-size: 0.75rem;
+            color: #065f46;
+        }
+
+        .comment-verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: #10b981;
+            color: var(--white);
+            border-radius: 50px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .btn-change-small {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: rgba(0,0,0,0.08);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            color: #4a5568;
+            font-size: 0.72rem;
+            flex-shrink: 0;
+        }
+
+        .btn-change-small:hover {
+            background: rgba(0,0,0,0.15);
+        }
+
+        .btn-submit:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-submit:disabled:hover {
+            background: #cbd5e0;
+            transform: none;
+            box-shadow: none;
+        }
     </style>
 @endpush
 
@@ -947,17 +1104,48 @@
                                     </div>
                                 @endif
 
-                                {{-- ✅ UPDATE FORM ACTION INI --}}
-                                <form action="{{ route('blog.comment.submit', $post->slug) }}" method="POST">
+                                {{-- Google Verified Comment Form --}}
+                                <form action="{{ route('blog.comment.submit', $post->slug) }}" method="POST" id="commentForm">
                                     @csrf
-                                    <div class="form-row">
-                                        <input type="text" name="name" placeholder="Nama Anda" required
-                                            class="form-input" value="{{ old('name') }}">
-                                        <input type="email" name="email" placeholder="Email Anda" required
-                                            class="form-input" value="{{ old('email') }}">
+                                    <input type="hidden" name="google_verified" id="commentGoogleVerified" value="0">
+                                    <input type="hidden" name="name" id="commentNameHidden">
+                                    <input type="hidden" name="email" id="commentEmailHidden">
+
+                                    <!-- Google Verification -->
+                                    <div class="google-verify-box" id="commentVerifySection">
+                                        <div class="verify-box-icon">
+                                            <svg viewBox="0 0 24 24" width="22" height="22">
+                                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>
+                                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="verify-box-text">Verifikasi akun Google untuk berkomentar</span>
+                                        <button type="button" class="btn-verify-small" onclick="commentGoogleSignIn()">
+                                            Verifikasi
+                                        </button>
                                     </div>
+
+                                    <!-- Verified Info -->
+                                    <div class="comment-verified-card" id="commentVerifiedCard" style="display: none;">
+                                        <div class="comment-verified-avatar" id="commentVerifiedAvatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="comment-verified-info">
+                                            <span class="comment-verified-name" id="commentVerifiedName"></span>
+                                            <span class="comment-verified-email" id="commentVerifiedEmail"></span>
+                                        </div>
+                                        <span class="comment-verified-badge">
+                                            <i class="fas fa-check-circle"></i> Terverifikasi
+                                        </span>
+                                        <button type="button" class="btn-change-small" onclick="commentChangeAccount()" title="Ganti akun">
+                                            <i class="fas fa-exchange-alt"></i>
+                                        </button>
+                                    </div>
+
                                     <textarea name="comment" rows="4" placeholder="Tulis komentar Anda..." required class="form-textarea">{{ old('comment') }}</textarea>
-                                    <button type="submit" class="btn-submit">
+                                    <button type="submit" class="btn-submit" id="btnCommentSubmit" disabled>
                                         <i class="fas fa-paper-plane"></i>
                                         Kirim Komentar
                                     </button>
@@ -1085,12 +1273,113 @@
     </section>
 @endsection
 @push('scripts')
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
-        // Copy URL functionality (optional enhancement)
+        // Copy URL functionality
         function copyURL() {
             navigator.clipboard.writeText(window.location.href).then(function() {
                 alert('Link berhasil disalin!');
             });
         }
+
+        // Google Sign-In for Comments
+        const COMMENT_GOOGLE_CLIENT_ID = '{{ config("services.google.client_id", "") }}';
+        let commentIsVerified = false;
+
+        function commentGoogleSignIn() {
+            if (!COMMENT_GOOGLE_CLIENT_ID) {
+                alert('Google Client ID belum dikonfigurasi. Hubungi administrator.');
+                return;
+            }
+
+            google.accounts.id.initialize({
+                client_id: COMMENT_GOOGLE_CLIENT_ID,
+                callback: handleCommentGoogleResponse,
+                auto_select: false,
+            });
+
+            google.accounts.id.prompt((notification) => {
+                if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                    google.accounts.oauth2.initTokenClient({
+                        client_id: COMMENT_GOOGLE_CLIENT_ID,
+                        scope: 'email profile',
+                        callback: handleCommentOAuthResponse,
+                    }).requestAccessToken();
+                }
+            });
+        }
+
+        function handleCommentGoogleResponse(response) {
+            const payload = parseCommentJwt(response.credential);
+            if (payload && payload.email_verified) {
+                setCommentVerifiedUser(payload.name, payload.email, payload.picture);
+            }
+        }
+
+        function handleCommentOAuthResponse(tokenResponse) {
+            fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                headers: { 'Authorization': 'Bearer ' + tokenResponse.access_token }
+            })
+            .then(res => res.json())
+            .then(userInfo => {
+                if (userInfo.email_verified) {
+                    setCommentVerifiedUser(userInfo.name, userInfo.email, userInfo.picture);
+                }
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                alert('Gagal memverifikasi. Silakan coba lagi.');
+            });
+        }
+
+        function setCommentVerifiedUser(name, email, picture) {
+            commentIsVerified = true;
+            document.getElementById('commentNameHidden').value = name;
+            document.getElementById('commentEmailHidden').value = email;
+            document.getElementById('commentGoogleVerified').value = '1';
+            document.getElementById('commentVerifiedName').textContent = name;
+            document.getElementById('commentVerifiedEmail').textContent = email;
+
+            if (picture) {
+                document.getElementById('commentVerifiedAvatar').innerHTML = '<img src="' + picture + '" alt="Avatar">';
+            }
+
+            document.getElementById('commentVerifySection').style.display = 'none';
+            document.getElementById('commentVerifiedCard').style.display = 'flex';
+            document.getElementById('btnCommentSubmit').disabled = false;
+        }
+
+        function commentChangeAccount() {
+            commentIsVerified = false;
+            document.getElementById('commentNameHidden').value = '';
+            document.getElementById('commentEmailHidden').value = '';
+            document.getElementById('commentGoogleVerified').value = '0';
+            document.getElementById('commentVerifySection').style.display = 'flex';
+            document.getElementById('commentVerifiedCard').style.display = 'none';
+            document.getElementById('btnCommentSubmit').disabled = true;
+        }
+
+        function parseCommentJwt(token) {
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                return JSON.parse(decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join('')));
+            } catch (e) { return null; }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('commentForm');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    if (!commentIsVerified) {
+                        e.preventDefault();
+                        alert('Silakan verifikasi akun Google Anda terlebih dahulu.');
+                    }
+                });
+            }
+        });
     </script>
 @endpush

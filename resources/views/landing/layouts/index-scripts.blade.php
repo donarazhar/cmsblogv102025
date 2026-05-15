@@ -104,7 +104,7 @@
     const galleryImages = {!! json_encode(
         $galleries->map(function ($gallery) {
                 return [
-                    'src' => $gallery->image ? asset('storage/' . $gallery->image) : 'https://via.placeholder.com/600x400',
+                    'src' => $gallery->image ? asset('storage/' . $gallery->image) : asset('assets/img/placeholder.jpg'),
                     'title' => $gallery->title,
                     'description' => $gallery->description ?? '',
                 ];

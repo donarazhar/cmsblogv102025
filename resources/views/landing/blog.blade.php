@@ -39,7 +39,7 @@
                             @foreach ($posts as $post)
                                 <article class="post-card" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
                                     <a href="{{ route('blog.detail', $post->slug) }}" class="post-image-wrapper">
-                                        <img src="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : 'https://via.placeholder.com/600x400' }}"
+                                        <img src="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : asset('assets/img/placeholder.jpg') }}"
                                             alt="{{ $post->title }}" class="post-image" loading="lazy">
                                         <span class="post-category">{{ $post->category->name }}</span>
                                     </a>
@@ -106,7 +106,7 @@
                             <div class="popular-list">
                                 @foreach ($popularPosts as $popular)
                                     <a href="{{ route('blog.detail', $popular->slug) }}" class="popular-item">
-                                        <img src="{{ $popular->featured_image ? asset('storage/' . $popular->featured_image) : 'https://via.placeholder.com/80x80' }}"
+                                        <img src="{{ $popular->featured_image ? asset('storage/' . $popular->featured_image) : asset('assets/img/placeholder.jpg') }}"
                                             alt="{{ $popular->title }}" loading="lazy">
                                         <div class="popular-content">
                                             <h4>{{ Str::limit($popular->title, 50) }}</h4>
