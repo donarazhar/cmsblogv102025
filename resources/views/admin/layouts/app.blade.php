@@ -169,17 +169,19 @@
 
         /* Menu Section with Accordion */
         .menu-section {
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
 
         .menu-section-header {
-            padding: 12px 20px;
+            padding: 10px 20px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: space-between;
             transition: all 0.3s ease;
             user-select: none;
+            margin-top: 6px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .menu-section-header:hover {
@@ -187,11 +189,11 @@
         }
 
         .menu-section-title {
-            font-size: 0.75rem;
+            font-size: 0.68rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.8;
-            font-weight: 600;
+            letter-spacing: 1.5px;
+            opacity: 0.5;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -240,11 +242,12 @@
         .menu-item {
             display: flex;
             align-items: center;
-            padding: 12px 20px 12px 35px;
-            color: white;
+            padding: 10px 20px 10px 44px;
+            color: rgba(255, 255, 255, 0.75);
             text-decoration: none;
             transition: all 0.3s ease;
             position: relative;
+            font-size: 0.88rem;
         }
 
         .sidebar.collapsed .menu-item {
@@ -254,7 +257,8 @@
 
         .menu-item:hover {
             background: rgba(255, 255, 255, 0.1);
-            padding-left: 40px;
+            color: white;
+            padding-left: 48px;
         }
 
         .sidebar.collapsed .menu-item:hover {
@@ -264,6 +268,7 @@
         .menu-item.active {
             background: rgba(255, 255, 255, 0.15);
             border-left: 4px solid white;
+            color: white;
         }
 
         .menu-item i {
@@ -739,7 +744,7 @@
                 <div class="menu-section-header">
                     <div class="menu-section-title">
                         <i class="fas fa-globe"></i>
-                        <span>Konten</span>
+                        <span>KONTEN</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
@@ -797,7 +802,7 @@
                 <div class="menu-section-header">
                     <div class="menu-section-title">
                         <i class="fas fa-info-circle"></i>
-                        <span>Tentang Kami</span>
+                        <span>PROFIL MASJID</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
@@ -864,7 +869,7 @@
                 <div class="menu-section-header">
                     <div class="menu-section-title">
                         <i class="fas fa-hand-holding-heart"></i>
-                        <span>Donasi</span>
+                        <span>DONASI</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
@@ -903,7 +908,7 @@
                 <div class="menu-section-header">
                     <div class="menu-section-title">
                         <i class="fas fa-ellipsis-h"></i>
-                        <span>Lainnya</span>
+                        <span>PENGATURAN</span>
                     </div>
                     <i class="fas fa-chevron-down menu-section-icon"></i>
                 </div>
@@ -929,7 +934,7 @@
                     <a href="{{ route('admin.settings.index') }}"
                         class="menu-item {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
                         <i class="fas fa-cog"></i>
-                        <span>Settings</span>
+                        <span>Pengaturan Umum</span>
                     </a>
                 </div>
             </div>
