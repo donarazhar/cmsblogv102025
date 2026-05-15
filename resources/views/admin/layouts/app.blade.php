@@ -59,7 +59,7 @@
             left: 0;
             top: 0;
             width: var(--sidebar-width);
-            height: 100vh;
+            height: calc(100vh / 0.9);
             background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             overflow-y: auto;
