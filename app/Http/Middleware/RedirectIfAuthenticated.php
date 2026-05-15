@@ -20,12 +20,6 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                // Jika user sudah login dan mengakses halaman landing page atau root
-                // redirect ke admin dashboard
-                if ($request->is('/') || $request->is('home')) {
-                    return redirect()->route('admin.dashboard');
-                }
-
                 // Jika user sudah login dan mengakses halaman login/register
                 // redirect ke admin dashboard
                 if ($request->is('login') || $request->is('register')) {
