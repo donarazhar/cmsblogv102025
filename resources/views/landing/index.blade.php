@@ -80,8 +80,16 @@
         .hero-subtitle {
             font-size: clamp(1rem, 2vw, 1.25rem);
             color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 2rem;
+            margin-bottom: 0.75rem;
             line-height: 1.6;
+        }
+
+        .hero-description {
+            font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.75rem;
+            line-height: 1.6;
+            max-width: 550px;
         }
 
         .hero-buttons {
@@ -1337,6 +1345,9 @@
                         @if ($slider->subtitle)
                             <p class="hero-subtitle">{{ $slider->subtitle }}</p>
                         @endif
+                        @if ($slider->description)
+                            <p class="hero-description">{{ Str::limit($slider->description, 200) }}</p>
+                        @endif
                         <div class="hero-buttons">
                             @if ($slider->button_text && $slider->button_link)
                                 <a href="{{ $slider->button_link }}" class="btn btn-primary">
@@ -1344,10 +1355,12 @@
                                     <i class="fas fa-arrow-right"></i>
                                 </a>
                             @endif
-                            <a href="{{ route('contact') }}" class="btn btn-outline">
-                                Hubungi Kami
-                                <i class="fas fa-envelope"></i>
-                            </a>
+                            @if ($slider->button_text_2 && $slider->button_link_2)
+                                <a href="{{ $slider->button_link_2 }}" class="btn btn-outline">
+                                    {{ $slider->button_text_2 }}
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>
