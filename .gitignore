@@ -7,6 +7,7 @@
 .phpunit.result.cache
 /.fleet
 /.idea
+/.idx
 /.nova
 /.phpunit.cache
 /.vscode
@@ -18,6 +19,7 @@
 /storage/*.key
 /storage/pail
 /vendor
+/composer-home
 Homestead.json
 Homestead.yaml
 Thumbs.db
