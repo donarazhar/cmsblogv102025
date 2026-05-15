@@ -733,12 +733,6 @@
                 <span class="menu-item-tooltip">Beranda</span>
             </a>
 
-            <a href="{{ url('/') }}" target="_blank" class="menu-dashboard">
-                <i class="fas fa-external-link-alt"></i>
-                <span>Preview Web</span>
-                <span class="menu-item-tooltip">Preview Web</span>
-            </a>
-
             <!-- Konten Section -->
             <div class="menu-section" data-section="konten">
                 <div class="menu-section-header">
@@ -938,6 +932,13 @@
                     </a>
                 </div>
             </div>
+
+            <!-- Preview Web -->
+            <a href="{{ url('/') }}" target="_blank" class="menu-dashboard" style="margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px;">
+                <i class="fas fa-external-link-alt"></i>
+                <span>Preview Web</span>
+                <span class="menu-item-tooltip">Preview Web</span>
+            </a>
         </nav>
     </aside>
 
