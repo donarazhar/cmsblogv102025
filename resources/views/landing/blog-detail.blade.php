@@ -133,6 +133,38 @@
             border: none;
         }
 
+        /* Video Source Section (below content) */
+        .article-video-source {
+            margin-top: 32px;
+            padding-top: 28px;
+            border-top: 2px solid var(--border);
+        }
+
+        .video-source-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .video-source-header i {
+            font-size: 1.4rem;
+            color: #e53e3e;
+        }
+
+        .video-source-header h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .article-video-source .article-featured-video {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+        }
+
         .article-body {
             padding: 32px;
         }
@@ -1032,19 +1064,7 @@
                 <!-- Main Content -->
                 <main>
                     <article class="article-card">
-                        @if ($post->featured_video)
-                            {{-- Featured Video (YouTube/Vimeo) --}}
-                            <div class="article-featured-video">
-                                <iframe
-                                    src="{{ \App\Helpers\VideoHelper::getEmbedUrl($post->featured_video) }}"
-                                    title="{{ $post->title }}"
-                                    frameborder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                    allowfullscreen
-                                    loading="lazy">
-                                </iframe>
-                            </div>
-                        @elseif ($post->featured_image)
+                        @if ($post->featured_image)
                             <img src="{{ asset('storage/' . $post->featured_image) }}" alt="{{ $post->title }}"
                                 class="article-featured-image" loading="eager">
                         @endif
@@ -1053,6 +1073,26 @@
                             <div class="content-body">
                                 {!! $post->content !!}
                             </div>
+
+                            {{-- Featured Video Source (optional, below content) --}}
+                            @if ($post->featured_video)
+                                <div class="article-video-source">
+                                    <div class="video-source-header">
+                                        <i class="fas fa-play-circle"></i>
+                                        <h3>Video Sumber</h3>
+                                    </div>
+                                    <div class="article-featured-video">
+                                        <iframe
+                                            src="{{ \App\Helpers\VideoHelper::getEmbedUrl($post->featured_video) }}"
+                                            title="{{ $post->title }}"
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            allowfullscreen
+                                            loading="lazy">
+                                        </iframe>
+                                    </div>
+                                </div>
+                            @endif
 
                             <!-- Tags -->
                             @if ($post->tags->count() > 0)
