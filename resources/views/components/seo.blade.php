@@ -28,6 +28,11 @@
 <meta name="googlebot" content="index, follow">
 <link rel="canonical" href="{{ $seo['url'] }}">
 
+{{-- Google Search Console Verification --}}
+@if (setting('google_site_verification'))
+    <meta name="google-site-verification" content="{{ setting('google_site_verification') }}">
+@endif
+
 {{-- Open Graph Meta Tags (Facebook) --}}
 <meta property="og:type" content="{{ $seo['type'] }}">
 <meta property="og:site_name" content="{{ $seo['site_name'] }}">
@@ -63,12 +68,27 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 @endif
 
-{{-- Structured Data (Schema.org) --}}
+{{-- 1. Organization Structured Data --}}
 <script type="application/ld+json">
 {!! SeoHelper::generateStructuredData() !!}
 </script>
 
-{{-- Breadcrumb Structured Data (if provided) --}}
+{{-- 2. WebSite Schema with SearchAction (KEY for Google Sitelinks) --}}
+<script type="application/ld+json">
+{!! SeoHelper::generateWebSiteSchema() !!}
+</script>
+
+{{-- 3. SiteNavigationElement Schema (tells Google your nav structure) --}}
+<script type="application/ld+json">
+{!! SeoHelper::generateSiteNavigationSchema() !!}
+</script>
+
+{{-- 4. Mosque / PlaceOfWorship Schema (local SEO for mosque searches) --}}
+<script type="application/ld+json">
+{!! SeoHelper::generatePlaceOfWorshipSchema() !!}
+</script>
+
+{{-- 5. Breadcrumb Structured Data (if provided) --}}
 @if (isset($breadcrumb) && !empty($breadcrumb))
     <script type="application/ld+json">
 {!! SeoHelper::generateBreadcrumb($breadcrumb) !!}

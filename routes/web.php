@@ -79,6 +79,9 @@ Route::get('/donation/{slug}', [LandingController::class, 'donationDetail'])->na
 Route::get('/contact', [LandingController::class, 'contact'])->name('contact');
 Route::post('/contact', [LandingController::class, 'contactSubmit'])->name('contact.submit');
 
+// Search (required for Google Sitelinks SearchAction schema)
+Route::get('/search', [LandingController::class, 'search'])->name('search');
+
 /*
 |--------------------------------------------------------------------------
 | Authentication Routes (Guest Only)

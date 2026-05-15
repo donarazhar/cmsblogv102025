@@ -434,6 +434,54 @@ class LandingController extends Controller
         ]);
     }
 
+    /**
+     * Search across posts, programs, and donations
+     * This page is required for the WebSite SearchAction schema (Google Sitelinks)
+     */
+    public function search(Request $request)
+    {
+        $query = $request->input('q', '');
+        $posts = collect();
+        $programs = collect();
+        $donations = collect();
+
+        if ($query) {
+            $posts = Post::published()
+                ->with(['category:id,name,slug', 'author:id,name'])
+                ->where(function ($q) use ($query) {
+                    $q->where('title', 'like', "%{$query}%")
+                        ->orWhere('excerpt', 'like', "%{$query}%")
+                        ->orWhere('content', 'like', "%{$query}%");
+                })
+                ->select('id', 'title', 'slug', 'excerpt', 'content', 'featured_image', 'published_at', 'category_id', 'author_id', 'views_count')
+                ->latest('published_at')
+                ->limit(10)
+                ->get();
+
+            $programs = Program::where('is_active', true)
+                ->where(function ($q) use ($query) {
+                    $q->where('name', 'like', "%{$query}%")
+                        ->orWhere('description', 'like', "%{$query}%");
+                })
+                ->select('id', 'name', 'slug', 'description', 'image', 'icon', 'frequency', 'location')
+                ->limit(5)
+                ->get();
+
+            $donations = Donation::where('is_active', true)
+                ->where(function ($q) use ($query) {
+                    $q->where('campaign_name', 'like', "%{$query}%")
+                        ->orWhere('description', 'like', "%{$query}%");
+                })
+                ->select('id', 'campaign_name', 'slug', 'description', 'image', 'donor_count')
+                ->limit(5)
+                ->get();
+        }
+
+        $totalResults = $posts->count() + $programs->count() + $donations->count();
+
+        return view('landing.search', compact('query', 'posts', 'programs', 'donations', 'totalResults'));
+    }
+
     public function clearCache()
     {
         Cache::flush(); // Clear all cache

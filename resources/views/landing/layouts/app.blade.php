@@ -798,7 +798,7 @@
                     <li class="nav-item">
                         <a href="{{ route('blog') }}"
                             class="nav-link {{ request()->routeIs('blog') || request()->routeIs('blog.*') ? 'active' : '' }}">
-                            Berita/Artikel
+                            Berita & Artikel
                         </a>
                     </li>
 

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Models\Program;
-use App\Models\Article;
+use App\Models\Donation;
 use App\Models\GalleryAlbum;
 use Illuminate\Http\Response;
 
@@ -14,36 +15,74 @@ class SitemapController extends Controller
         $sitemap = '<?xml version="1.0" encoding="UTF-8"?>';
         $sitemap .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
-        // Home
+        // ===== STATIC / MAIN PAGES =====
+
+        // Home (highest priority)
         $sitemap .= $this->addUrl(url('/'), now(), 'daily', '1.0');
 
+        // Profile pages
+        $sitemap .= $this->addUrl(url('/profil/sejarah'), now(), 'monthly', '0.8');
+        $sitemap .= $this->addUrl(url('/profil/visi-misi'), now(), 'monthly', '0.8');
+        $sitemap .= $this->addUrl(url('/profil/struktur-organisasi'), now(), 'monthly', '0.8');
+        $sitemap .= $this->addUrl(url('/profil/pengurus-staf'), now(), 'monthly', '0.7');
+        $sitemap .= $this->addUrl(url('/profil/fasilitas'), now(), 'monthly', '0.7');
+
+        // Main section index pages (important for sitelinks)
+        $sitemap .= $this->addUrl(url('/programs'), now(), 'weekly', '0.9');
+        $sitemap .= $this->addUrl(url('/blog'), now(), 'daily', '0.9');
+        $sitemap .= $this->addUrl(url('/gallery'), now(), 'weekly', '0.8');
+        $sitemap .= $this->addUrl(url('/donations'), now(), 'weekly', '0.8');
+        $sitemap .= $this->addUrl(url('/contact'), now(), 'monthly', '0.7');
+        $sitemap .= $this->addUrl(url('/search'), now(), 'monthly', '0.5');
+
+        // ===== DYNAMIC PAGES =====
+
         // Programs
-        $programs = Program::active()->get();
+        $programs = Program::where('is_active', true)->get();
         foreach ($programs as $program) {
             $sitemap .= $this->addUrl(
-                route('programs.show', $program->slug),
+                url('/program/' . $program->slug),
                 $program->updated_at,
                 'weekly',
-                '0.8'
+                '0.7'
+            );
+        }
+
+        // Blog Posts
+        $posts = Post::where('status', 'published')
+            ->latest('published_at')
+            ->limit(500)
+            ->get();
+        foreach ($posts as $post) {
+            $sitemap .= $this->addUrl(
+                url('/blog/' . $post->slug),
+                $post->updated_at,
+                'weekly',
+                '0.7'
             );
         }
 
         // Gallery Albums
-        $albums = GalleryAlbum::active()->get();
+        $albums = GalleryAlbum::where('is_active', true)->get();
         foreach ($albums as $album) {
             $sitemap .= $this->addUrl(
-                route('gallery.show', $album->slug),
+                url('/gallery/' . $album->slug),
                 $album->updated_at,
                 'monthly',
                 '0.6'
             );
         }
 
-        // Static pages
-        $sitemap .= $this->addUrl(route('frontend.profile.sejarah'), now(), 'monthly', '0.7');
-        $sitemap .= $this->addUrl(route('frontend.profile.visi-misi'), now(), 'monthly', '0.7');
-        $sitemap .= $this->addUrl(route('frontend.profile.struktur-organisasi'), now(), 'monthly', '0.7');
-        $sitemap .= $this->addUrl(route('contact'), now(), 'monthly', '0.7');
+        // Donations
+        $donations = Donation::where('is_active', true)->get();
+        foreach ($donations as $donation) {
+            $sitemap .= $this->addUrl(
+                url('/donation/' . $donation->slug),
+                $donation->updated_at,
+                'weekly',
+                '0.6'
+            );
+        }
 
         $sitemap .= '</urlset>';
 
