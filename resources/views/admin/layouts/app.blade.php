@@ -806,12 +806,7 @@
                         <span>Hero Banner</span>
                         <span class="menu-item-tooltip">Hero Banner</span>
                     </a>
-                    <a href="{{ route('admin.pages.index') }}"
-                        class="menu-item {{ request()->routeIs('admin.pages.*') ? 'active' : '' }}">
-                        <i class="fas fa-file-alt"></i>
-                        <span>Halaman</span>
-                        <span class="menu-item-tooltip">Halaman</span>
-                    </a>
+
                     <a href="{{ route('admin.schedules.index') }}"
                         class="menu-item {{ request()->routeIs('admin.schedules.*') ? 'active' : '' }}">
                         <i class="fas fa-clock"></i>

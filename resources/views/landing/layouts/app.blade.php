@@ -788,55 +788,26 @@
                         </a>
                     </li>
 
-                    @php
-                        $pages = \App\Models\Page::published()
-                            ->inMenu()
-                            ->whereNull('parent_id')
-                            ->with([
-                                'children' => function ($q) {
-                                    $q->where('status', 'published')->where('show_in_menu', true);
-                                },
-                            ])
-                            ->get();
-                    @endphp
+                    <li class="nav-item">
+                        <a href="{{ route('gallery') }}"
+                            class="nav-link {{ request()->routeIs('gallery') || request()->routeIs('gallery.*') ? 'active' : '' }}">
+                            <i class="fas fa-images"></i> Galeri
+                        </a>
+                    </li>
 
-                    @foreach ($pages as $page)
-                        @if ($page->children->count() > 0)
-                            <li class="nav-item nav-dropdown">
-                                <a href="javascript:void(0)"
-                                    class="nav-link {{ request()->is($page->slug) || request()->is($page->slug . '/*') ? 'active' : '' }}">
-                                    @if ($page->icon)
-                                        <i class="{{ $page->icon }}"></i>
-                                    @endif
-                                    {{ $page->title }}
-                                    <i class="fas fa-chevron-down dropdown-icon"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    @foreach ($page->children as $child)
-                                        <li>
-                                            <a href="{{ $child->custom_url ?? route('page.show', $child->slug) }}"
-                                                class="dropdown-item">
-                                                @if ($child->icon)
-                                                    <i class="{{ $child->icon }}"></i>
-                                                @endif
-                                                {{ $child->title }}
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </li>
-                        @else
-                            <li class="nav-item">
-                                <a href="{{ $page->custom_url ?? route('page.show', $page->slug) }}"
-                                    class="nav-link {{ request()->is($page->slug) ? 'active' : '' }}">
-                                    @if ($page->icon)
-                                        <i class="{{ $page->icon }}"></i>
-                                    @endif
-                                    {{ $page->title }}
-                                </a>
-                            </li>
-                        @endif
-                    @endforeach
+                    <li class="nav-item">
+                        <a href="{{ route('blog') }}"
+                            class="nav-link {{ request()->routeIs('blog') || request()->routeIs('blog.*') ? 'active' : '' }}">
+                            <i class="fas fa-newspaper"></i> Berita
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('contact') }}"
+                            class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">
+                            <i class="fas fa-envelope"></i> Kontak
+                        </a>
+                    </li>
                 </ul>
             </div>
 
