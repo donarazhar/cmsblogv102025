@@ -47,11 +47,10 @@
             opacity: 1;
         }
 
-        .hero-slide::before {
-            content: '';
+        .hero-slide .hero-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(0, 53, 197, 0.85) 0%, rgba(0, 53, 197, 0.4) 100%);
+            z-index: 1;
         }
 
         .hero-content {
@@ -65,8 +64,37 @@
             margin: 0 auto;
         }
 
+        /* Text Position */
+        .hero-content.text-left {
+            justify-content: flex-start;
+        }
+
+        .hero-content.text-center {
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero-content.text-right {
+            justify-content: flex-end;
+            text-align: right;
+        }
+
         .hero-text {
             max-width: 650px;
+        }
+
+        .hero-content.text-center .hero-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-content.text-center .hero-buttons {
+            justify-content: center;
+        }
+
+        .hero-content.text-right .hero-buttons {
+            justify-content: flex-end;
         }
 
         .hero-title {
@@ -1337,9 +1365,20 @@
     <!-- Hero Section -->
     <section class="hero">
         @foreach ($sliders as $index => $slider)
+            @php
+                $overlayColor = $slider->overlay_color ?? '#000000';
+                $overlayOpacity = ($slider->overlay_opacity ?? 50) / 100;
+                // Convert hex to RGB for rgba()
+                $r = hexdec(substr($overlayColor, 1, 2));
+                $g = hexdec(substr($overlayColor, 3, 2));
+                $b = hexdec(substr($overlayColor, 5, 2));
+                $textPos = $slider->text_position ?? 'left';
+            @endphp
             <div class="hero-slide {{ $index === 0 ? 'active' : '' }} lazy-bg"
                 data-bg="{{ asset('storage/' . $slider->image) }}">
-                <div class="hero-content">
+                {{-- Dynamic Overlay --}}
+                <div class="hero-overlay" style="background: linear-gradient(135deg, rgba({{ $r }},{{ $g }},{{ $b }},{{ $overlayOpacity }}) 0%, rgba({{ $r }},{{ $g }},{{ $b }},{{ $overlayOpacity * 0.5 }}) 100%);"></div>
+                <div class="hero-content text-{{ $textPos }}">
                     <div class="hero-text">
                         <h1 class="hero-title">{{ $slider->title }}</h1>
                         @if ($slider->subtitle)
