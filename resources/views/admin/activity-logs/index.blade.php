@@ -244,7 +244,45 @@
         </div>
         @if ($activities->hasPages())
             <div class="card-footer">
-                {{ $activities->links() }}
+                <div class="custom-pagination">
+                    {{-- Previous --}}
+                    @if ($activities->onFirstPage())
+                        <span class="page-btn disabled"><i class="fas fa-chevron-left"></i></span>
+                    @else
+                        <a href="{{ $activities->previousPageUrl() }}" class="page-btn"><i class="fas fa-chevron-left"></i></a>
+                    @endif
+
+                    {{-- Page Numbers --}}
+                    @php
+                        $currentPage = $activities->currentPage();
+                        $lastPage = $activities->lastPage();
+                        $start = max(1, $currentPage - 2);
+                        $end = min($lastPage, $currentPage + 2);
+                    @endphp
+
+                    @if ($start > 1)
+                        <a href="{{ $activities->url(1) }}" class="page-btn">1</a>
+                        @if ($start > 2) <span class="page-dots">...</span> @endif
+                    @endif
+
+                    @for ($i = $start; $i <= $end; $i++)
+                        <a href="{{ $activities->url($i) }}" class="page-btn {{ $i == $currentPage ? 'active' : '' }}">{{ $i }}</a>
+                    @endfor
+
+                    @if ($end < $lastPage)
+                        @if ($end < $lastPage - 1) <span class="page-dots">...</span> @endif
+                        <a href="{{ $activities->url($lastPage) }}" class="page-btn">{{ $lastPage }}</a>
+                    @endif
+
+                    {{-- Next --}}
+                    @if ($activities->hasMorePages())
+                        <a href="{{ $activities->nextPageUrl() }}" class="page-btn"><i class="fas fa-chevron-right"></i></a>
+                    @else
+                        <span class="page-btn disabled"><i class="fas fa-chevron-right"></i></span>
+                    @endif
+
+                    <span class="page-info">Hal {{ $currentPage }} dari {{ $lastPage }}</span>
+                </div>
             </div>
         @endif
     </div>
@@ -336,6 +374,60 @@
             padding: 15px 20px;
             border-top: 1px solid var(--border);
             background: var(--light);
+        }
+
+        .custom-pagination {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 34px;
+            height: 34px;
+            padding: 0 8px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: white;
+            color: var(--dark);
+            font-size: 0.82rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .page-btn:hover:not(.disabled):not(.active) {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .page-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .page-btn.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .page-dots {
+            padding: 0 4px;
+            color: #9ca3af;
+            font-size: 0.85rem;
+        }
+
+        .page-info {
+            margin-left: 12px;
+            font-size: 0.8rem;
+            color: #9ca3af;
         }
 
         .mb-4 {
