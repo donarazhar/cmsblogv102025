@@ -68,7 +68,8 @@ class LandingController extends Controller
                     ->featured()
                     ->with(['category:id,name,slug', 'author:id,name'])
                     ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'published_at', 'category_id', 'author_id')
-                    ->limit(3) // Kurangi dari 3 ke 2
+                    ->latest('published_at')
+                    ->limit(3)
                     ->get(),
 
                 'galleries' => Gallery::active()
