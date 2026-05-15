@@ -728,6 +728,12 @@
                 <span class="menu-item-tooltip">Beranda</span>
             </a>
 
+            <a href="{{ url('/') }}" target="_blank" class="menu-dashboard">
+                <i class="fas fa-external-link-alt"></i>
+                <span>Preview Web</span>
+                <span class="menu-item-tooltip">Preview Web</span>
+            </a>
+
             <!-- Konten Section -->
             <div class="menu-section" data-section="konten">
                 <div class="menu-section-header">
