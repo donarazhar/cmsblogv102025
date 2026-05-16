@@ -4,12 +4,12 @@
 
 @section('content')
     <div class="page-header">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
             <div>
                 <h1 class="page-title">Gallery Albums</h1>
                 <p class="page-subtitle">Kelola album foto & video kegiatan</p>
             </div>
-            <div style="display: flex; gap: 10px;">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                 <a href="{{ route('admin.gallery.photos.index') }}" class="btn btn-secondary">
                     <i class="fas fa-images"></i>
                     Kelola Foto
@@ -22,110 +22,122 @@
         </div>
     </div>
 
+    <!-- Table Card -->
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Daftar Album</h3>
             <div class="card-tools">
-                <span class="badge">{{ $albums->total() }} Total</span>
+                <span class="badge" style="background: var(--primary); color: white;">{{ $albums->total() }} Total</span>
             </div>
         </div>
         <div class="card-body">
-            @if ($albums->count() > 0)
-                <div class="albums-grid">
-                    @foreach ($albums as $album)
-                        <div class="album-card">
-                            <!-- Cover Image -->
-                            <div class="album-cover">
-                                @if ($album->cover_image)
-                                    <img src="{{ asset('storage/' . $album->cover_image) }}" alt="{{ $album->name }}">
-                                @else
-                                    <div class="no-image">
-                                        <i class="fas fa-images"></i>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="5%">No</th>
+                            <th width="35%">Nama Album</th>
+                            <th width="15%">Tanggal Event</th>
+                            <th width="15%">Jumlah Foto</th>
+                            <th width="10%">Status</th>
+                            <th width="20%">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($albums as $album)
+                            <tr>
+                                <td>{{ $albums->firstItem() + $loop->index }}</td>
+                                <td>
+                                    <div class="album-title-cell">
+                                        @if ($album->cover_image)
+                                            <div class="album-thumb-container">
+                                                <img src="{{ asset('storage/' . $album->cover_image) }}"
+                                                    alt="{{ $album->name }}" class="album-thumb">
+                                            </div>
+                                        @else
+                                            <div class="album-thumb-placeholder">
+                                                <i class="fas fa-images"></i>
+                                            </div>
+                                        @endif
+                                        <div>
+                                            <strong>{{ Str::limit($album->name, 50) }}</strong>
+                                        </div>
                                     </div>
-                                @endif
-
-                                <!-- Status Badge -->
-                                <div class="album-status">
-                                    <span class="badge badge-{{ $album->is_active ? 'success' : 'danger' }}">
+                                </td>
+                                <td>
+                                    <div class="info-cell">
+                                        @if ($album->event_date)
+                                            <div class="info-item">
+                                                <i class="fas fa-calendar text-muted"></i> {{ \Carbon\Carbon::parse($album->event_date)->format('d M Y') }}
+                                            </div>
+                                        @else
+                                            <span class="text-muted">-</span>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge" style="background: #e0e7ff; color: #4338ca; font-weight: 500;">
+                                        <i class="fas fa-images"></i> {{ $album->galleries_count }} Foto
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-status-{{ $album->is_active ? 'active' : 'inactive' }}">
                                         {{ $album->is_active ? 'Active' : 'Inactive' }}
                                     </span>
-                                </div>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <!-- Lihat Foto -->
+                                        <a href="{{ route('admin.gallery.photos.index', ['album' => $album->id]) }}"
+                                            class="btn-action btn-view" title="Lihat Foto">
+                                            <i class="fas fa-images"></i>
+                                        </a>
 
-                                <!-- Photo Count -->
-                                <div class="photo-count">
-                                    <i class="fas fa-images"></i>
-                                    <span>{{ $album->galleries_count }} Foto</span>
-                                </div>
-                            </div>
+                                        <!-- Toggle Status -->
+                                        <form action="{{ route('admin.gallery.albums.toggle', $album) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-action {{ $album->is_active ? 'btn-success' : 'btn-secondary' }}" title="{{ $album->is_active ? 'Nonaktifkan' : 'Aktifkan' }}">
+                                                <i class="fas fa-{{ $album->is_active ? 'eye' : 'eye-slash' }}"></i>
+                                            </button>
+                                        </form>
 
-                            <!-- Album Info -->
-                            <div class="album-info">
-                                <h3 class="album-title">{{ $album->name }}</h3>
+                                        <!-- Edit -->
+                                        <a href="{{ route('admin.gallery.albums.edit', $album) }}" class="btn btn-sm btn-info btn-action" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
 
-                                @if ($album->description)
-                                    <p class="album-description">{{ Str::limit($album->description, 80) }}</p>
-                                @endif
-
-                                <div class="album-meta">
-                                    @if ($album->event_date)
-                                        <span><i class="fas fa-calendar"></i>
-                                            {{ $album->event_date ? \Carbon\Carbon::parse($album->event_date)->format('d M Y') : '-' }}
-                                    @endif
-                                </div>
-
-                                <!-- Actions -->
-                                <div class="album-actions">
-                                    <a href="{{ route('admin.gallery.photos.index', ['album' => $album->id]) }}"
-                                        class="btn-action btn-view" title="Lihat Foto">
-                                        <i class="fas fa-images"></i>
+                                        <!-- Delete -->
+                                        <form action="{{ route('admin.gallery.albums.destroy', $album) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin menghapus album ini beserta semua foto di dalamnya?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger btn-action" title="Hapus">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center py-5">
+                                    <i class="fas fa-images fa-3x text-muted mb-3"></i>
+                                    <p class="text-muted">Belum ada album</p>
+                                    <a href="{{ route('admin.gallery.albums.create') }}" class="btn btn-primary mt-2">
+                                        <i class="fas fa-plus"></i> Tambah Album Pertama
                                     </a>
-
-                                    <form action="{{ route('admin.gallery.albums.toggle', $album) }}" method="POST"
-                                        class="d-inline">
-                                        @csrf
-                                        <button type="submit"
-                                            class="btn-action btn-status {{ $album->is_active ? 'active' : '' }}"
-                                            title="{{ $album->is_active ? 'Nonaktifkan' : 'Aktifkan' }}">
-                                            <i class="fas fa-{{ $album->is_active ? 'eye' : 'eye-slash' }}"></i>
-                                        </button>
-                                    </form>
-
-                                    <a href="{{ route('admin.gallery.albums.edit', $album) }}" class="btn-action btn-edit"
-                                        title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-
-                                    <form action="{{ route('admin.gallery.albums.destroy', $album) }}" method="POST"
-                                        class="d-inline"
-                                        onsubmit="return confirm('Yakin ingin menghapus album ini beserta semua foto di dalamnya?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn-action btn-delete" title="Hapus">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-
-                <!-- Pagination -->
-                <div class="card-footer">
-                    {{ $albums->links() }}
-                </div>
-            @else
-                <div class="empty-state">
-                    <i class="fas fa-images"></i>
-                    <h3>Belum Ada Album</h3>
-                    <p>Mulai tambahkan album foto kegiatan</p>
-                    <a href="{{ route('admin.gallery.albums.create') }}" class="btn btn-primary">
-                        <i class="fas fa-plus"></i>
-                        Tambah Album Pertama
-                    </a>
-                </div>
-            @endif
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
+        @if ($albums->hasPages())
+            <!-- Pagination -->
+            <div style="margin-top: 20px; text-align:center; padding: 20px; border-top: 1px solid var(--border);">
+                {{ $albums->links('vendor.pagination.simple') }}
+            </div>
+        @endif
     </div>
 @endsection
 
@@ -133,8 +145,10 @@
     <style>
         .card {
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
         }
 
         .card-header {
@@ -146,9 +160,10 @@
         }
 
         .card-title {
-            font-size: 1.2rem;
-            font-weight: 700;
+            font-size: 1.1rem;
+            font-weight: 600;
             color: var(--dark);
+            margin: 0;
         }
 
         .card-tools {
@@ -157,153 +172,91 @@
         }
 
         .card-body {
-            padding: 25px;
-        }
-
-        .card-footer {
-            padding: 20px 25px;
-            border-top: 1px solid var(--border);
-        }
-
-        .badge {
-            padding: 5px 12px;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .badge-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .badge-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .albums-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        .album-card {
-            background: white;
-            border: 2px solid var(--border);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .album-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            border-color: var(--primary);
-        }
-
-        .album-cover {
-            width: 100%;
-            height: 220px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .album-cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .album-card:hover .album-cover img {
-            transform: scale(1.1);
-        }
-
-        .no-image {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 3rem;
-        }
-
-        .album-status {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
-        .photo-count {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .album-info {
             padding: 20px;
         }
 
-        .album-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: var(--dark);
-            line-height: 1.4;
-        }
-
-        .album-description {
-            color: #6b7280;
-            margin-bottom: 12px;
-            line-height: 1.6;
-            font-size: 0.9rem;
-        }
-
-        .album-meta {
-            display: flex;
-            flex-direction: column;
+        /* Badge */
+        .badge {
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
             gap: 5px;
-            margin-bottom: 15px;
-            font-size: 0.85rem;
-            color: #9ca3af;
         }
 
-        .album-meta i {
-            margin-right: 5px;
-            width: 16px;
+        .badge-sm {
+            padding: 3px 8px;
+            font-size: 0.7rem;
         }
 
-        .album-actions {
-            display: flex;
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-status-active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-status-inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
             gap: 8px;
-            justify-content: center;
-            padding-top: 15px;
-            border-top: 1px solid var(--border);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 83, 197, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.85rem;
         }
 
         .btn-action {
-            width: 38px;
-            height: 38px;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            border-radius: 10px;
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            border-radius: 6px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 0.95rem;
         }
 
         .btn-view {
@@ -316,103 +269,182 @@
             color: white;
         }
 
-        .btn-status {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-
-        .btn-status.active {
-            background: #d1fae5;
-            color: #059669;
-        }
-
-        .btn-status:hover {
-            transform: scale(1.1);
-        }
-
-        .btn-edit {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
-        .btn-edit:hover {
-            background: #3b82f6;
+        .btn-success {
+            background: var(--success);
             color: white;
         }
 
-        .btn-delete {
-            background: #fee2e2;
-            color: #dc2626;
+        .btn-success:hover {
+            background: #059669;
         }
 
-        .btn-delete:hover {
-            background: #ef4444;
+        .btn-info {
+            background: var(--info);
             color: white;
         }
 
-        .empty-state {
-            padding: 80px 20px;
+        .btn-info:hover {
+            background: #2563eb;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 5px;
+        }
+
+        /* Table */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table thead th {
+            background: var(--light);
+            color: var(--dark);
+            font-weight: 600;
+            padding: 12px;
+            border-bottom: 2px solid var(--border);
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .table tbody td {
+            padding: 12px;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table tbody tr:hover {
+            background: var(--light);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Album specific styles */
+        .album-title-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .album-thumb-container {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            flex-shrink: 0;
+        }
+
+        .album-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+        }
+
+        .album-thumb-placeholder {
+            width: 60px;
+            height: 60px;
+            background: var(--light);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 1.5rem;
+            border: 2px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .text-center {
             text-align: center;
         }
 
-        .empty-state i {
-            font-size: 4rem;
-            color: #e5e7eb;
-            margin-bottom: 20px;
+        .text-muted {
+            color: #6b7280;
         }
 
-        .empty-state h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--dark);
+        .py-5 {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
         }
 
-        .empty-state p {
-            color: #9ca3af;
-            margin-bottom: 25px;
+        .mb-3 {
+            margin-bottom: 1rem;
         }
 
-        .btn {
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
+        .mt-2 {
+            margin-top: 0.5rem;
+        }
+
+        .fa-3x {
+            font-size: 3rem;
+        }
+
+        /* Pagination */
+        nav[role="navigation"] {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            text-decoration: none;
         }
 
-        .btn-primary {
+        .pagination {
+            display: flex;
+            gap: 5px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .pagination li span,
+        .pagination li a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            height: 40px;
+            padding: 0 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--dark);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .pagination li a:hover {
             background: var(--primary);
             color: white;
+            border-color: var(--primary);
         }
 
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 83, 197, 0.3);
-        }
-
-        .btn-secondary {
-            background: #6b7280;
+        .pagination li.active span {
+            background: var(--primary);
             color: white;
+            border-color: var(--primary);
         }
 
-        .btn-secondary:hover {
-            background: #4b5563;
-        }
-
-        .d-inline {
-            display: inline;
+        .pagination li.disabled span {
+            color: #9ca3af;
+            cursor: not-allowed;
         }
 
         @media (max-width: 768px) {
-            .albums-grid {
-                grid-template-columns: 1fr;
+            .album-title-cell {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
