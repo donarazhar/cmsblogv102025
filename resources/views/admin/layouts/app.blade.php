@@ -986,12 +986,7 @@
                     <i class="fas fa-search"></i>
                 </div>
 
-                <div class="header-notification">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">5</span>
-                </div>
-
-                <div class="header-profile">
+                <a href="{{ route('admin.users.edit', auth()->user()) }}" class="header-profile" style="text-decoration: none;">
                     <div class="profile-avatar">
                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                     </div>
@@ -999,8 +994,8 @@
                         <div class="profile-name">{{ auth()->user()->name }}</div>
                         <div class="profile-role">Administrator</div>
                     </div>
-                    <i class="fas fa-chevron-down" style="color: #9ca3af; font-size: 0.8rem;"></i>
-                </div>
+                    <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.75rem;"></i>
+                </a>
 
                 <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                     @csrf
