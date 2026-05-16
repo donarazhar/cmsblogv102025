@@ -177,7 +177,11 @@ class LandingController extends Controller
                 ->limit(3)
                 ->get();
 
-            return compact('program', 'relatedPrograms');
+            $pageTitle = $program->name;
+            $pageDescription = \Illuminate\Support\Str::limit(strip_tags($program->description), 160);
+            $pageImage = $program->image ? asset('storage/' . $program->image) : null;
+
+            return compact('program', 'relatedPrograms', 'pageTitle', 'pageDescription', 'pageImage');
         });
 
         return view('landing.program-detail', $data);
@@ -256,7 +260,11 @@ class LandingController extends Controller
                 ->get();
         });
 
-        return view('landing.blog-detail', compact('post', 'relatedPosts'));
+        $pageTitle = $post->title;
+        $pageDescription = \Illuminate\Support\Str::limit(strip_tags($post->excerpt ?: $post->content), 160);
+        $pageImage = $post->featured_image ? asset('storage/' . $post->featured_image) : null;
+
+        return view('landing.blog-detail', compact('post', 'relatedPosts', 'pageTitle', 'pageDescription', 'pageImage'));
     }
 
     public function blogCommentSubmit(Request $request, string $slug)
@@ -321,7 +329,11 @@ class LandingController extends Controller
                 ->select('id', 'title', 'image', 'type')
                 ->get();
 
-            return compact('album', 'galleries');
+            $pageTitle = $album->name;
+            $pageDescription = \Illuminate\Support\Str::limit(strip_tags($album->description), 160);
+            $pageImage = $album->cover_image ? asset('storage/' . $album->cover_image) : null;
+
+            return compact('album', 'galleries', 'pageTitle', 'pageDescription', 'pageImage');
         });
 
         return view('landing.gallery-album', $data);
@@ -417,7 +429,11 @@ class LandingController extends Controller
                 ->get();
         });
 
-        return view('landing.donation-detail', compact('donation', 'recentDonations', 'relatedDonations'));
+        $pageTitle = $donation->campaign_name;
+        $pageDescription = \Illuminate\Support\Str::limit(strip_tags($donation->description), 160);
+        $pageImage = $donation->image ? asset('storage/' . $donation->image) : null;
+
+        return view('landing.donation-detail', compact('donation', 'recentDonations', 'relatedDonations', 'pageTitle', 'pageDescription', 'pageImage'));
     }
 
     public function page(string $slug)
