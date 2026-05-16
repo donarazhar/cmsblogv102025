@@ -308,7 +308,6 @@
             display: none;
         }
 
-        /* Dashboard Menu (tidak ada accordion) */
         .menu-dashboard {
             padding: 12px 20px;
             display: flex;
@@ -316,7 +315,17 @@
             color: white;
             text-decoration: none;
             transition: all 0.3s ease;
-            margin-bottom: 10px;
+            margin-top: 6px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .menu-dashboard span {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            opacity: 0.5;
+            white-space: nowrap;
         }
 
         .sidebar.collapsed .menu-dashboard {
@@ -342,6 +351,7 @@
             margin-right: 12px;
             text-align: center;
             flex-shrink: 0;
+            opacity: 0.5;
         }
 
         .sidebar.collapsed .menu-dashboard i {
@@ -355,6 +365,13 @@
 
         .sidebar.collapsed .menu-dashboard span {
             display: none;
+        }
+
+        .menu-dashboard:hover span,
+        .menu-dashboard:hover i,
+        .menu-dashboard.active span,
+        .menu-dashboard.active i {
+            opacity: 1;
         }
 
         /* Mobile Overlay */
