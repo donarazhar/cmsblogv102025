@@ -262,8 +262,12 @@
 <body>
     <div class="login-card">
         <div class="login-header">
-            <div class="login-logo">
-                <i class="fas fa-mosque"></i>
+            <div class="login-logo" @if(setting('site_favicon')) style="background: transparent;" @endif>
+                @if(setting('site_favicon'))
+                    <img src="{{ asset('storage/' . setting('site_favicon')) }}" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                @else
+                    <i class="fas fa-mosque"></i>
+                @endif
             </div>
             <h1>Login</h1>
             <p>Masuk ke panel admin</p>

@@ -716,8 +716,12 @@
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <div class="sidebar-logo">
-                <i class="fas fa-mosque"></i>
+            <div class="sidebar-logo" @if(setting('site_favicon')) style="background: transparent;" @endif>
+                @if(setting('site_favicon'))
+                    <img src="{{ asset('storage/' . setting('site_favicon')) }}" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                @else
+                    <i class="fas fa-mosque"></i>
+                @endif
             </div>
             <div class="sidebar-title">
                 <h3>Al Azhar</h3>
