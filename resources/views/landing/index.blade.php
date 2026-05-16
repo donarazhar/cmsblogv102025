@@ -1314,12 +1314,63 @@
             }
 
             .hero {
-                height: 70vh;
-                min-height: 450px;
+                height: 60vh;
+                min-height: 380px;
+                max-height: 550px;
+            }
+
+            .hero-content {
+                padding: 0 1.25rem;
+                align-items: flex-end;
+                padding-bottom: 3.5rem;
+            }
+
+            .hero-text {
+                max-width: 100%;
+            }
+
+            .hero-title {
+                font-size: 1.5rem;
+                line-height: 1.25;
+                margin-bottom: 0.5rem;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+
+            .hero-subtitle {
+                font-size: 0.9rem;
+                line-height: 1.4;
+                margin-bottom: 0.5rem;
+            }
+
+            .hero-description {
+                font-size: 0.78rem;
+                line-height: 1.5;
+                margin-bottom: 1rem;
+                max-width: 100%;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
             }
 
             .hero-buttons {
-                flex-direction: column;
+                flex-direction: row;
+                gap: 0.5rem;
+            }
+
+            .hero-buttons .btn {
+                padding: 0.65rem 1.1rem;
+                font-size: 0.8rem;
+            }
+
+            .hero-content.text-right {
+                text-align: left;
+                justify-content: flex-start;
+            }
+
+            .hero-content.text-right .hero-buttons {
+                justify-content: flex-start;
             }
 
             .announcement-badge span {
@@ -1336,6 +1387,46 @@
 
             .cta-buttons {
                 flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                height: 55vh;
+                min-height: 320px;
+                max-height: 450px;
+            }
+
+            .hero-content {
+                padding: 0 1rem;
+                padding-bottom: 3rem;
+            }
+
+            .hero-title {
+                font-size: 1.25rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.82rem;
+            }
+
+            .hero-description {
+                font-size: 0.75rem;
+                -webkit-line-clamp: 2;
+            }
+
+            .hero-buttons .btn {
+                padding: 0.55rem 0.9rem;
+                font-size: 0.75rem;
+            }
+
+            .hero-controls {
+                bottom: 1rem;
+            }
+
+            .hero-dot {
+                width: 8px;
+                height: 8px;
             }
         }
 
@@ -1375,7 +1466,7 @@
                 <div class="hero-overlay" style="background: linear-gradient(135deg, rgba(0,53,197,{{ $overlayOpacity }}) 0%, rgba(0,61,148,{{ $overlayOpacity * 0.5 }}) 100%);"></div>
                 <div class="hero-content text-{{ $textPos }}">
                     <div class="hero-text">
-                        <h1 class="hero-title" style="white-space: nowrap;">{{ $slider->title }}</h1>
+                        <h1 class="hero-title">{{ $slider->title }}</h1>
                         @if ($slider->subtitle)
                             <p class="hero-subtitle">{{ $slider->subtitle }}</p>
                         @endif
