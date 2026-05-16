@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Alias middleware
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'admin.only' => \App\Http\Middleware\AdminOnly::class,
             'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         ]);
 

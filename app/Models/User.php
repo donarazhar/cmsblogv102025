@@ -24,6 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
         'email_verified_at',
     ];
 
@@ -62,5 +63,21 @@ class User extends Authenticatable
     public function actions()
     {
         return $this->morphMany(\Spatie\Activitylog\Models\Activity::class, 'causer');
+    }
+
+    /**
+     * Check if user is Administrator
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Check if user is Staff
+     */
+    public function isStaff(): bool
+    {
+        return $this->role === 'staff';
     }
 }

@@ -263,6 +263,23 @@
                     @enderror
                 </div>
 
+                <div class="form-group">
+                    <label class="form-label">Role <span class="required">*</span></label>
+                    <select name="role" class="form-input" {{ $user->id === auth()->id() ? 'disabled' : '' }}>
+                        <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>Administrator</option>
+                        <option value="staff" {{ old('role', $user->role) === 'staff' ? 'selected' : '' }}>Staf</option>
+                    </select>
+                    @if($user->id === auth()->id())
+                        <input type="hidden" name="role" value="{{ $user->role }}">
+                        <div class="form-hint"><i class="fas fa-lock"></i> Anda tidak dapat mengubah role akun Anda sendiri.</div>
+                    @else
+                        <div class="form-hint">Administrator: akses penuh. Staf: tanpa menu pengaturan, user, log & backup.</div>
+                    @endif
+                    @error('role')
+                        <div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div>
+                    @enderror
+                </div>
+
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Password Baru</label>

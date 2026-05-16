@@ -61,6 +61,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|in:admin,staff',
         ], [
             'name.required' => 'Nama harus diisi',
             'email.required' => 'Email harus diisi',
@@ -69,12 +70,15 @@ class UserController extends Controller
             'password.required' => 'Password harus diisi',
             'password.min' => 'Password minimal 8 karakter',
             'password.confirmed' => 'Konfirmasi password tidak cocok',
+            'role.required' => 'Role harus dipilih',
+            'role.in' => 'Role tidak valid',
         ]);
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
+            'role' => $validated['role'],
             'email_verified_at' => $request->has('email_verified') ? now() : null,
         ]);
 
@@ -123,6 +127,7 @@ class UserController extends Controller
                 Rule::unique('users')->ignore($user->id),
             ],
             'password' => 'nullable|string|min:8|confirmed',
+            'role' => 'required|in:admin,staff',
         ], [
             'name.required' => 'Nama harus diisi',
             'email.required' => 'Email harus diisi',
@@ -130,10 +135,17 @@ class UserController extends Controller
             'email.unique' => 'Email sudah terdaftar',
             'password.min' => 'Password minimal 8 karakter',
             'password.confirmed' => 'Konfirmasi password tidak cocok',
+            'role.required' => 'Role harus dipilih',
+            'role.in' => 'Role tidak valid',
         ]);
 
         $user->name = $validated['name'];
         $user->email = $validated['email'];
+
+        // Update role (prevent self-demotion)
+        if ($user->id !== auth()->id()) {
+            $user->role = $validated['role'];
+        }
 
         // Only update password if provided
         if (!empty($validated['password'])) {

@@ -922,6 +922,7 @@
                 <span class="menu-item-tooltip">Kontak</span>
             </a>
 
+            @if(auth()->user()->isAdmin())
             <!-- Lainnya Section -->
             <div class="menu-section" data-section="others">
                 <div class="menu-section-header">
@@ -957,6 +958,7 @@
                     </a>
                 </div>
             </div>
+            @endif
 
             <!-- Preview Web -->
             <a href="{{ url('/') }}" target="_blank" class="menu-dashboard" style="margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px;">
@@ -992,7 +994,7 @@
                     </div>
                     <div class="profile-info">
                         <div class="profile-name">{{ auth()->user()->name }}</div>
-                        <div class="profile-role">Administrator</div>
+                        <div class="profile-role">{{ auth()->user()->role === 'admin' ? 'Administrator' : 'Staf' }}</div>
                     </div>
                     <i class="fas fa-chevron-right" style="color: #9ca3af; font-size: 0.75rem;"></i>
                 </a>

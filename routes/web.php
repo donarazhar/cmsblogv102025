@@ -265,12 +265,6 @@ Route::middleware('auth')->group(function () {
         Route::get('contacts/export/csv', [ContactController::class, 'exportCsv'])
             ->name('contacts.export-csv');
 
-        // Users Routes
-        Route::resource('users', UserController::class);
-        Route::get('users/{user}/change-password', [UserController::class, 'changePassword'])
-            ->name('users.change-password');
-        Route::put('users/{user}/update-password', [UserController::class, 'updatePassword'])
-            ->name('users.update-password');
 
         // Profile Routes
         Route::prefix('profile')->name('profile.')->group(function () {
@@ -285,35 +279,43 @@ Route::middleware('auth')->group(function () {
             Route::put('/fasilitas', [ProfileController::class, 'updateFasilitas'])->name('fasilitas.update');
         });
 
-        // Activity Logs Routes
-        Route::prefix('activity-logs')->name('activity-logs.')->group(function () {
-            Route::get('/', [ActivityLogController::class, 'index'])->name('index');
-            Route::get('/analytics', [ActivityLogController::class, 'analytics'])->name('analytics');
-            Route::get('/{activity}/show', [ActivityLogController::class, 'show'])->name('show');
-            Route::get('/user/{user}', [ActivityLogController::class, 'userActivity'])->name('user-activity');
-            Route::delete('/{activity}', [ActivityLogController::class, 'destroy'])->name('destroy');
-            Route::post('/clear', [ActivityLogController::class, 'clear'])->name('clear');
-        });
+        // === Admin Only Routes (Settings, Users, Logs, Backups) ===
+        Route::middleware('admin.only')->group(function () {
+            // Activity Logs Routes
+            Route::prefix('activity-logs')->name('activity-logs.')->group(function () {
+                Route::get('/', [ActivityLogController::class, 'index'])->name('index');
+                Route::get('/analytics', [ActivityLogController::class, 'analytics'])->name('analytics');
+                Route::get('/{activity}/show', [ActivityLogController::class, 'show'])->name('show');
+                Route::get('/user/{user}', [ActivityLogController::class, 'userActivity'])->name('user-activity');
+                Route::delete('/{activity}', [ActivityLogController::class, 'destroy'])->name('destroy');
+                Route::post('/clear', [ActivityLogController::class, 'clear'])->name('clear');
+            });
 
-        // Backup Routes
-        Route::prefix('backups')->name('backups.')->group(function () {
-            Route::get('/', [BackupController::class, 'index'])->name('index');
-            Route::post('/create', [BackupController::class, 'create'])->name('create');
-            Route::post('/create-full', [BackupController::class, 'createFull'])->name('create-full');
-            Route::get('/download/{filename}', [BackupController::class, 'download'])->name('download');
-            Route::delete('/{filename}', [BackupController::class, 'destroy'])->name('destroy');
-            Route::post('/clean', [BackupController::class, 'clean'])->name('clean');
-            Route::post('/restore', [BackupController::class, 'restore'])->name('restore');
-        });
+            // Backup Routes
+            Route::prefix('backups')->name('backups.')->group(function () {
+                Route::get('/', [BackupController::class, 'index'])->name('index');
+                Route::post('/create', [BackupController::class, 'create'])->name('create');
+                Route::post('/create-full', [BackupController::class, 'createFull'])->name('create-full');
+                Route::get('/download/{filename}', [BackupController::class, 'download'])->name('download');
+                Route::delete('/{filename}', [BackupController::class, 'destroy'])->name('destroy');
+                Route::post('/clean', [BackupController::class, 'clean'])->name('clean');
+                Route::post('/restore', [BackupController::class, 'restore'])->name('restore');
+            });
 
-        // Settings Routes
-        Route::prefix('settings')->name('settings.')->group(function () {
-            Route::get('/', [SettingController::class, 'index'])->name('index');
-            Route::post('/', [SettingController::class, 'update'])->name('update');
-            Route::get('/create', [SettingController::class, 'create'])->name('create');
-            Route::post('/store', [SettingController::class, 'store'])->name('store');
-            Route::delete('/{setting}', [SettingController::class, 'destroy'])->name('destroy');
-            Route::post('/clear-cache', [SettingController::class, 'clearCache'])->name('clear-cache');
+            // Settings Routes
+            Route::prefix('settings')->name('settings.')->group(function () {
+                Route::get('/', [SettingController::class, 'index'])->name('index');
+                Route::post('/', [SettingController::class, 'update'])->name('update');
+                Route::get('/create', [SettingController::class, 'create'])->name('create');
+                Route::post('/store', [SettingController::class, 'store'])->name('store');
+                Route::delete('/{setting}', [SettingController::class, 'destroy'])->name('destroy');
+                Route::post('/clear-cache', [SettingController::class, 'clearCache'])->name('clear-cache');
+            });
+
+            // User Management Routes
+            Route::resource('users', UserController::class);
+            Route::get('users/{user}/change-password', [UserController::class, 'changePassword'])->name('users.change-password');
+            Route::put('users/{user}/update-password', [UserController::class, 'updatePassword'])->name('users.update-password');
         });
     });
 });

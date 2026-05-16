@@ -210,6 +210,18 @@
                     @enderror
                 </div>
 
+                <div class="form-group">
+                    <label class="form-label">Role <span class="required">*</span></label>
+                    <select name="role" class="form-input">
+                        <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>Administrator</option>
+                        <option value="staff" {{ old('role', 'staff') === 'staff' ? 'selected' : '' }}>Staf</option>
+                    </select>
+                    <div class="form-hint">Administrator: akses penuh. Staf: tanpa menu pengaturan, user, log & backup.</div>
+                    @error('role')
+                        <div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div>
+                    @enderror
+                </div>
+
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Password <span class="required">*</span></label>
