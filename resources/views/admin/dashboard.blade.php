@@ -72,6 +72,7 @@
         grid-template-columns: 1fr 1fr;
         gap: 24px;
         margin-bottom: 24px;
+        min-width: 0;
     }
     .dash-grid-3 {
         display: grid;
@@ -84,6 +85,7 @@
     .dash-panel {
         background: white; border-radius: 14px; padding: 20px 24px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;
+        min-width: 0; overflow: hidden;
     }
     .dash-panel-header {
         display: flex; justify-content: space-between; align-items: center;
@@ -115,9 +117,14 @@
     .dash-list-item .item-body { flex: 1; min-width: 0; }
     .dash-list-item .item-title {
         font-size: 0.85rem; font-weight: 600; color: #1a1a1a;
-        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        overflow: hidden; text-overflow: ellipsis;
+        display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical;
     }
-    .dash-list-item .item-meta { font-size: 0.75rem; color: #9ca3af; }
+    .dash-list-item .item-meta {
+        font-size: 0.75rem; color: #9ca3af;
+        overflow: hidden; text-overflow: ellipsis;
+        white-space: nowrap;
+    }
     .dash-list-item .item-badge {
         font-size: 0.7rem; padding: 3px 8px; border-radius: 20px;
         font-weight: 600; flex-shrink: 0;
