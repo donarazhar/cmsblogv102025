@@ -1375,15 +1375,7 @@
                 <div class="hero-overlay" style="background: linear-gradient(135deg, rgba(0,53,197,{{ $overlayOpacity }}) 0%, rgba(0,61,148,{{ $overlayOpacity * 0.5 }}) 100%);"></div>
                 <div class="hero-content text-{{ $textPos }}">
                     <div class="hero-text">
-                        <h1 class="hero-title">
-                            @php
-                                $formattedTitle = collect(explode(' ', $slider->title))
-                                    ->chunk(2)
-                                    ->map(fn($chunk) => $chunk->implode(' '))
-                                    ->implode('<br>');
-                            @endphp
-                            {!! $formattedTitle !!}
-                        </h1>
+                        <h1 class="hero-title" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">{{ $slider->title }}</h1>
                         @if ($slider->subtitle)
                             <p class="hero-subtitle">{{ $slider->subtitle }}</p>
                         @endif
