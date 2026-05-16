@@ -48,7 +48,7 @@ class PostController extends Controller
             });
         }
 
-        $posts = $query->latest('created_at')->paginate(15);
+        $posts = $query->latest('created_at')->paginate(10);
         $categories = Category::all();
 
         return view('admin.posts.index', compact('posts', 'categories'));
