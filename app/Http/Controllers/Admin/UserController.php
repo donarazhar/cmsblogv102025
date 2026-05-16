@@ -234,4 +234,55 @@ class UserController extends Controller
             ->route('admin.users.index')
             ->with('success', 'Password user "' . $user->name . '" berhasil diubah!');
     }
+
+    /**
+     * Show edit form for current logged-in user (accessible by all roles).
+     */
+    public function editSelf()
+    {
+        $user = auth()->user();
+        return view('admin.users.edit-self', compact('user'));
+    }
+
+    /**
+     * Update current logged-in user's own account.
+     */
+    public function updateSelf(Request $request)
+    {
+        $user = auth()->user();
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => [
+                'required', 'string', 'email', 'max:255',
+                Rule::unique('users')->ignore($user->id),
+            ],
+            'password' => 'nullable|string|min:8|confirmed',
+        ], [
+            'name.required' => 'Nama harus diisi',
+            'email.required' => 'Email harus diisi',
+            'email.email' => 'Format email tidak valid',
+            'email.unique' => 'Email sudah terdaftar',
+            'password.min' => 'Password minimal 8 karakter',
+            'password.confirmed' => 'Konfirmasi password tidak cocok',
+        ]);
+
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+
+        if (!empty($validated['password'])) {
+            $user->password = Hash::make($validated['password']);
+        }
+
+        $user->save();
+
+        activity()
+            ->causedBy($user)
+            ->performedOn($user)
+            ->log('Akun sendiri diupdate: ' . $user->name);
+
+        return redirect()
+            ->route('admin.my-account')
+            ->with('success', 'Akun Anda berhasil diperbarui!');
+    }
 }

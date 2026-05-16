@@ -988,7 +988,7 @@
                     <i class="fas fa-search"></i>
                 </div>
 
-                <a href="{{ route('admin.users.edit', auth()->user()) }}" class="header-profile" style="text-decoration: none;">
+                <a href="{{ route('admin.my-account') }}" class="header-profile" style="text-decoration: none;">
                     <div class="profile-avatar">
                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                     </div>

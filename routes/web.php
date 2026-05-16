@@ -279,6 +279,10 @@ Route::middleware('auth')->group(function () {
             Route::put('/fasilitas', [ProfileController::class, 'updateFasilitas'])->name('fasilitas.update');
         });
 
+        // My Account (accessible by all roles)
+        Route::get('my-account', [UserController::class, 'editSelf'])->name('my-account');
+        Route::put('my-account', [UserController::class, 'updateSelf'])->name('my-account.update');
+
         // === Admin Only Routes (Settings, Users, Logs, Backups) ===
         Route::middleware('admin.only')->group(function () {
             // Activity Logs Routes
