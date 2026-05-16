@@ -876,17 +876,17 @@
                                 <i class="fas fa-chevron-right"></i>
                                 Program
                             </a>
-                            <a href="{{ route('blog') }}" class="footer-link">
-                                <i class="fas fa-chevron-right"></i>
-                                Berita
-                            </a>
                             <a href="{{ route('gallery') }}" class="footer-link">
                                 <i class="fas fa-chevron-right"></i>
                                 Galeri
                             </a>
+                            <a href="{{ route('blog') }}" class="footer-link">
+                                <i class="fas fa-chevron-right"></i>
+                                Berita & Artikel
+                            </a>
                             <a href="{{ route('contact') }}" class="footer-link">
                                 <i class="fas fa-chevron-right"></i>
-                                Hubungi Kami
+                                Kontak
                             </a>
                         </nav>
                     </div>
