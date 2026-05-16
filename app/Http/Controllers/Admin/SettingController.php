@@ -6,21 +6,27 @@ use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class SettingController extends Controller
 {
     public function index()
     {
-        $settings = Setting::ordered()->get()->groupBy('group');
+        // Sembunyikan pengaturan yang khusus untuk halaman profil
+        $settings = Setting::where('key', 'not like', 'profile_%')
+            ->ordered()
+            ->get()
+            ->groupBy('group');
+            
         return view('admin.settings.index', compact('settings'));
     }
 
     public function update(Request $request)
     {
         try {
-            \Log::info('Settings Update Started');
-            \Log::info('Request All:', $request->all());
-            \Log::info('Files:', array_keys($request->allFiles()));
+            Log::info('Settings Update Started');
+            Log::info('Request All:', $request->all());
+            Log::info('Files:', array_keys($request->allFiles()));
 
             // Ambil SEMUA settings dari database (bukan dari request)
             $allSettings = Setting::all();
@@ -34,7 +40,7 @@ class SettingController extends Controller
 
                     // Check jika ada file yang diupload
                     if ($request->hasFile($fileKey)) {
-                        \Log::info("File detected for {$key}");
+                        Log::info("File detected for {$key}");
 
                         $file = $request->file($fileKey);
 
@@ -50,7 +56,7 @@ class SettingController extends Controller
                         // Delete old file if exists
                         if ($setting->value && Storage::disk('public')->exists($setting->value)) {
                             Storage::disk('public')->delete($setting->value);
-                            \Log::info("Deleted old file: {$setting->value}");
+                            Log::info("Deleted old file: {$setting->value}");
                         }
 
                         // Upload new file
@@ -60,9 +66,9 @@ class SettingController extends Controller
                         $setting->value = $path;
                         $setting->save();
 
-                        \Log::info("✅ File uploaded for {$key}: {$path}");
+                        Log::info("✅ File uploaded for {$key}: {$path}");
                     } else {
-                        \Log::info("No file uploaded for {$key}, keeping current value");
+                        Log::info("No file uploaded for {$key}, keeping current value");
                     }
 
                     continue; // Skip to next setting
@@ -81,23 +87,23 @@ class SettingController extends Controller
                     $setting->value = $value;
                     $setting->save();
 
-                    \Log::info("Setting updated: {$key} = {$value}");
+                    Log::info("Setting updated: {$key} = {$value}");
                 }
             }
 
-            \Log::info('Settings Update Completed Successfully');
+            Log::info('Settings Update Completed Successfully');
 
             return redirect()->route('admin.settings.index')
                 ->with('success', 'Pengaturan berhasil diperbarui!');
         } catch (\Illuminate\Validation\ValidationException $e) {
-            \Log::error('Validation Failed', ['errors' => $e->errors()]);
+            Log::error('Validation Failed', ['errors' => $e->errors()]);
 
             return redirect()->route('admin.settings.index')
                 ->withErrors($e->errors())
                 ->withInput()
                 ->with('error', 'Validasi gagal! Periksa file yang diupload.');
         } catch (\Exception $e) {
-            \Log::error('Settings Update Failed', [
+            Log::error('Settings Update Failed', [
                 'error' => $e->getMessage(),
                 'line' => $e->getLine(),
                 'trace' => $e->getTraceAsString()
@@ -143,7 +149,7 @@ class SettingController extends Controller
         if (in_array($setting->type, ['image', 'file']) && $setting->value) {
             if (Storage::disk('public')->exists($setting->value)) {
                 Storage::disk('public')->delete($setting->value);
-                \Log::info("Deleted file on setting destroy: {$setting->value}");
+                Log::info("Deleted file on setting destroy: {$setting->value}");
             }
         }
 
