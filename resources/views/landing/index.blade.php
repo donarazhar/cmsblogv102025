@@ -1429,8 +1429,61 @@
             </div>
         </div>
     @endif
-    <!-- Programs Section - News Layout -->
+    <!-- Posts Section -->
     <section class="section">
+        <div class="container">
+            <div class="section-header fade-up">
+                <h2 class="section-title">Berita & Artikel</h2>
+            </div>
+            @if ($featuredPosts->count() > 0)
+                <div class="posts-featured">
+                    @foreach ($featuredPosts as $post)
+                        <article class="post-card fade-up">
+                            <div class="post-img lazy-bg"
+                                data-bg="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : '' }}">
+                                <span class="post-category">{{ $post->category->name }}</span>
+                                <span class="post-featured-badge">Featured</span>
+                            </div>
+                            <div class="post-body">
+                                <div class="post-meta">
+                                    <span><i class="fas fa-user"></i> {{ $post->author->name }}</span>
+                                    <span><i class="fas fa-calendar"></i> {{ $post->published_at->format('d M Y') }}</span>
+                                </div>
+                                <h3 class="post-title">{{ $post->title }}</h3>
+                                <p class="post-excerpt">{{ Str::limit(strip_tags($post->excerpt), 100) }}</p>
+                                <a href="{{ route('blog.detail', $post->slug) }}" class="post-link">
+                                    Baca Selengkapnya <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            @endif
+
+            <div class="posts-grid">
+                @foreach ($latestPosts->take(6) as $post)
+                    <a href="{{ route('blog.detail', $post->slug) }}" class="post-compact fade-up">
+                        <div class="post-compact-img lazy-bg"
+                            data-bg="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : '' }}"></div>
+                        <div class="post-compact-body">
+                            <span class="post-compact-cat">{{ $post->category->name }}</span>
+                            <h4 class="post-compact-title">{{ Str::limit($post->title, 50) }}</h4>
+                            <span class="post-compact-date">{{ $post->published_at->format('d M Y') }}</span>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+
+            <div class="text-center mt-4 fade-up">
+                <a href="{{ route('blog') }}" class="btn btn-primary"
+                    style="background: var(--primary); color: var(--white);">
+                    Lihat Semua Berita <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- Programs Section - News Layout -->
+    <section class="section section-alt">
         <div class="container">
             <div class="section-header fade-up">
                 <h2 class="section-title">Program Kami</h2>
@@ -1504,59 +1557,6 @@
                         </a>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-    <!-- Posts Section -->
-    <section class="section section-alt">
-        <div class="container">
-            <div class="section-header fade-up">
-                <h2 class="section-title">Berita & Artikel</h2>
-            </div>
-            @if ($featuredPosts->count() > 0)
-                <div class="posts-featured">
-                    @foreach ($featuredPosts as $post)
-                        <article class="post-card fade-up">
-                            <div class="post-img lazy-bg"
-                                data-bg="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : '' }}">
-                                <span class="post-category">{{ $post->category->name }}</span>
-                                <span class="post-featured-badge">Featured</span>
-                            </div>
-                            <div class="post-body">
-                                <div class="post-meta">
-                                    <span><i class="fas fa-user"></i> {{ $post->author->name }}</span>
-                                    <span><i class="fas fa-calendar"></i> {{ $post->published_at->format('d M Y') }}</span>
-                                </div>
-                                <h3 class="post-title">{{ $post->title }}</h3>
-                                <p class="post-excerpt">{{ Str::limit(strip_tags($post->excerpt), 100) }}</p>
-                                <a href="{{ route('blog.detail', $post->slug) }}" class="post-link">
-                                    Baca Selengkapnya <i class="fas fa-arrow-right"></i>
-                                </a>
-                            </div>
-                        </article>
-                    @endforeach
-                </div>
-            @endif
-
-            <div class="posts-grid">
-                @foreach ($latestPosts->take(6) as $post)
-                    <a href="{{ route('blog.detail', $post->slug) }}" class="post-compact fade-up">
-                        <div class="post-compact-img lazy-bg"
-                            data-bg="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : '' }}"></div>
-                        <div class="post-compact-body">
-                            <span class="post-compact-cat">{{ $post->category->name }}</span>
-                            <h4 class="post-compact-title">{{ Str::limit($post->title, 50) }}</h4>
-                            <span class="post-compact-date">{{ $post->published_at->format('d M Y') }}</span>
-                        </div>
-                    </a>
-                @endforeach
-            </div>
-
-            <div class="text-center mt-4 fade-up">
-                <a href="{{ route('blog') }}" class="btn btn-primary"
-                    style="background: var(--primary); color: var(--white);">
-                    Lihat Semua Berita <i class="fas fa-arrow-right"></i>
-                </a>
             </div>
         </div>
     </section>
