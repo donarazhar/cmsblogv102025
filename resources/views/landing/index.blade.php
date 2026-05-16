@@ -1461,7 +1461,7 @@
             @endif
 
             <div class="posts-grid">
-                @foreach ($latestPosts->take(6) as $post)
+                @foreach ($latestPosts as $post)
                     <a href="{{ route('blog.detail', $post->slug) }}" class="post-compact fade-up">
                         <div class="post-compact-img lazy-bg"
                             data-bg="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : '' }}"></div>
