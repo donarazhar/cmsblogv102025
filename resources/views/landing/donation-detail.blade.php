@@ -937,7 +937,7 @@
                 <div class="related-grid">
                     @foreach ($relatedDonations as $related)
                         <article class="related-card">
-                            <img src="{{ $related->image ? asset('storage/' . $related->image) : asset('assets/img/placeholder-donation.jpg') }}"
+                            <img src="{{ $related->image ? asset('storage/' . $related->image) : asset('storage/img/placeholder-donation.jpg') }}"
                                 alt="{{ $related->campaign_name }}" class="related-image" loading="lazy">
 
                             <div class="related-body">

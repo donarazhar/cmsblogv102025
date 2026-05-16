@@ -3,7 +3,7 @@
     <div class="container">
         <div class="history-grid">
             <div class="history-image">
-                <img src="{{ asset('assets/img/maa.jpg') }}" alt="Masjid Agung Al Azhar" loading="lazy"
+                <img src="{{ asset('storage/img/maa.jpg') }}" alt="Masjid Agung Al Azhar" loading="lazy"
                     onerror="this.src='https://placehold.co/600x400/0053C5/ffffff?text=Masjid+Al+Azhar'">
             </div>
             <div class="history-content">

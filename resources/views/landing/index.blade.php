@@ -1493,9 +1493,9 @@
             <div class="programs-featured fade-up">
                 @foreach ($programs->take(2) as $program)
                     <a href="{{ route('program.detail', $program->slug) }}" class="program-news-card program-news-featured">
-                        <img src="{{ $program->image ? asset('storage/' . $program->image) : asset('assets/img/placeholder.jpg') }}"
+                        <img src="{{ $program->image ? asset('storage/' . $program->image) : asset('storage/img/placeholder.jpg') }}"
                             alt="{{ $program->name }}" class="program-news-img" loading="lazy"
-                            onerror="this.src='{{ asset('assets/img/placeholder.jpg') }}'">
+                            onerror="this.src='{{ asset('storage/img/placeholder.jpg') }}'">
                         <div class="program-news-body">
                             <h3 class="program-news-title">{{ $program->name }}</h3>
                             <div class="program-news-meta">
@@ -1511,9 +1511,9 @@
             <div class="programs-layout fade-up">
                 @foreach ($programs->skip(2)->take(4) as $program)
                     <a href="{{ route('program.detail', $program->slug) }}" class="program-news-card">
-                        <img src="{{ $program->image ? asset('storage/' . $program->image) : asset('assets/img/placeholder.jpg') }}"
+                        <img src="{{ $program->image ? asset('storage/' . $program->image) : asset('storage/img/placeholder.jpg') }}"
                             alt="{{ $program->name }}" class="program-news-img" loading="lazy"
-                            onerror="this.src='{{ asset('assets/img/placeholder.jpg') }}'">
+                            onerror="this.src='{{ asset('storage/img/placeholder.jpg') }}'">
                         <div class="program-news-body">
                             <h3 class="program-news-title">{{ $program->name }}</h3>
                             <div class="program-news-meta">

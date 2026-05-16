@@ -718,7 +718,7 @@
                     <img src="{{ asset('storage/' . setting('site_logo')) }}"
                         alt="{{ setting('site_name', 'Al Azhar') }}" class="brand-logo" width="48" height="48">
                 @else
-                    <img src="{{ asset('assets/img/ypia.png') }}" alt="{{ setting('site_name', 'Al Azhar') }}"
+                    <img src="{{ asset('storage/img/ypia.png') }}" alt="{{ setting('site_name', 'Al Azhar') }}"
                         class="brand-logo" width="48" height="48">
                 @endif
                 <span class="brand-text">{{ setting('site_name', 'Al Azhar') }}</span>

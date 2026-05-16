@@ -76,7 +76,7 @@ class SeoHelper
                 'url' => url('/'),
                 'logo' => [
                     '@type' => 'ImageObject',
-                    'url' => setting('site_logo') ? asset('storage/' . setting('site_logo')) : asset('assets/img/ypia.png'),
+                    'url' => setting('site_logo') ? asset('storage/' . setting('site_logo')) : asset('storage/img/ypia.png'),
                 ],
             ],
             'potentialAction' => [
@@ -177,7 +177,7 @@ class SeoHelper
             'name' => setting('site_name', 'Masjid Agung Al Azhar'),
             'description' => setting('seo_description', 'Masjid Agung Al Azhar - Pusat Kegiatan Keagamaan dan Dakwah'),
             'url' => url('/'),
-            'image' => setting('site_logo') ? asset('storage/' . setting('site_logo')) : asset('assets/img/ypia.png'),
+            'image' => setting('site_logo') ? asset('storage/' . setting('site_logo')) : asset('storage/img/ypia.png'),
             'telephone' => setting('contact_phone', ''),
             'email' => setting('contact_email', ''),
             'address' => [

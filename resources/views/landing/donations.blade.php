@@ -547,7 +547,7 @@
                                 </div>
                             @endif
 
-                            <img src="{{ $donation->image ? asset('storage/' . $donation->image) : asset('assets/img/placeholder-donation.jpg') }}"
+                            <img src="{{ $donation->image ? asset('storage/' . $donation->image) : asset('storage/img/placeholder-donation.jpg') }}"
                                 alt="{{ $donation->campaign_name }}" class="donation-image" loading="lazy">
 
                             <div class="donation-body">
@@ -625,7 +625,7 @@
                                 </div>
                             @endif
 
-                            <img src="{{ $donation->image ? asset('storage/' . $donation->image) : asset('assets/img/placeholder-donation.jpg') }}"
+                            <img src="{{ $donation->image ? asset('storage/' . $donation->image) : asset('storage/img/placeholder-donation.jpg') }}"
                                 alt="{{ $donation->campaign_name }}" class="donation-image" loading="lazy">
 
                             <div class="donation-body">

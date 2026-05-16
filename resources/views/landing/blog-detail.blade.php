@@ -1313,7 +1313,7 @@
                             <div class="related-list">
                                 @foreach ($relatedPosts as $related)
                                     <a href="{{ route('blog.detail', $related->slug) }}" class="related-item">
-                                        <img src="{{ $related->featured_image ? asset('storage/' . $related->featured_image) : asset('assets/img/placeholder.jpg') }}"
+                                        <img src="{{ $related->featured_image ? asset('storage/' . $related->featured_image) : asset('storage/img/placeholder.jpg') }}"
                                             alt="{{ $related->title }}" class="related-image" loading="lazy">
                                         <div class="related-content">
                                             <h4 class="related-title">{{ Str::limit($related->title, 55) }}</h4>

@@ -34,8 +34,8 @@
 
             <div class="history-grid">
                 <div class="history-image">
-                    <img src="{{ asset('assets/img/maa.jpg') }}" alt="Masjid Agung Al Azhar" loading="lazy"
-                        onerror="this.src='{{ asset('assets/img/placeholder.jpg') }}'">
+                    <img src="{{ asset('storage/img/maa.jpg') }}" alt="Masjid Agung Al Azhar" loading="lazy"
+                        onerror="this.src='{{ asset('storage/img/placeholder.jpg') }}'">
                 </div>
                 <div class="history-content">
                     <div class="history-text content-wrapper">
