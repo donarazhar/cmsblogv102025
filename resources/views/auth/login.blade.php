@@ -262,9 +262,9 @@
 <body>
     <div class="login-card">
         <div class="login-header">
-            <div class="login-logo" @if(setting('site_favicon')) style="background: transparent;" @endif>
+            <div class="login-logo" @if(setting('site_favicon')) style="background: white; border-radius: 50%; padding: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);" @endif>
                 @if(setting('site_favicon'))
-                    <img src="{{ asset('storage/' . setting('site_favicon')) }}" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                    <img src="{{ asset('storage/' . setting('site_favicon')) }}" alt="Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 50%;">
                 @else
                     <i class="fas fa-mosque"></i>
                 @endif

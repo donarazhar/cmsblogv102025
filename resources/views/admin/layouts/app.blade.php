@@ -716,9 +716,9 @@
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <div class="sidebar-logo" @if(setting('site_favicon')) style="background: transparent;" @endif>
+            <div class="sidebar-logo" @if(setting('site_favicon')) style="background: white; border-radius: 50%; padding: 4px;" @endif>
                 @if(setting('site_favicon'))
-                    <img src="{{ asset('storage/' . setting('site_favicon')) }}" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                    <img src="{{ asset('storage/' . setting('site_favicon')) }}" alt="Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 50%;">
                 @else
                     <i class="fas fa-mosque"></i>
                 @endif
