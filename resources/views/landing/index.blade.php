@@ -1651,7 +1651,8 @@
             </div>
         </div>
     </section>
-    <!-- Gallery Section -->
+    <!-- Gallery Section (Hidden as requested) -->
+    {{-- 
     <section class="section">
         <div class="container">
             <div class="section-header fade-up">
@@ -1692,6 +1693,33 @@
                 <a href="{{ route('gallery') }}" class="btn btn-primary"
                     style="background: var(--primary); color: var(--white);">
                     Lihat Semua Galeri <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    --}}
+
+    <!-- Instagram Feed Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header fade-up">
+                <h2 class="section-title">Instagram @masjidagungalazhar</h2>
+            </div>
+            
+            <div class="text-center fade-up" style="margin-bottom: 2rem;">
+                <p>Ikuti kegiatan terbaru kami di Instagram <a href="https://instagram.com/masjidagungalazhar" target="_blank" style="color: var(--primary); font-weight: bold; text-decoration: none;">@masjidagungalazhar</a></p>
+            </div>
+
+            <div class="fade-up" style="width: 100%; border-radius: var(--radius); overflow: hidden;">
+                <!-- Elfsight Instagram Feed Widget -->
+                <script src="https://elfsightcdn.com/platform.js" async></script>
+                <div class="elfsight-app-2edc714a-36ba-4433-b2f5-40632f906ae2" data-elfsight-app-lazy></div>
+            </div>
+
+            <div class="text-center mt-4 fade-up">
+                <a href="https://instagram.com/masjidagungalazhar" target="_blank" class="btn btn-primary"
+                    style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: var(--white); border: none;">
+                    <i class="fab fa-instagram"></i> Kunjungi Instagram Kami
                 </a>
             </div>
         </div>
