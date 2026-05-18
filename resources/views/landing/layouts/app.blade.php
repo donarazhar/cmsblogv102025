@@ -954,7 +954,7 @@
 
                     <li class="nav-item">
                         <a href="{{ route('programs') }}" class="nav-link {{ request()->routeIs('programs') || request()->routeIs('program.*') ? 'active' : '' }}">
-                            Program
+                            Layanan Masjid
                         </a>
                     </li>
 
@@ -1065,7 +1065,7 @@
                         <nav class="footer-links">
                             <a href="{{ route('programs') }}" class="footer-link">
                                 <i class="fas fa-chevron-right"></i>
-                                Program
+                                Layanan Masjid
                             </a>
 
                             <a href="{{ route('blog') }}" class="footer-link">

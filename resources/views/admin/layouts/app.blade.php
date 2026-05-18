@@ -854,12 +854,12 @@
                 </div>
             </div>
 
-            <!-- Program Masjid (Standalone) -->
+            <!-- Layanan Masjid (Standalone) -->
             <a href="{{ route('admin.programs.index') }}"
                 class="menu-dashboard {{ request()->routeIs('admin.programs.*') ? 'active' : '' }}">
                 <i class="fas fa-calendar-check"></i>
-                <span>Program Masjid</span>
-                <span class="menu-item-tooltip">Program Masjid</span>
+                <span>Layanan Masjid</span>
+                <span class="menu-item-tooltip">Layanan Masjid</span>
             </a>
 
 

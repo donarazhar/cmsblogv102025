@@ -220,14 +220,14 @@
         </div>
     </div>
 
-    {{-- ROW 2: Statistik Program & Galeri --}}
-    <h3 class="dash-section-title"><i class="fas fa-mosque"></i> Program & Media</h3>
+    {{-- ROW 2: Statistik Layanan & Media --}}
+    <h3 class="dash-section-title"><i class="fas fa-mosque"></i> Layanan & Media</h3>
     <div class="stats-row">
         <a href="{{ route('admin.programs.index') }}" class="stat-card">
             <div class="stat-icon indigo"><i class="fas fa-calendar-check"></i></div>
             <div>
                 <div class="stat-value">{{ number_format($stats['active_programs']) }}<span style="font-size:0.8rem;color:#9ca3af">/{{ $stats['total_programs'] }}</span></div>
-                <div class="stat-label">Program Aktif</div>
+                <div class="stat-label">Layanan Aktif</div>
             </div>
         </a>
 

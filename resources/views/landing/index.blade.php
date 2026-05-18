@@ -1577,7 +1577,7 @@
     <section class="section section-alt">
         <div class="container">
             <div class="section-header fade-up">
-                <h2 class="section-title">Program Kami</h2>
+                <h2 class="section-title">Layanan Kami</h2>
             </div>
 
             <!-- Row 1: 2 Featured Cards -->
@@ -1619,7 +1619,7 @@
                 <div class="program-sidebar">
                     <div class="program-sidebar-header">
                         <i class="fas fa-list-ul"></i>
-                        Program Kegiatan
+                        Layanan Masjid
                     </div>
                     <div class="program-sidebar-list">
                         @foreach ($programs->skip(6)->take(5) as $program)
@@ -1644,7 +1644,7 @@
                     </div>
                     <div class="program-sidebar-footer">
                         <a href="{{ route('programs') }}">
-                            Lihat Semua Program <i class="fas fa-arrow-right"></i>
+                            Lihat Semua Layanan <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
@@ -1784,11 +1784,11 @@
     <section class="cta-section">
         <div class="cta-content fade-up">
             <h2 class="cta-title">Mari Bergabung Bersama Kami</h2>
-            <p class="cta-desc">Ikuti berbagai program kegiatan dan dakwah Islam di Masjid Agung Al Azhar. Bersama kita
+            <p class="cta-desc">Ikuti berbagai layanan dan kegiatan dakwah Islam di Masjid Agung Al Azhar. Bersama kita
                 membangun umat yang lebih baik.</p>
             <div class="cta-buttons">
                 <a href="{{ route('programs') }}" class="btn-cta-primary">
-                    <i class="fas fa-calendar-check"></i> Lihat Program
+                    <i class="fas fa-calendar-check"></i> Lihat Layanan
                 </a>
                 <a href="{{ route('contact') }}" class="btn-cta-outline">
                     <i class="fas fa-envelope"></i> Hubungi Kami
