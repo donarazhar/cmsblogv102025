@@ -1724,7 +1724,8 @@
             </div>
         </div>
     </section>
-    <!-- Schedule Section -->
+    <!-- Schedule Section (Hidden as requested, replaced by IG) -->
+    {{-- 
     <section class="section section-alt">
         <div class="container">
             <div class="section-header fade-up">
@@ -1794,6 +1795,7 @@
             </div>
         </div>
     </section>
+    --}}
     <!-- Testimonials Section -->
     @if ($testimonials->count() > 0)
         <section class="section">
