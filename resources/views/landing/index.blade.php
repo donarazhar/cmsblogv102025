@@ -1796,13 +1796,7 @@
             </div>
         </div>
     </section>
-    <!-- Lightbox -->
-    <div class="lightbox" id="lightbox">
-        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-        <button class="lightbox-nav lightbox-prev" onclick="changeLightbox(-1)">&#10094;</button>
-        <img class="lightbox-img" id="lightboxImg" src="" alt="">
-        <button class="lightbox-nav lightbox-next" onclick="changeLightbox(1)">&#10095;</button>
-    </div>
+
 @endsection
 @push('scripts')
     <script>
@@ -1873,30 +1867,6 @@
 
         if (heroSlides.length > 1) startHeroSlider();
 
-        // Gallery Lightbox
-        const galleryImages = @json($galleries->pluck('image')->map(fn($img) => asset('storage/' . $img)));
-        let lightboxIndex = 0;
-
-        function openLightbox(index) {
-            lightboxIndex = index;
-            document.getElementById('lightboxImg').src = galleryImages[index];
-            document.getElementById('lightbox').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLightbox() {
-            document.getElementById('lightbox').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        function changeLightbox(dir) {
-            lightboxIndex = (lightboxIndex + dir + galleryImages.length) % galleryImages.length;
-            document.getElementById('lightboxImg').src = galleryImages[lightboxIndex];
-        }
-
-        document.getElementById('lightbox').addEventListener('click', (e) => {
-            if (e.target.id === 'lightbox') closeLightbox();
-        });
 
         document.addEventListener('keydown', (e) => {
             if (!document.getElementById('lightbox').classList.contains('active')) return;
