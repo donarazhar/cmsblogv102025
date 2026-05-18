@@ -6,19 +6,33 @@
     <style>
         :root {
             --primary: #0053C5;
-            --primary-dark: #003d94;
-            --primary-light: #e8f0fc;
-            --secondary: #1e293b;
+            --primary-dark: #003a8c;
+            --primary-deeper: #002766;
+            --primary-light: #e6f0ff;
+            --primary-lighter: #f0f6ff;
+            --primary-glow: rgba(0, 83, 197, 0.15);
+            --secondary: #0f172a;
             --accent: #f59e0b;
+            --accent-light: #fef3c7;
             --text: #334155;
             --text-light: #64748b;
+            --text-dark: #0f172a;
             --bg: #f8fafc;
+            --bg-alt: #f1f5f9;
             --white: #ffffff;
-            --shadow: 0 4px 20px rgba(0, 83, 197, 0.08);
-            --shadow-lg: 0 10px 40px rgba(0, 83, 197, 0.12);
+            --border: #e2e8f0;
+            --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow: 0 4px 24px rgba(0, 53, 140, 0.07);
+            --shadow-md: 0 8px 30px rgba(0, 53, 140, 0.10);
+            --shadow-lg: 0 16px 48px rgba(0, 53, 140, 0.12);
+            --shadow-xl: 0 24px 64px rgba(0, 53, 140, 0.16);
+            --shadow-glow: 0 0 30px rgba(0, 83, 197, 0.15);
             --radius: 12px;
             --radius-lg: 20px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius-xl: 28px;
+            --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -28,9 +42,9 @@
         /* ===== HERO SECTION ===== */
         .hero {
             position: relative;
-            height: 85vh;
-            min-height: 500px;
-            max-height: 800px;
+            height: 90vh;
+            min-height: 550px;
+            max-height: 850px;
             overflow: hidden;
         }
 
@@ -38,9 +52,15 @@
             position: absolute;
             inset: 0;
             opacity: 0;
-            transition: opacity 0.8s ease;
+            transition: opacity 1.2s ease;
             background-size: cover;
             background-position: center;
+            animation: kenBurns 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes kenBurns {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
         }
 
         .hero-slide.active {
@@ -103,11 +123,13 @@
             color: var(--white);
             line-height: 1.15;
             margin-bottom: 1rem;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            letter-spacing: -0.02em;
         }
 
         .hero-subtitle {
             font-size: clamp(1rem, 2vw, 1.25rem);
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.95);
             margin-bottom: 0.75rem;
             line-height: 1.6;
         }
@@ -130,35 +152,55 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.875rem 1.75rem;
+            padding: 0.9rem 1.85rem;
             font-size: 0.95rem;
             font-weight: 600;
-            border-radius: var(--radius);
+            border-radius: 50px;
             text-decoration: none;
             transition: var(--transition);
             cursor: pointer;
             border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .btn:hover::after {
+            opacity: 1;
         }
 
         .btn-primary {
             background: var(--white);
             color: var(--primary);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
         }
 
         .btn-primary:hover {
             background: var(--primary-light);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
 
         .btn-outline {
-            background: transparent;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             color: var(--white);
-            border: 2px solid rgba(255, 255, 255, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.4);
         }
 
         .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.2);
             border-color: var(--white);
+            transform: translateY(-3px);
         }
 
         /* Hero Controls */
@@ -175,16 +217,18 @@
         .hero-dot {
             width: 10px;
             height: 10px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.35);
             border: none;
             cursor: pointer;
             transition: var(--transition);
+            padding: 0;
         }
 
         .hero-dot.active {
             background: var(--white);
-            transform: scale(1.2);
+            width: 32px;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
         }
 
         /* ===== ANNOUNCEMENT BAR ===== */
@@ -259,6 +303,7 @@
         /* ===== SECTION STYLES ===== */
         .section {
             padding: 5rem 1rem;
+            position: relative;
         }
 
         .section-alt {
@@ -268,22 +313,25 @@
         .container {
             max-width: 1280px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 3.5rem;
         }
 
         .section-badge {
             display: inline-block;
             background: var(--primary-light);
             color: var(--primary);
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 1.25rem;
             border-radius: 50px;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: 600;
             margin-bottom: 1rem;
+            letter-spacing: 0.03em;
         }
 
         .section-title {
@@ -291,13 +339,29 @@
             font-weight: 800;
             color: var(--secondary);
             margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            border-radius: 50px;
         }
 
         .section-desc {
             color: var(--text-light);
             font-size: 1.05rem;
             max-width: 600px;
-            margin: 0 auto;
+            margin: 0.75rem auto 0;
+            line-height: 1.7;
         }
 
         /* ===== PROGRAMS - NEWS LAYOUT ===== */
@@ -323,15 +387,32 @@
             display: block;
             text-decoration: none;
             background: var(--white);
-            border-radius: 8px;
+            border-radius: var(--radius);
             overflow: hidden;
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--border);
             transition: var(--transition);
+            position: relative;
+        }
+
+        .program-news-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius);
+            background: linear-gradient(135deg, var(--primary-glow) 0%, transparent 60%);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
         }
 
         .program-news-card:hover {
-            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-5px);
+            border-color: rgba(0, 83, 197, 0.15);
+        }
+
+        .program-news-card:hover::before {
+            opacity: 1;
         }
 
         .program-news-img {
@@ -531,11 +612,13 @@
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: var(--transition);
+            border: 1px solid var(--border);
         }
 
         .post-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-xl);
+            border-color: rgba(0, 83, 197, 0.12);
         }
 
         .post-img {
@@ -638,14 +721,16 @@
             background: var(--white);
             border-radius: var(--radius);
             padding: 1rem;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-xs);
+            border: 1px solid var(--border);
             transition: var(--transition);
             text-decoration: none;
         }
 
         .post-compact:hover {
             transform: translateX(5px);
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(0, 83, 197, 0.12);
         }
 
         .post-compact-img {
@@ -796,8 +881,14 @@
         .schedule-card {
             background: var(--white);
             border-radius: var(--radius-lg);
-            padding: 1.5rem;
+            padding: 1.75rem;
             box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .schedule-card:hover {
+            box-shadow: var(--shadow-md);
         }
 
         .schedule-header {
@@ -919,9 +1010,17 @@
             flex: 0 0 calc(33.333% - 1rem);
             background: var(--white);
             border-radius: var(--radius-lg);
-            padding: 1.75rem;
+            padding: 2rem;
             box-shadow: var(--shadow);
             position: relative;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
         }
 
         .testimonial-quote {
@@ -1004,11 +1103,13 @@
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: var(--transition);
+            border: 1px solid var(--border);
         }
 
         .donation-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-xl);
+            border-color: rgba(0, 83, 197, 0.15);
         }
 
         .donation-img {
@@ -1090,9 +1191,29 @@
 
         .donation-progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: linear-gradient(90deg, var(--primary) 0%, #2980ef 50%, var(--primary-dark) 100%);
+            background-size: 200% 100%;
             border-radius: 50px;
-            transition: width 1s ease;
+            transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: progressShine 2.5s ease infinite;
+            position: relative;
+        }
+
+        .donation-progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 6px;
+            height: 100%;
+            background: rgba(255,255,255,0.6);
+            border-radius: 50px;
+            filter: blur(2px);
+        }
+
+        @keyframes progressShine {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 100% center; }
         }
 
         .donation-stats {
@@ -1132,28 +1253,53 @@
             justify-content: center;
             gap: 0.5rem;
             width: 100%;
-            padding: 0.875rem;
-            background: var(--primary);
+            padding: 0.9rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: var(--white);
             border: none;
-            border-radius: var(--radius);
+            border-radius: 50px;
             font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
             text-decoration: none;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-donate:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-deeper) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 83, 197, 0.35);
         }
 
         /* ===== CTA SECTION ===== */
         .cta-section {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            padding: 5rem 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 50%, var(--primary-deeper) 100%);
+            padding: 6rem 1rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .cta-section::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
         }
 
         .cta-content {
@@ -1185,38 +1331,43 @@
         .btn-cta-primary {
             background: var(--white);
             color: var(--primary);
-            padding: 1rem 2rem;
-            border-radius: var(--radius);
+            padding: 1rem 2.25rem;
+            border-radius: 50px;
             font-weight: 700;
             text-decoration: none;
             transition: var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         }
 
         .btn-cta-primary:hover {
             background: var(--primary-light);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
         }
 
         .btn-cta-outline {
             background: transparent;
             color: var(--white);
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            padding: 1rem 2rem;
-            border-radius: var(--radius);
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            padding: 1rem 2.25rem;
+            border-radius: 50px;
             font-weight: 600;
             text-decoration: none;
             transition: var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
         }
 
         .btn-cta-outline:hover {
             border-color: var(--white);
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-3px);
         }
 
         /* ===== LIGHTBOX ===== */
@@ -1441,13 +1592,26 @@
         @media (prefers-reduced-motion: no-preference) {
             .fade-up {
                 opacity: 0;
-                transform: translateY(20px);
-                transition: opacity 0.6s ease, transform 0.6s ease;
+                transform: translateY(30px);
+                transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
             }
 
             .fade-up.visible {
                 opacity: 1;
                 transform: translateY(0);
+            }
+
+            /* Staggered children animation */
+            .fade-up:nth-child(2) { transition-delay: 0.1s; }
+            .fade-up:nth-child(3) { transition-delay: 0.2s; }
+            .fade-up:nth-child(4) { transition-delay: 0.3s; }
+            .fade-up:nth-child(5) { transition-delay: 0.15s; }
+            .fade-up:nth-child(6) { transition-delay: 0.25s; }
+
+            /* Shimmer effect on section load */
+            @keyframes shimmer {
+                0% { background-position: -200% center; }
+                100% { background-position: 200% center; }
             }
         }
     </style>
@@ -1524,7 +1688,9 @@
     <section class="section">
         <div class="container">
             <div class="section-header fade-up">
+                <span class="section-badge"><i class="fas fa-newspaper"></i> Terbaru</span>
                 <h2 class="section-title">Berita & Artikel</h2>
+                <p class="section-desc">Informasi terkini seputar kegiatan dan berita dari Masjid Agung Al-Azhar</p>
             </div>
             @if ($featuredPosts->count() > 0)
                 <div class="posts-featured">
@@ -1577,7 +1743,9 @@
     <section class="section section-alt">
         <div class="container">
             <div class="section-header fade-up">
+                <span class="section-badge"><i class="fas fa-mosque"></i> Kegiatan</span>
                 <h2 class="section-title">Layanan & Kegiatan</h2>
+                <p class="section-desc">Program dakwah dan kegiatan rutin Masjid Agung Al-Azhar</p>
             </div>
 
             <!-- Row 1: 2 Featured Cards -->
@@ -1657,6 +1825,7 @@
     <section class="section">
         <div class="container">
             <div class="section-header fade-up">
+                <span class="section-badge"><i class="fab fa-instagram"></i> Social Media</span>
                 <h2 class="section-title">Instagram @masjidagungalazhar</h2>
             </div>
             
@@ -1679,12 +1848,37 @@
         </div>
     </section>
 
+    <!-- YouTube Video Gallery Section -->
+    <section class="section section-alt">
+        <div class="container">
+            <div class="section-header fade-up">
+                <span class="section-badge"><i class="fab fa-youtube"></i> Video</span>
+                <h2 class="section-title">Video Gallery</h2>
+                <p class="section-desc">Saksikan kajian, khutbah, dan kegiatan Masjid Agung Al-Azhar</p>
+            </div>
+
+            <div class="fade-up" style="width: 100%; border-radius: var(--radius-lg); overflow: hidden;">
+                <!-- Elfsight YouTube Gallery Widget -->
+                <div class="elfsight-app-a0e07724-d5c6-4540-a51b-1d39d9a7436d" data-elfsight-app-lazy></div>
+            </div>
+
+            <div class="text-center mt-4 fade-up">
+                <a href="https://www.youtube.com/@MasjidAgungAlAzhar" target="_blank" class="btn btn-primary"
+                    style="background: #FF0000; color: var(--white); border: none;">
+                    <i class="fab fa-youtube"></i> Kunjungi Channel YouTube Kami
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Testimonials Section -->
     @if ($testimonials->count() > 0)
         <section class="section">
             <div class="container">
                 <div class="section-header fade-up">
+                    <span class="section-badge"><i class="fas fa-comments"></i> Ulasan</span>
                     <h2 class="section-title">Testimonial</h2>
+                    <p class="section-desc">Apa kata jamaah tentang Masjid Agung Al-Azhar</p>
                 </div>
                 <div class="testimonials-slider fade-up">
                     <div class="testimonials-track" id="testimonialTrack">
@@ -1723,7 +1917,9 @@
         <section class="section section-alt">
             <div class="container">
                 <div class="section-header fade-up">
+                    <span class="section-badge"><i class="fas fa-heart"></i> Donasi</span>
                     <h2 class="section-title">Salurkan Donasi Anda</h2>
+                    <p class="section-desc">Mari berpartisipasi dalam program kebaikan untuk umat</p>
                 </div>
                 <div class="donations-grid">
                     @foreach ($donations as $donation)
