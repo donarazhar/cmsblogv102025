@@ -373,7 +373,7 @@
                     <label class="form-label">Status</label>
                     <div class="switch-wrapper">
                         <label class="switch">
-                            <input type="checkbox" name="is_active"
+                            <input type="checkbox" name="is_active" value="1"
                                 {{ old('is_active', $tag->is_active) ? 'checked' : '' }}>
                             <span class="slider"></span>
                         </label>

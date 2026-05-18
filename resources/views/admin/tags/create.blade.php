@@ -335,7 +335,7 @@
                     <label class="form-label">Status</label>
                     <div class="switch-wrapper">
                         <label class="switch">
-                            <input type="checkbox" name="is_active" {{ old('is_active', true) ? 'checked' : '' }}>
+                            <input type="checkbox" name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}>
                             <span class="slider"></span>
                         </label>
                         <span style="color: #6b7280; font-size: 0.95rem;">Aktifkan tag ini</span>
