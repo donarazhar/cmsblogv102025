@@ -13,9 +13,7 @@ use App\Models\Donation;
 use App\Models\DonationTransaction;
 use App\Models\Program;
 use App\Models\Announcement;
-use App\Models\Gallery;
-use App\Models\GalleryAlbum;
-use App\Models\Schedule;
+
 use App\Models\Slider;
 use App\Models\Staff;
 use App\Models\Testimonial;
@@ -57,13 +55,10 @@ class DashboardController extends Controller
             'total_programs'       => Program::count(),
             'active_programs'      => Program::where('is_active', true)->count(),
 
-            // Galeri
-            'total_albums'         => GalleryAlbum::count(),
-            'total_photos'         => Gallery::count(),
 
             // Konten Lainnya
             'active_sliders'       => Slider::where('is_active', true)->count(),
-            'active_schedules'     => Schedule::where('is_active', true)->count(),
+
             'active_announcements' => Announcement::where('is_active', true)->count(),
             'total_staff'          => Staff::count(),
             'total_testimonials'   => Testimonial::count(),

@@ -230,13 +230,7 @@
                 <div class="stat-label">Program Aktif</div>
             </div>
         </a>
-        <a href="{{ route('admin.gallery.albums.index') }}" class="stat-card">
-            <div class="stat-icon cyan"><i class="fas fa-images"></i></div>
-            <div>
-                <div class="stat-value">{{ number_format($stats['total_photos']) }}</div>
-                <div class="stat-label">Foto ({{ $stats['total_albums'] }} Album)</div>
-            </div>
-        </a>
+
         <div class="stat-card">
             <div class="stat-icon blue"><i class="fas fa-sliders-h"></i></div>
             <div>
@@ -244,13 +238,7 @@
                 <div class="stat-label">Hero Banner Aktif</div>
             </div>
         </div>
-        <div class="stat-card">
-            <div class="stat-icon green"><i class="fas fa-clock"></i></div>
-            <div>
-                <div class="stat-value">{{ number_format($stats['active_schedules']) }}</div>
-                <div class="stat-label">Jadwal Aktif</div>
-            </div>
-        </div>
+
     </div>
 
     {{-- ROW 3: Statistik Interaksi & Donasi --}}

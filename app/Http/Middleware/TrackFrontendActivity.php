@@ -103,15 +103,6 @@ class TrackFrontendActivity
             return 'donations';
         }
 
-        // Gallery
-        if (str_contains($path, 'gallery') || str_contains($routeName, 'gallery')) {
-            return 'gallery';
-        }
-
-        // Schedules
-        if (str_contains($path, 'schedules') || str_contains($routeName, 'schedules')) {
-            return 'schedules';
-        }
 
         // Staff/About
         if (str_contains($path, 'staff') || str_contains($path, 'about') || str_contains($routeName, 'staff')) {
