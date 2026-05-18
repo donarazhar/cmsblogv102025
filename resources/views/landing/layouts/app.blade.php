@@ -958,12 +958,6 @@
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a href="{{ route('gallery') }}"
-                            class="nav-link {{ request()->routeIs('gallery') || request()->routeIs('gallery.*') ? 'active' : '' }}">
-                            Galeri
-                        </a>
-                    </li>
 
                     <li class="nav-item">
                         <a href="{{ route('blog') }}"
@@ -1073,10 +1067,7 @@
                                 <i class="fas fa-chevron-right"></i>
                                 Program
                             </a>
-                            <a href="{{ route('gallery') }}" class="footer-link">
-                                <i class="fas fa-chevron-right"></i>
-                                Galeri
-                            </a>
+
                             <a href="{{ route('blog') }}" class="footer-link">
                                 <i class="fas fa-chevron-right"></i>
                                 Berita & Artikel
