@@ -1,15 +1,15 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Manajemen Program & Kegiatan')
+@section('title', 'Manajemen Layanan & Kegiatan')
 
 @section('content')
     <div class="page-header">
-        <h1 class="page-title">Manajemen Program & Kegiatan</h1>
-        <p class="page-subtitle">Kelola program dan kegiatan masjid</p>
+        <h1 class="page-title">Manajemen Layanan & Kegiatan</h1>
+        <p class="page-subtitle">Kelola layanan dan kegiatan masjid</p>
         <div class="breadcrumb">
             <a href="{{ route('admin.dashboard') }}">Dashboard</a>
             <span>/</span>
-            <span>Programs</span>
+            <span>Layanan</span>
         </div>
     </div>
 
@@ -17,9 +17,9 @@
     <div class="card">
         <div class="card-header">
             <div class="card-header-flex">
-                <h3 class="card-title">Daftar Program</h3>
+                <h3 class="card-title">Daftar Layanan</h3>
                 <a href="{{ route('admin.programs.create') }}" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Tambah Program
+                    <i class="fas fa-plus"></i> Tambah Layanan
                 </a>
             </div>
         </div>
@@ -29,7 +29,7 @@
                     <thead>
                         <tr>
                             <th width="5%">No</th>
-                            <th width="30%">Nama Program</th>
+                            <th width="30%">Nama Layanan</th>
                             <th width="12%">Tipe</th>
                             <th width="15%">Info Kegiatan</th>
                             <th width="10%">Status</th>
@@ -115,7 +115,7 @@
                                         </a>
 
                                         <!-- Delete -->
-                                        <form action="{{ route('admin.programs.destroy', $program) }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus program ini?')">
+                                        <form action="{{ route('admin.programs.destroy', $program) }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus layanan ini?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger btn-action" title="Hapus">
@@ -129,9 +129,9 @@
                             <tr>
                                 <td colspan="6" class="text-center py-5">
                                     <i class="fas fa-calendar-check fa-3x text-muted mb-3"></i>
-                                    <p class="text-muted">Belum ada program kegiatan</p>
+                                    <p class="text-muted">Belum ada layanan kegiatan</p>
                                     <a href="{{ route('admin.programs.create') }}" class="btn btn-primary mt-2">
-                                        <i class="fas fa-plus"></i> Tambah Program Pertama
+                                        <i class="fas fa-plus"></i> Tambah Layanan Pertama
                                     </a>
                                 </td>
                             </tr>

@@ -954,7 +954,7 @@
 
                     <li class="nav-item">
                         <a href="{{ route('programs') }}" class="nav-link {{ request()->routeIs('programs') || request()->routeIs('program.*') ? 'active' : '' }}">
-                            Layanan Masjid
+                            Layanan & Kegiatan
                         </a>
                     </li>
 

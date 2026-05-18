@@ -8,7 +8,7 @@
         <div class="container">
             <div class="header-content">
                 <h1><i class="fas fa-search"></i> Pencarian</h1>
-                <p>Temukan informasi, berita, program, dan kegiatan Masjid Agung Al Azhar</p>
+                <p>Temukan informasi, berita, layanan, dan kegiatan Masjid Agung Al Azhar</p>
 
                 <!-- Search Form -->
                 <form method="GET" action="{{ route('search') }}" class="search-form">
@@ -79,7 +79,7 @@
                     @if ($programs->count() > 0)
                         <div class="result-group">
                             <div class="result-group-header">
-                                <h2><i class="fas fa-mosque"></i> Program</h2>
+                                <h2><i class="fas fa-mosque"></i> Layanan Masjid</h2>
                                 <span class="result-count">{{ $programs->count() }} hasil</span>
                             </div>
                             <div class="result-list">
@@ -168,7 +168,7 @@
                         <i class="fas fa-compass"></i>
                     </div>
                     <h3>Jelajahi Masjid Agung Al Azhar</h3>
-                    <p>Ketik kata kunci untuk mencari berita, program, donasi, dan informasi lainnya</p>
+                    <p>Ketik kata kunci untuk mencari berita, layanan, donasi, dan informasi lainnya</p>
 
                     <div class="quick-links">
                         <h4>Pencarian Populer</h4>

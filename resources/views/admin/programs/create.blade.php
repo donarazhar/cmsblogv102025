@@ -1,12 +1,12 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Tambah Program')
+@section('title', 'Tambah Layanan')
 
 @section('content')
     <div class="page-header">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div>
-                <h1 class="page-title">Tambah Program</h1>
+                <h1 class="page-title">Tambah Layanan</h1>
                 <div class="breadcrumb">
                     <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                     <span>/</span>
@@ -35,10 +35,10 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="name">Nama Program <span class="required">*</span></label>
+                            <label for="name">Nama Layanan <span class="required">*</span></label>
                             <input type="text" name="name" id="name"
                                 class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
-                                required placeholder="Masukkan nama program">
+                                required placeholder="Masukkan nama layanan">
                             @error('name')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -58,7 +58,7 @@
                         <div class="form-group">
                             <label for="description">Deskripsi Singkat <span class="required">*</span></label>
                             <textarea name="description" id="description" rows="3"
-                                class="form-control @error('description') is-invalid @enderror" required placeholder="Deskripsi singkat program">{{ old('description') }}</textarea>
+                                class="form-control @error('description') is-invalid @enderror" required placeholder="Deskripsi singkat layanan">{{ old('description') }}</textarea>
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -67,14 +67,14 @@
                         <div class="form-group">
                             <label for="content">Konten Detail</label>
                             <textarea name="content" id="content" class="form-control @error('content') is-invalid @enderror"
-                                placeholder="Detail lengkap program (opsional)">{{ old('content') }}</textarea>
+                                placeholder="Detail lengkap layanan (opsional)">{{ old('content') }}</textarea>
                             @error('content')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
                         <div class="form-group">
-                            <label for="image">Gambar Program</label>
+                            <label for="image">Gambar Layanan</label>
                             <div class="image-upload-wrapper">
                                 <input type="file" name="image" id="image"
                                     class="form-control-file @error('image') is-invalid @enderror" accept="image/*"
@@ -224,11 +224,11 @@
                 <!-- Program Type & Settings -->
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Pengaturan Program</h3>
+                        <h3 class="card-title">Pengaturan Layanan</h3>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="type">Tipe Program <span class="required">*</span></label>
+                            <label for="type">Tipe Layanan <span class="required">*</span></label>
                             <select name="type" id="type"
                                 class="form-control @error('type') is-invalid @enderror" required>
                                 <option value="">Pilih Tipe</option>
@@ -289,7 +289,7 @@
                             <label class="checkbox-label">
                                 <input type="checkbox" name="is_active" value="1"
                                     {{ old('is_active', 1) ? 'checked' : '' }}>
-                                <span>Program Aktif</span>
+                                <span>Layanan Aktif</span>
                             </label>
                         </div>
 
@@ -346,7 +346,7 @@
                     <div class="card-body">
                         <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">
                             <i class="fas fa-save"></i>
-                            Simpan Program
+                            Simpan Layanan
                         </button>
                         <a href="{{ route('admin.programs.index') }}" class="btn btn-secondary" style="width: 100%;">
                             <i class="fas fa-times"></i>

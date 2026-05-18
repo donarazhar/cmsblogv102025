@@ -1,14 +1,14 @@
 @extends('landing.layouts.app')
 
-@section('title', 'Program Kegiatan - ' . ($settings['site_name'] ?? 'Masjid Agung Al Azhar'))
+@section('title', 'Layanan & Kegiatan - ' . ($settings['site_name'] ?? 'Masjid Agung Al Azhar'))
 
 @section('content')
     <!-- Compact Page Header -->
     <section class="page-header">
         <div class="container">
             <div class="header-content" data-aos="fade-up">
-                <h1>Program & Kegiatan</h1>
-                <p>Ikuti berbagai program kegiatan keagamaan yang kami selenggarakan</p>
+                <h1>Layanan & Kegiatan</h1>
+                <p>Ikuti berbagai layanan dan kegiatan keagamaan yang kami selenggarakan</p>
             </div>
         </div>
     </section>

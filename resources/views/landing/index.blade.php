@@ -1619,7 +1619,7 @@
                 <div class="program-sidebar">
                     <div class="program-sidebar-header">
                         <i class="fas fa-list-ul"></i>
-                        Layanan Masjid
+                        Layanan & Kegiatan
                     </div>
                     <div class="program-sidebar-list">
                         @foreach ($programs->skip(6)->take(5) as $program)
