@@ -1577,7 +1577,7 @@
     <section class="section section-alt">
         <div class="container">
             <div class="section-header fade-up">
-                <h2 class="section-title">Layanan Kami</h2>
+                <h2 class="section-title">Layanan & Kegiatan</h2>
             </div>
 
             <!-- Row 1: 2 Featured Cards -->
