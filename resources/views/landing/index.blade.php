@@ -1651,53 +1651,7 @@
             </div>
         </div>
     </section>
-    <!-- Gallery Section (Hidden as requested) -->
-    {{-- 
-    <section class="section">
-        <div class="container">
-            <div class="section-header fade-up">
-                <h2 class="section-title">Galeri Kegiatan</h2>
-            </div>
-            <div class="gallery-grid">
-                @foreach ($galleries as $index => $gallery)
-                    <div class="gallery-item fade-up" onclick="openLightbox({{ $index }})">
-                        <img src="{{ $gallery->image ? asset('storage/' . $gallery->image) : '' }}"
-                            alt="{{ $gallery->title }}" loading="lazy">
-                        <div class="gallery-overlay">
-                            <span class="gallery-title">{{ $gallery->title }}</span>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
 
-            @if ($albums->count() > 0)
-                <div class="albums-grid">
-                    @foreach ($albums as $album)
-                        <a href="{{ route('gallery.album', $album->slug) }}" class="album-card fade-up">
-                            <div class="album-cover lazy-bg"
-                                data-bg="{{ $album->cover_image ? asset('storage/' . $album->cover_image) : '' }}"></div>
-                            <div class="album-body">
-                                <h4 class="album-title">{{ $album->name }}</h4>
-                                <div class="album-meta">
-                                    <span><i class="fas fa-images"></i> {{ $album->galleries_count }} Foto</span>
-                                    <span><i class="fas fa-calendar"></i>
-                                        {{ $album->event_date?->format('d M Y') ?? '-' }}</span>
-                                </div>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-            @endif
-
-            <div class="text-center mt-4 fade-up">
-                <a href="{{ route('gallery') }}" class="btn btn-primary"
-                    style="background: var(--primary); color: var(--white);">
-                    Lihat Semua Galeri <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-    </section>
-    --}}
 
     <!-- Instagram Feed Section -->
     <section class="section">
@@ -1724,78 +1678,7 @@
             </div>
         </div>
     </section>
-    <!-- Schedule Section (Hidden as requested, replaced by IG) -->
-    {{-- 
-    <section class="section section-alt">
-        <div class="container">
-            <div class="section-header fade-up">
-                <h2 class="section-title">Jadwal Kegiatan</h2>
-            </div>
-            <div class="schedule-grid">
-                <!-- Today's Schedule -->
-                <div class="schedule-card fade-up">
-                    <div class="schedule-header">
-                        <i class="fas fa-calendar-day"></i>
-                        <h3>Jadwal Hari Ini</h3>
-                    </div>
-                    @if ($todaySchedules->count() > 0)
-                        <div class="schedule-list">
-                            @foreach ($todaySchedules as $schedule)
-                                <div class="schedule-item">
-                                    <div class="schedule-time">{{ $schedule->formatted_time }}</div>
-                                    <div class="schedule-info">
-                                        <h4 class="schedule-title">{{ $schedule->title }}</h4>
-                                        @if ($schedule->location)
-                                            <p class="schedule-detail"><i class="fas fa-map-marker-alt"></i>
-                                                {{ $schedule->location }}</p>
-                                        @endif
-                                    </div>
-                                    <span class="schedule-badge"
-                                        style="background: {{ $schedule->color ?? 'var(--primary)' }};">
-                                        {{ ucfirst($schedule->type) }}
-                                    </span>
-                                </div>
-                            @endforeach
-                        </div>
-                    @else
-                        <p class="schedule-empty">Tidak ada jadwal untuk hari ini</p>
-                    @endif
-                </div>
 
-                <!-- Upcoming Events -->
-                <div class="schedule-card fade-up">
-                    <div class="schedule-header">
-                        <i class="fas fa-calendar-alt"></i>
-                        <h3>Event Mendatang</h3>
-                    </div>
-                    @if ($upcomingEvents->count() > 0)
-                        <div class="schedule-list">
-                            @foreach ($upcomingEvents as $event)
-                                <div class="schedule-item">
-                                    <div class="schedule-date">
-                                        <div class="schedule-date-day">{{ $event->date->format('d') }}</div>
-                                        <div class="schedule-date-month">{{ $event->date->format('M') }}</div>
-                                    </div>
-                                    <div class="schedule-info">
-                                        <h4 class="schedule-title">{{ $event->title }}</h4>
-                                        <p class="schedule-detail"><i class="fas fa-clock"></i>
-                                            {{ $event->formatted_time }}</p>
-                                        @if ($event->location)
-                                            <p class="schedule-detail"><i class="fas fa-map-marker-alt"></i>
-                                                {{ $event->location }}</p>
-                                        @endif
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    @else
-                        <p class="schedule-empty">Belum ada event mendatang</p>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </section>
-    --}}
     <!-- Testimonials Section -->
     @if ($testimonials->count() > 0)
         <section class="section">

@@ -9,12 +9,11 @@ use App\Models\{
     Contact,
     Donation,
     DonationTransaction,
-    Gallery,
-    GalleryAlbum,
+
     Page,
     Post,
     Program,
-    Schedule,
+
     Slider,
     Staff,
     Testimonial,
@@ -72,34 +71,7 @@ class LandingController extends Controller
                     ->limit(3)
                     ->get(),
 
-                'galleries' => Gallery::active()
-                    ->featured()
-                    ->images()
-                    ->ordered()
-                    ->select('id', 'title', 'image')
-                    ->limit(6)
-                    ->get(),
 
-                'albums' => GalleryAlbum::active()
-                    ->withCount('galleries')
-                    ->latest('event_date')
-                    ->select('id', 'name', 'slug', 'cover_image', 'event_date')
-                    ->limit(3)
-                    ->get(),
-
-                'todaySchedules' => Schedule::active()
-                    ->today()
-                    ->orderBy('start_time')
-                    ->select('id', 'title', 'type', 'start_time', 'end_time', 'location', 'speaker', 'color')
-                    ->limit(6)
-                    ->get(),
-
-                'upcomingEvents' => Schedule::active()
-                    ->where('type', 'event')
-                    ->upcoming(14) // 2 minggu ke depan saja
-                    ->select('id', 'title', 'date', 'start_time', 'location')
-                    ->limit(3)
-                    ->get(),
 
                 'testimonials' => Testimonial::approved()
                     ->featured()
@@ -305,39 +277,6 @@ class LandingController extends Controller
             ->with('success', 'Terima kasih! Komentar Anda telah dikirim dan menunggu persetujuan admin.');
     }
 
-    public function gallery()
-    {
-        $albums = GalleryAlbum::active()
-            ->withCount('galleries')
-            ->latest('event_date')
-            ->select('id', 'name', 'slug', 'description', 'cover_image', 'event_date')
-            ->paginate(12);
-
-        return view('landing.gallery', compact('albums'));
-    }
-
-    public function galleryAlbum(string $slug)
-    {
-        $data = Cache::remember("album_{$slug}_v3", self::CACHE_MEDIUM, function () use ($slug) {
-            $album = GalleryAlbum::where('slug', $slug)
-                ->where('is_active', true)
-                ->firstOrFail();
-
-            $galleries = Gallery::where('album_id', $album->id)
-                ->where('is_active', true)
-                ->ordered()
-                ->select('id', 'title', 'image', 'type')
-                ->get();
-
-            $pageTitle = $album->name;
-            $pageDescription = \Illuminate\Support\Str::limit(strip_tags($album->description), 160);
-            $pageImage = $album->cover_image ? asset('storage/' . $album->cover_image) : null;
-
-            return compact('album', 'galleries', 'pageTitle', 'pageDescription', 'pageImage');
-        });
-
-        return view('landing.gallery-album', $data);
-    }
 
     public function contact()
     {

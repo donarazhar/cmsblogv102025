@@ -9,13 +9,12 @@ use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DonationController;
 use App\Http\Controllers\Admin\DonationTransactionController;
-use App\Http\Controllers\Admin\GalleryAlbumController;
-use App\Http\Controllers\Admin\GalleryController;
+
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ProgramController;
-use App\Http\Controllers\Admin\ScheduleController;
+
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\StaffController;
@@ -67,9 +66,6 @@ Route::get('/blog/{slug}', [LandingController::class, 'blogDetail'])->name('blog
 // Route untuk submit comment
 Route::post('/blog/{slug}/comment', [LandingController::class, 'blogCommentSubmit'])->name('blog.comment.submit');
 
-// Gallery
-Route::get('/gallery', [LandingController::class, 'gallery'])->name('gallery');
-Route::get('/gallery/{slug}', [LandingController::class, 'galleryAlbum'])->name('gallery.album');
 
 // Donations
 Route::get('/donations', [LandingController::class, 'donations'])->name('donations');
@@ -211,23 +207,6 @@ Route::middleware('auth')->group(function () {
         Route::post('programs/upload-image', [ProgramController::class, 'uploadImage'])
             ->name('programs.upload-image');
 
-        // Gallery Routes
-        Route::prefix('gallery')->name('gallery.')->group(function () {
-            Route::resource('albums', GalleryAlbumController::class);
-            Route::post('albums/{album}/toggle', [GalleryAlbumController::class, 'toggleStatus'])
-                ->name('albums.toggle');
-
-            Route::resource('photos', GalleryController::class);
-            Route::post('photos/{photo}/toggle', [GalleryController::class, 'toggleStatus'])
-                ->name('photos.toggle');
-            Route::post('photos/bulk-upload', [GalleryController::class, 'bulkUpload'])
-                ->name('photos.bulk-upload');
-        });
-
-        // Schedules Routes
-        Route::resource('schedules', ScheduleController::class);
-        Route::post('schedules/{schedule}/toggle-active', [ScheduleController::class, 'toggleActive'])
-            ->name('schedules.toggle-active');
 
         // Announcements Routes
         Route::resource('announcements', AnnouncementController::class);

@@ -774,12 +774,7 @@
                         <span>Hero Banner</span>
                         <span class="menu-item-tooltip">Hero Banner</span>
                     </a>
-                    <a href="{{ route('admin.schedules.index') }}"
-                        class="menu-item {{ request()->routeIs('admin.schedules.*') ? 'active' : '' }}">
-                        <i class="fas fa-clock"></i>
-                        <span>Jadwal Kegiatan</span>
-                        <span class="menu-item-tooltip">Jadwal Kegiatan</span>
-                    </a>
+
                     <a href="{{ route('admin.announcements.index') }}"
                         class="menu-item {{ request()->routeIs('admin.announcements.*') ? 'active' : '' }}">
                         <i class="fas fa-bullhorn"></i>
@@ -867,13 +862,7 @@
                 <span class="menu-item-tooltip">Program Masjid</span>
             </a>
 
-            <!-- Galeri (Standalone) -->
-            <a href="{{ route('admin.gallery.albums.index') }}"
-                class="menu-dashboard {{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
-                <i class="fas fa-photo-video"></i>
-                <span>Galeri</span>
-                <span class="menu-item-tooltip">Galeri</span>
-            </a>
+
 
             <!-- Berita/Artikel (Standalone) -->
             <a href="{{ route('admin.posts.index') }}"
