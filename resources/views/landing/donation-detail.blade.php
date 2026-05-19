@@ -787,8 +787,8 @@
 
                         <!-- CTA Button -->
                         <a href="{{ route('contact') }}" class="btn-donate">
-                            <i class="fas fa-heart"></i>
-                            Donasi Sekarang
+                            <i class="fas fa-comments"></i>
+                            Kontak Kami
                         </a>
 
                         <div class="secure-text">
