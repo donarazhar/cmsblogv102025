@@ -967,6 +967,13 @@
                     </li>
 
                     <li class="nav-item">
+                        <a href="{{ route('donations') }}"
+                            class="nav-link {{ request()->routeIs('donations') || request()->routeIs('donations.*') ? 'active' : '' }}">
+                            Donasi
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
                         <a href="{{ route('contact') }}"
                             class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">
                             Kontak
@@ -1071,6 +1078,10 @@
                             <a href="{{ route('blog') }}" class="footer-link">
                                 <i class="fas fa-chevron-right"></i>
                                 Berita & Artikel
+                            </a>
+                            <a href="{{ route('donations') }}" class="footer-link">
+                                <i class="fas fa-chevron-right"></i>
+                                Donasi
                             </a>
                             <a href="{{ route('contact') }}" class="footer-link">
                                 <i class="fas fa-chevron-right"></i>
