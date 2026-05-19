@@ -147,6 +147,62 @@
             margin-bottom: 0;
         }
 
+        .content-body h1, .content-body h2, .content-body h3, .content-body h4, .content-body h5, .content-body h6 {
+            color: var(--text-dark);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+        
+        .content-body h1 { font-size: 1.8rem; }
+        .content-body h2 { font-size: 1.5rem; }
+        .content-body h3 { font-size: 1.25rem; }
+
+        .content-body ul, .content-body ol {
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+
+        .content-body li {
+            margin-bottom: 8px;
+        }
+
+        .content-body img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 16px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .content-body blockquote {
+            border-left: 4px solid var(--primary);
+            margin: 16px 0;
+            color: var(--text-light);
+            font-style: italic;
+            background: var(--bg);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .content-body a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .content-body a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+        
+        .content-body strong, .content-body b {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
         /* ===== DONORS LIST ===== */
         .donors-list {
             display: flex;
