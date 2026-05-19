@@ -249,47 +249,7 @@
 
             <!-- Sidebar -->
             <div style="display: flex; flex-direction: column; gap: 20px;">
-                <!-- Statistics -->
-                <div
-                    style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-                    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; color: var(--dark);">
-                        <i class="fas fa-chart-line" style="color: var(--primary);"></i> Statistik
-                    </h3>
 
-                    <div style="display: flex; flex-direction: column; gap: 16px;">
-                        <div
-                            style="padding: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; color: white;">
-                            <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 4px;">Terkumpul</div>
-                            <div style="font-size: 1.5rem; font-weight: 700;">Rp
-                                {{ number_format($donation->current_amount, 0, ',', '.') }}</div>
-                            @if ($donation->target_amount)
-                                <div style="font-size: 0.85rem; opacity: 0.9; margin-top: 4px;">
-                                    {{ number_format($donation->percentage, 1) }}% dari target</div>
-                            @endif
-                        </div>
-
-                        <div
-                            style="padding: 16px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 10px; color: white;">
-                            <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 4px;">Total Donatur</div>
-                            <div style="font-size: 1.5rem; font-weight: 700;">{{ $donation->donor_count }}</div>
-                        </div>
-
-                        <div
-                            style="padding: 16px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 10px; color: white;">
-                            <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 4px;">Total Transaksi</div>
-                            <div style="font-size: 1.5rem; font-weight: 700;">{{ $donation->transactions_count ?? 0 }}
-                            </div>
-                        </div>
-
-                        @if ($donation->days_left !== null)
-                            <div
-                                style="padding: 16px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 10px; color: white;">
-                                <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 4px;">Waktu Tersisa</div>
-                                <div style="font-size: 1.5rem; font-weight: 700;">{{ $donation->days_left }} Hari</div>
-                            </div>
-                        @endif
-                    </div>
-                </div>
 
                 <!-- Settings -->
                 <div
