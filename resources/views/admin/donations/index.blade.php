@@ -17,66 +17,7 @@
         </div>
     </div>
 
-    <!-- Statistics Cards -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px;">
-        <div
-            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 24px; color: white;">
-            <div style="display: flex; justify-content: space-between; align-items: start;">
-                <div>
-                    <div style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 8px;">Total Campaign</div>
-                    <div style="font-size: 2rem; font-weight: 700;">{{ $donations->total() }}</div>
-                </div>
-                <div
-                    style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                    <i class="fas fa-bullhorn" style="font-size: 1.5rem;"></i>
-                </div>
-            </div>
-        </div>
 
-        <div
-            style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 12px; padding: 24px; color: white;">
-            <div style="display: flex; justify-content: space-between; align-items: start;">
-                <div>
-                    <div style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 8px;">Campaign Aktif</div>
-                    <div style="font-size: 2rem; font-weight: 700;">{{ $donations->where('is_active', true)->count() }}
-                    </div>
-                </div>
-                <div
-                    style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                    <i class="fas fa-check-circle" style="font-size: 1.5rem;"></i>
-                </div>
-            </div>
-        </div>
-
-        <div
-            style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 12px; padding: 24px; color: white;">
-            <div style="display: flex; justify-content: space-between; align-items: start;">
-                <div>
-                    <div style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 8px;">Total Terkumpul</div>
-                    <div style="font-size: 1.5rem; font-weight: 700;">Rp
-                        {{ number_format($donations->sum('current_amount'), 0, ',', '.') }}</div>
-                </div>
-                <div
-                    style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                    <i class="fas fa-hand-holding-usd" style="font-size: 1.5rem;"></i>
-                </div>
-            </div>
-        </div>
-
-        <div
-            style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 12px; padding: 24px; color: white;">
-            <div style="display: flex; justify-content: space-between; align-items: start;">
-                <div>
-                    <div style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 8px;">Total Donatur</div>
-                    <div style="font-size: 2rem; font-weight: 700;">{{ $donations->sum('donor_count') }}</div>
-                </div>
-                <div
-                    style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                    <i class="fas fa-users" style="font-size: 1.5rem;"></i>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
         @if ($donations->count() > 0)
@@ -139,10 +80,6 @@
                                             </span>
                                             <span><i class="fas fa-calendar"></i>
                                                 {{ $donation->created_at->format('d M Y') }}</span>
-                                            @if ($donation->end_date)
-                                                <span><i class="fas fa-clock"></i> {{ $donation->days_left }} hari
-                                                    lagi</span>
-                                            @endif
                                         </div>
                                     </div>
 
@@ -171,32 +108,6 @@
                                 <p style="color: #6b7280; margin-bottom: 16px; font-size: 0.95rem;">
                                     {{ Str::limit($donation->description, 150) }}</p>
 
-                                <!-- Progress -->
-                                <div style="margin-bottom: 12px;">
-                                    <div
-                                        style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;">
-                                        <span style="font-weight: 600; color: var(--primary);">
-                                            Rp {{ number_format($donation->current_amount, 0, ',', '.') }}
-                                        </span>
-                                        @if ($donation->target_amount)
-                                            <span style="color: #6b7280;">
-                                                Target: Rp {{ number_format($donation->target_amount, 0, ',', '.') }}
-                                            </span>
-                                        @endif
-                                    </div>
-                                    <div
-                                        style="width: 100%; height: 8px; background: #e5e7eb; border-radius: 10px; overflow: hidden;">
-                                        <div
-                                            style="width: {{ $donation->percentage }}%; height: 100%; background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%); transition: width 0.3s ease;">
-                                        </div>
-                                    </div>
-                                    <div
-                                        style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.85rem; color: #6b7280;">
-                                        <span><i class="fas fa-percentage"></i>
-                                            {{ number_format($donation->percentage, 1) }}% tercapai</span>
-                                        <span><i class="fas fa-users"></i> {{ $donation->donor_count }} donatur</span>
-                                    </div>
-                                </div>
 
                                 <!-- Action Buttons -->
                                 <div style="display: flex; gap: 8px; flex-wrap: wrap;">

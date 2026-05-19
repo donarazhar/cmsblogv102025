@@ -499,34 +499,7 @@
         </div>
     </section>
 
-    <!-- Statistics -->
-    <section class="stats-section">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon primary">
-                        <i class="fas fa-hand-holding-heart"></i>
-                    </div>
-                    <div class="stat-value">Rp {{ number_format($stats['total_collected'] / 1000000, 1) }}M</div>
-                    <div class="stat-label">Total Terkumpul</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon success">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="stat-value">{{ number_format($stats['total_donors']) }}</div>
-                    <div class="stat-label">Total Donatur</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon warning">
-                        <i class="fas fa-clipboard-list"></i>
-                    </div>
-                    <div class="stat-value">{{ $stats['active_campaigns'] }}</div>
-                    <div class="stat-label">Campaign Aktif</div>
-                </div>
-            </div>
-        </div>
-    </section>
+
 
     <!-- Featured Donations -->
     @if ($featuredDonations->count() > 0)
@@ -556,43 +529,11 @@
                                 <h3 class="donation-title">{{ $donation->campaign_name }}</h3>
                                 <p class="donation-desc">{{ Str::limit($donation->description, 80) }}</p>
 
-                                @if ($donation->target_amount)
-                                    <div class="donation-progress">
-                                        <div class="progress-header">
-                                            <span class="progress-label">Terkumpul</span>
-                                            <span
-                                                class="progress-percent">{{ number_format($donation->percentage ?? 0, 1) }}%</span>
-                                        </div>
-                                        <div class="progress-bar">
-                                            <div class="progress-fill"
-                                                style="width: {{ min($donation->percentage ?? 0, 100) }}%;"></div>
-                                        </div>
-                                        <div class="progress-amounts">
-                                            <span class="amount-current">Rp
-                                                {{ number_format($donation->current_amount, 0, ',', '.') }}</span>
-                                            <span class="amount-target">dari Rp
-                                                {{ number_format($donation->target_amount, 0, ',', '.') }}</span>
-                                        </div>
-                                    </div>
-                                @else
-                                    <div class="donation-amount-box">
-                                        <div class="amount-box-label">Terkumpul</div>
-                                        <div class="amount-box-value">Rp
-                                            {{ number_format($donation->current_amount, 0, ',', '.') }}</div>
-                                    </div>
-                                @endif
-
                                 <div class="donation-meta">
                                     <span class="meta-item">
                                         <i class="fas fa-users"></i>
                                         {{ number_format($donation->donor_count) }} Donatur
                                     </span>
-                                    @if ($donation->days_left ?? false)
-                                        <span class="meta-item">
-                                            <i class="fas fa-clock"></i>
-                                            {{ $donation->days_left }} hari lagi
-                                        </span>
-                                    @endif
                                 </div>
 
                                 <a href="{{ route('donations.show', $donation->slug) }}" class="btn-donate">
@@ -634,43 +575,11 @@
                                 <h3 class="donation-title">{{ $donation->campaign_name }}</h3>
                                 <p class="donation-desc">{{ Str::limit($donation->description, 80) }}</p>
 
-                                @if ($donation->target_amount)
-                                    <div class="donation-progress">
-                                        <div class="progress-header">
-                                            <span class="progress-label">Terkumpul</span>
-                                            <span
-                                                class="progress-percent">{{ number_format($donation->percentage ?? 0, 1) }}%</span>
-                                        </div>
-                                        <div class="progress-bar">
-                                            <div class="progress-fill"
-                                                style="width: {{ min($donation->percentage ?? 0, 100) }}%;"></div>
-                                        </div>
-                                        <div class="progress-amounts">
-                                            <span class="amount-current">Rp
-                                                {{ number_format($donation->current_amount, 0, ',', '.') }}</span>
-                                            <span class="amount-target">dari Rp
-                                                {{ number_format($donation->target_amount, 0, ',', '.') }}</span>
-                                        </div>
-                                    </div>
-                                @else
-                                    <div class="donation-amount-box">
-                                        <div class="amount-box-label">Terkumpul</div>
-                                        <div class="amount-box-value">Rp
-                                            {{ number_format($donation->current_amount, 0, ',', '.') }}</div>
-                                    </div>
-                                @endif
-
                                 <div class="donation-meta">
                                     <span class="meta-item">
                                         <i class="fas fa-users"></i>
                                         {{ number_format($donation->donor_count) }} Donatur
                                     </span>
-                                    @if ($donation->days_left ?? false)
-                                        <span class="meta-item">
-                                            <i class="fas fa-clock"></i>
-                                            {{ $donation->days_left }} hari lagi
-                                        </span>
-                                    @endif
                                 </div>
 
                                 <a href="{{ route('donations.show', $donation->slug) }}" class="btn-donate">

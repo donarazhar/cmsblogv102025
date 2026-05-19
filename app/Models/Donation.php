@@ -29,7 +29,9 @@ class Donation extends Model
         'is_featured',
         'is_active',
         'order',
-        'payment_methods',
+        'bank_name',
+        'bank_account',
+        'qris_image',
     ];
 
     protected $casts = [

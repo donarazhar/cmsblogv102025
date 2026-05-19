@@ -34,14 +34,14 @@ class DonationController extends Controller
             'content' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'category' => 'required|in:infaq,sedekah,zakat,wakaf,qurban,renovation,program,other',
-            'target_amount' => 'nullable|numeric|min:0',
             'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
             'is_urgent' => 'boolean',
             'is_featured' => 'boolean',
             'is_active' => 'boolean',
             'order' => 'nullable|integer|min:0',
-            'payment_methods' => 'nullable|array',
+            'bank_name' => 'nullable|string|max:255',
+            'bank_account' => 'nullable|string|max:255',
+            'qris_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         // Generate slug if not provided
@@ -60,9 +60,9 @@ class DonationController extends Controller
         $validated['is_active'] = $request->has('is_active');
         $validated['order'] = $validated['order'] ?? 0;
 
-        // Handle payment methods
-        if ($request->has('payment_methods')) {
-            $validated['payment_methods'] = $request->payment_methods;
+        // Handle QRIS image upload
+        if ($request->hasFile('qris_image')) {
+            $validated['qris_image'] = $request->file('qris_image')->store('donations/qris', 'public');
         }
 
         Donation::create($validated);
@@ -94,14 +94,14 @@ class DonationController extends Controller
             'content' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'category' => 'required|in:infaq,sedekah,zakat,wakaf,qurban,renovation,program,other',
-            'target_amount' => 'nullable|numeric|min:0',
             'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
             'is_urgent' => 'boolean',
             'is_featured' => 'boolean',
             'is_active' => 'boolean',
             'order' => 'nullable|integer|min:0',
-            'payment_methods' => 'nullable|array',
+            'bank_name' => 'nullable|string|max:255',
+            'bank_account' => 'nullable|string|max:255',
+            'qris_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         // Generate slug if not provided
@@ -124,11 +124,12 @@ class DonationController extends Controller
         $validated['is_active'] = $request->has('is_active');
         $validated['order'] = $validated['order'] ?? $donation->order;
 
-        // Handle payment methods
-        if ($request->has('payment_methods')) {
-            $validated['payment_methods'] = $request->payment_methods;
-        } else {
-            $validated['payment_methods'] = [];
+        // Handle QRIS image upload
+        if ($request->hasFile('qris_image')) {
+            if ($donation->qris_image) {
+                Storage::disk('public')->delete($donation->qris_image);
+            }
+            $validated['qris_image'] = $request->file('qris_image')->store('donations/qris', 'public');
         }
 
         $donation->update($validated);

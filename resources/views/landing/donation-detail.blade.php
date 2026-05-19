@@ -783,35 +783,6 @@
                 <!-- Sidebar -->
                 <aside>
                     <div class="sidebar-card">
-                        <h3 class="sidebar-title">Progress Donasi</h3>
-
-                        <!-- Progress Section -->
-                        @if ($donation->target_amount)
-                            <div class="progress-section">
-                                <div class="progress-amount-label">Terkumpul</div>
-                                <div class="progress-amount-value">
-                                    Rp {{ number_format($donation->current_amount, 0, ',', '.') }}
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: {{ min($donation->percentage ?? 0, 100) }}%;">
-                                    </div>
-                                </div>
-                                <div class="progress-stats">
-                                    <span
-                                        class="progress-percent">{{ number_format($donation->percentage ?? 0, 1) }}%</span>
-                                    <span class="progress-target">dari Rp
-                                        {{ number_format($donation->target_amount, 0, ',', '.') }}</span>
-                                </div>
-                            </div>
-                        @else
-                            <div class="amount-box">
-                                <div class="amount-box-label">Total Terkumpul</div>
-                                <div class="amount-box-value">
-                                    Rp {{ number_format($donation->current_amount, 0, ',', '.') }}
-                                </div>
-                            </div>
-                        @endif
-
                         <!-- Stats -->
                         <div class="stats-mini">
                             <div class="stat-mini-item">
@@ -823,72 +794,40 @@
                                     <div class="stat-mini-label">Donatur</div>
                                 </div>
                             </div>
-                            @if ($donation->days_left ?? false)
-                                <div class="stat-mini-item">
-                                    <div class="stat-mini-icon">
-                                        <i class="fas fa-clock"></i>
+                        </div>
+
+                        <!-- Payment Methods -->
+                        <div class="payment-section">
+                            <h4 class="payment-title">Metode Pembayaran</h4>
+
+                            @if ($donation->bank_name && $donation->bank_account)
+                                <div class="payment-item">
+                                    <div class="payment-icon">
+                                        <i class="fas fa-university"></i>
                                     </div>
-                                    <div>
-                                        <div class="stat-mini-value">{{ $donation->days_left }}</div>
-                                        <div class="stat-mini-label">Hari Lagi</div>
+                                    <div class="payment-info">
+                                        <div class="payment-name">Transfer Bank</div>
+                                        <div class="payment-detail">{{ $donation->bank_name }}</div>
+                                        <div class="payment-number">{{ $donation->bank_account }}</div>
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if ($donation->qris_image)
+                                <div class="payment-item">
+                                    <div class="payment-icon">
+                                        <i class="fas fa-qrcode"></i>
+                                    </div>
+                                    <div class="payment-info">
+                                        <div class="payment-name">QRIS</div>
+                                        <div class="payment-detail">Scan QR Code untuk donasi</div>
+                                        <div style="margin-top: 10px;">
+                                            <img src="{{ asset('storage/' . $donation->qris_image) }}" alt="QRIS {{ $donation->campaign_name }}" style="max-width: 100%; border-radius: 8px;">
+                                        </div>
                                     </div>
                                 </div>
                             @endif
                         </div>
-
-                        <!-- Payment Methods -->
-                        @if ($donation->payment_methods)
-                            @php
-                                $methods = is_string($donation->payment_methods)
-                                    ? json_decode($donation->payment_methods, true)
-                                    : $donation->payment_methods;
-                            @endphp
-
-                            <div class="payment-section">
-                                <h4 class="payment-title">Metode Pembayaran</h4>
-
-                                @if (isset($methods['bank_transfer']))
-                                    <div class="payment-item">
-                                        <div class="payment-icon">
-                                            <i class="fas fa-university"></i>
-                                        </div>
-                                        <div class="payment-info">
-                                            <div class="payment-name">Transfer Bank</div>
-                                            <div class="payment-detail">
-                                                {{ $methods['bank_transfer']['bank'] ?? 'Bank Syariah Indonesia' }}</div>
-                                            <div class="payment-number">
-                                                {{ $methods['bank_transfer']['account_number'] ?? '1234567890' }}</div>
-                                            <div class="payment-detail">a.n.
-                                                {{ $methods['bank_transfer']['account_name'] ?? 'YPI Al Azhar' }}</div>
-                                        </div>
-                                    </div>
-                                @endif
-
-                                @if (isset($methods['qris']) && $methods['qris'])
-                                    <div class="payment-item">
-                                        <div class="payment-icon">
-                                            <i class="fas fa-qrcode"></i>
-                                        </div>
-                                        <div class="payment-info">
-                                            <div class="payment-name">QRIS</div>
-                                            <div class="payment-detail">Scan QR Code untuk donasi</div>
-                                        </div>
-                                    </div>
-                                @endif
-
-                                @if (isset($methods['cash']) && $methods['cash'])
-                                    <div class="payment-item">
-                                        <div class="payment-icon">
-                                            <i class="fas fa-money-bill-wave"></i>
-                                        </div>
-                                        <div class="payment-info">
-                                            <div class="payment-name">Tunai</div>
-                                            <div class="payment-detail">Langsung ke sekretariat masjid</div>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        @endif
 
                         <!-- CTA Button -->
                         <a href="{{ route('contact') }}" class="btn-donate">
@@ -943,20 +882,7 @@
                             <div class="related-body">
                                 <h3 class="related-title">{{ $related->campaign_name }}</h3>
                                 <p class="related-desc">{{ Str::limit($related->description, 70) }}</p>
-                                @if ($related->target_amount)
-                                    <div class="related-progress">
-                                        <div class="related-progress-bar">
-                                            <div class="related-progress-fill"
-                                                style="width: {{ min($related->percentage ?? 0, 100) }}%;"></div>
-                                        </div>
-                                        <div class="related-progress-stats">
-                                            <span
-                                                class="related-progress-percent">{{ number_format($related->percentage ?? 0, 1) }}%</span>
-                                            <span class="related-progress-amount">Rp
-                                                {{ number_format($related->current_amount, 0, ',', '.') }}</span>
-                                        </div>
-                                    </div>
-                                @endif
+
 
                                 <a href="{{ route('donations.show', $related->slug) }}" class="related-link">
                                     Lihat Detail

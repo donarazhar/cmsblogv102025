@@ -139,27 +139,10 @@
                 <!-- Target & Timeline -->
                 <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
                     <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; color: var(--dark);">
-                        <i class="fas fa-bullseye" style="color: var(--primary);"></i> Target & Timeline
+                        <i class="fas fa-bullseye" style="color: var(--primary);"></i> Timeline
                     </h3>
 
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-                        <!-- Target Amount -->
-                        <div>
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark);">
-                                Target Donasi (Rp)
-                            </label>
-                            <input type="number" name="target_amount" value="{{ old('target_amount') }}" min="0"
-                                step="1000"
-                                style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem;"
-                                placeholder="5000000">
-                            <p style="font-size: 0.85rem; color: #6b7280; margin-top: 4px;">Kosongkan jika tidak ada target
-                            </p>
-                            @error('target_amount')
-                                <span
-                                    style="color: var(--danger); font-size: 0.85rem; margin-top: 4px; display: block;">{{ $message }}</span>
-                            @enderror
-                        </div>
-
                         <!-- Start Date -->
                         <div>
                             <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark);">
@@ -172,21 +155,6 @@
                                     style="color: var(--danger); font-size: 0.85rem; margin-top: 4px; display: block;">{{ $message }}</span>
                             @enderror
                         </div>
-
-                        <!-- End Date -->
-                        <div>
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark);">
-                                Tanggal Berakhir
-                            </label>
-                            <input type="date" name="end_date" value="{{ old('end_date') }}"
-                                style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem;">
-                            <p style="font-size: 0.85rem; color: #6b7280; margin-top: 4px;">Kosongkan jika tidak ada batas
-                                waktu</p>
-                            @error('end_date')
-                                <span
-                                    style="color: var(--danger); font-size: 0.85rem; margin-top: 4px; display: block;">{{ $message }}</span>
-                            @enderror
-                        </div>
                     </div>
                 </div>
 
@@ -194,57 +162,56 @@
                 <div
                     style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
                     <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; color: var(--dark);">
-                        <i class="fas fa-credit-card" style="color: var(--primary);"></i> Metode Pembayaran
+                        <i class="fas fa-credit-card" style="color: var(--primary);"></i> Informasi Pembayaran
                     </h3>
 
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
-                        <label
-                            style="display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.3s ease;"
-                            class="payment-method-label">
-                            <input type="checkbox" name="payment_methods[]" value="bank_transfer"
-                                {{ is_array(old('payment_methods')) && in_array('bank_transfer', old('payment_methods')) ? 'checked' : '' }}
-                                style="width: 18px; height: 18px; cursor: pointer;">
+                    <div style="display: grid; gap: 20px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <!-- Bank Name -->
                             <div>
-                                <div style="font-weight: 600; color: var(--dark);">Transfer Bank</div>
-                                <div style="font-size: 0.85rem; color: #6b7280;">BCA, Mandiri, BNI, dll</div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark);">
+                                    Nama Bank
+                                </label>
+                                <input type="text" name="bank_name" value="{{ old('bank_name') }}"
+                                    style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem;"
+                                    placeholder="Contoh: Bank BSI">
+                                @error('bank_name')
+                                    <span style="color: var(--danger); font-size: 0.85rem; margin-top: 4px; display: block;">{{ $message }}</span>
+                                @enderror
                             </div>
-                        </label>
 
-                        <label
-                            style="display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.3s ease;"
-                            class="payment-method-label">
-                            <input type="checkbox" name="payment_methods[]" value="qris"
-                                {{ is_array(old('payment_methods')) && in_array('qris', old('payment_methods')) ? 'checked' : '' }}
-                                style="width: 18px; height: 18px; cursor: pointer;">
+                            <!-- Bank Account -->
                             <div>
-                                <div style="font-weight: 600; color: var(--dark);">QRIS</div>
-                                <div style="font-size: 0.85rem; color: #6b7280;">Scan QR Code</div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark);">
+                                    Nomor Rekening
+                                </label>
+                                <input type="text" name="bank_account" value="{{ old('bank_account') }}"
+                                    style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem;"
+                                    placeholder="Contoh: 1234567890 (A.N Masjid)">
+                                @error('bank_account')
+                                    <span style="color: var(--danger); font-size: 0.85rem; margin-top: 4px; display: block;">{{ $message }}</span>
+                                @enderror
                             </div>
-                        </label>
+                        </div>
 
-                        <label
-                            style="display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.3s ease;"
-                            class="payment-method-label">
-                            <input type="checkbox" name="payment_methods[]" value="cash"
-                                {{ is_array(old('payment_methods')) && in_array('cash', old('payment_methods')) ? 'checked' : '' }}
-                                style="width: 18px; height: 18px; cursor: pointer;">
-                            <div>
-                                <div style="font-weight: 600; color: var(--dark);">Tunai</div>
-                                <div style="font-size: 0.85rem; color: #6b7280;">Langsung ke masjid</div>
-                            </div>
-                        </label>
+                        <!-- QRIS Image -->
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark);">
+                                Gambar QRIS
+                            </label>
+                            <input type="file" name="qris_image" accept="image/*" id="qrisInput"
+                                style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem;">
+                            <p style="font-size: 0.85rem; color: #6b7280; margin-top: 4px;">Upload kode QRIS jika tersedia. Format: JPG, PNG. Maksimal 2MB.</p>
+                            @error('qris_image')
+                                <span style="color: var(--danger); font-size: 0.85rem; margin-top: 4px; display: block;">{{ $message }}</span>
+                            @enderror
 
-                        <label
-                            style="display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.3s ease;"
-                            class="payment-method-label">
-                            <input type="checkbox" name="payment_methods[]" value="other"
-                                {{ is_array(old('payment_methods')) && in_array('other', old('payment_methods')) ? 'checked' : '' }}
-                                style="width: 18px; height: 18px; cursor: pointer;">
-                            <div>
-                                <div style="font-weight: 600; color: var(--dark);">Lainnya</div>
-                                <div style="font-size: 0.85rem; color: #6b7280;">Metode lain</div>
+                            <!-- QRIS Preview -->
+                            <div id="qrisPreview" style="margin-top: 12px; display: none;">
+                                <img id="qrisPreviewImg" src="" alt="QRIS Preview"
+                                    style="max-width: 200px; height: auto; border-radius: 8px; border: 1px solid var(--border);">
                             </div>
-                        </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -378,6 +345,19 @@
                 reader.onload = function(e) {
                     document.getElementById('previewImg').src = e.target.result;
                     document.getElementById('imagePreview').style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // QRIS Preview
+        document.getElementById('qrisInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('qrisPreviewImg').src = e.target.result;
+                    document.getElementById('qrisPreview').style.display = 'block';
                 }
                 reader.readAsDataURL(file);
             }
