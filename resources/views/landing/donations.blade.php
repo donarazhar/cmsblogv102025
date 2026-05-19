@@ -501,52 +501,7 @@
 
 
 
-    <!-- Featured Donations -->
-    @if ($featuredDonations->count() > 0)
-        <section class="section">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-badge">Prioritas</span>
-                    <h2 class="section-title">Campaign Unggulan</h2>
-                </div>
 
-                <div class="donation-grid">
-                    @foreach ($featuredDonations as $donation)
-                        <article class="donation-card">
-                            @if ($donation->is_urgent ?? false)
-                                <div class="donation-badge">
-                                    <i class="fas fa-exclamation-circle"></i>
-                                    URGENT
-                                </div>
-                            @endif
-
-                            <img src="{{ $donation->image ? asset('storage/' . $donation->image) : asset('storage/img/placeholder-donation.jpg') }}"
-                                alt="{{ $donation->campaign_name }}" class="donation-image" loading="lazy">
-
-                            <div class="donation-body">
-                                <span
-                                    class="donation-category">{{ ucfirst(str_replace('_', ' ', $donation->category)) }}</span>
-                                <h3 class="donation-title">{{ $donation->campaign_name }}</h3>
-                                <p class="donation-desc">{{ Str::limit($donation->description, 80) }}</p>
-
-                                <div class="donation-meta">
-                                    <span class="meta-item">
-                                        <i class="fas fa-users"></i>
-                                        {{ number_format($donation->donor_count) }} Donatur
-                                    </span>
-                                </div>
-
-                                <a href="{{ route('donations.show', $donation->slug) }}" class="btn-donate">
-                                    Donasi Sekarang
-                                    <i class="fas fa-heart"></i>
-                                </a>
-                            </div>
-                        </article>
-                    @endforeach
-                </div>
-            </div>
-        </section>
-    @endif
 
     <!-- All Donations -->
     <section class="section section-light">
