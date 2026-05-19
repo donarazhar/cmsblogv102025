@@ -745,56 +745,12 @@
                         </div>
                     </div>
 
-                    <!-- Recent Donors -->
-                    <div class="content-card">
-                        <h2 class="content-title">Donatur Terbaru</h2>
 
-                        @if ($recentDonations->count() > 0)
-                            <div class="donors-list">
-                                @foreach ($recentDonations as $transaction)
-                                    <div class="donor-item">
-                                        <div class="donor-avatar">
-                                            {{ strtoupper(substr($transaction->donor_name, 0, 1)) }}
-                                        </div>
-                                        <div class="donor-info">
-                                            <div class="donor-name">{{ $transaction->donor_name }}</div>
-                                            <div class="donor-amount">
-                                                Berdonasi <strong>Rp
-                                                    {{ number_format($transaction->amount, 0, ',', '.') }}</strong>
-                                            </div>
-                                        </div>
-                                        <div class="donor-time">
-                                            {{ $transaction->created_at->diffForHumans() }}
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @else
-                            <div class="empty-donors">
-                                <div class="empty-donors-icon">
-                                    <i class="fas fa-hand-holding-heart"></i>
-                                </div>
-                                <p class="empty-donors-text">Jadilah donatur pertama untuk campaign ini!</p>
-                            </div>
-                        @endif
-                    </div>
                 </main>
 
                 <!-- Sidebar -->
                 <aside>
                     <div class="sidebar-card">
-                        <!-- Stats -->
-                        <div class="stats-mini">
-                            <div class="stat-mini-item">
-                                <div class="stat-mini-icon">
-                                    <i class="fas fa-users"></i>
-                                </div>
-                                <div>
-                                    <div class="stat-mini-value">{{ number_format($donation->donor_count) }}</div>
-                                    <div class="stat-mini-label">Donatur</div>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Payment Methods -->
                         <div class="payment-section">
