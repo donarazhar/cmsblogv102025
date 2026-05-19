@@ -1935,29 +1935,7 @@
                                 <h3 class="donation-title">{{ $donation->campaign_name }}</h3>
                                 <p class="donation-desc">{{ Str::limit($donation->description, 80) }}</p>
 
-                                @if ($donation->target_amount)
-                                    Coba lagiUntuk menjalankan kode, aktifkan eksekusi kode dan pembuatan file di Pengaturan
-                                    > Kemampuan.ZLanjutkan <div class="donation-progress">
-                                        <div class="donation-progress-bar">
-                                            <div class="donation-progress-fill"
-                                                style="width: {{ min($donation->percentage ?? 0, 100) }}%;"></div>
-                                        </div>
-                                        <div class="donation-stats">
-                                            <span class="donation-raised">Rp
-                                                {{ number_format($donation->current_amount, 0, ',', '.') }}</span>
-                                            <span class="donation-target">dari Rp
-                                                {{ number_format($donation->target_amount, 0, ',', '.') }}</span>
-                                        </div>
-                                    </div>
-                                @endif
 
-                                <div class="donation-meta">
-                                    <span><i class="fas fa-users"></i> {{ number_format($donation->donor_count) }}
-                                        Donatur</span>
-                                    @if ($donation->days_left ?? false)
-                                        <span><i class="fas fa-clock"></i> {{ $donation->days_left }} hari lagi</span>
-                                    @endif
-                                </div>
 
                                 <a href="{{ route('donations.show', $donation->slug) }}" class="btn-donate">
                                     Donasi Sekarang <i class="fas fa-heart"></i>
