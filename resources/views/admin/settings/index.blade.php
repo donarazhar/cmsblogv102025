@@ -10,14 +10,7 @@
                 <p class="page-subtitle">Kelola pengaturan website</p>
             </div>
             <div style="display: flex; gap: 12px;">
-                <form action="{{ route('admin.settings.clear-cache') }}" method="POST" style="display: inline;">
-                    @csrf
-                    <button type="submit"
-                        style="padding: 12px 24px; background: var(--warning); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
-                        <i class="fas fa-sync"></i>
-                        Clear Cache
-                    </button>
-                </form>
+
                 <a href="{{ route('admin.settings.create') }}"
                     style="padding: 12px 24px; background: var(--primary); color: white; border-radius: 10px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
                     <i class="fas fa-plus"></i>

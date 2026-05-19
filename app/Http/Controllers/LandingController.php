@@ -46,7 +46,7 @@ class LandingController extends Controller
                 'announcements' => Announcement::active()
                     ->onHomepage()
                     ->byPriority()
-                    ->select('id', 'title', 'type')
+                    ->select('id', 'title', 'content', 'type')
                     ->limit(3)
                     ->get(),
 

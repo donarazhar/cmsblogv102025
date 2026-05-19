@@ -19,14 +19,6 @@
     }
     .dash-welcome h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
     .dash-welcome p { opacity: 0.85; font-size: 0.9rem; }
-    .dash-welcome .cache-btn {
-        display: inline-flex; align-items: center; gap: 8px;
-        padding: 10px 20px; background: rgba(255,255,255,0.2);
-        color: white; border: 1px solid rgba(255,255,255,0.3);
-        border-radius: 8px; font-weight: 600; font-size: 0.85rem;
-        cursor: pointer; transition: all 0.3s ease;
-    }
-    .dash-welcome .cache-btn:hover { background: rgba(255,255,255,0.35); }
 
     /* Stats Cards */
     .stats-row {
@@ -179,12 +171,6 @@
             <h2>Assalamu'alaikum, {{ auth()->user()->name }} 👋</h2>
             <p>{{ Carbon\Carbon::now()->locale('id')->isoFormat('dddd, D MMMM Y') }} — Berikut ringkasan data website Anda</p>
         </div>
-        <form action="{{ route('admin.cache.clear') }}" method="POST">
-            @csrf
-            <button type="submit" class="cache-btn" onclick="return confirm('Clear semua cache?')">
-                <i class="fas fa-sync-alt"></i> Clear Cache
-            </button>
-        </form>
     </div>
 
     {{-- ROW 1: Statistik Konten --}}

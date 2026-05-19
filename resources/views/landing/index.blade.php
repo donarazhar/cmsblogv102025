@@ -1674,10 +1674,10 @@
                 <div class="announcement-scroll">
                     <div class="announcement-track">
                         @foreach ($announcements as $item)
-                            <span class="announcement-item">{{ $item->title }}</span>
+                            <span class="announcement-item">{{ $item->content }}</span>
                         @endforeach
                         @foreach ($announcements as $item)
-                            <span class="announcement-item">{{ $item->title }}</span>
+                            <span class="announcement-item">{{ $item->content }}</span>
                         @endforeach
                     </div>
                 </div>

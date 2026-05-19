@@ -977,6 +977,14 @@
                     <i class="fas fa-search"></i>
                 </div>
 
+                <form method="POST" action="{{ route('admin.cache.clear') }}" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="header-profile" style="background: #fee2e2; border: 1px solid #fca5a5; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-broom" style="color: #dc2626;"></i>
+                        <span class="profile-name" style="color: #dc2626;">Clear Cache</span>
+                    </button>
+                </form>
+
                 <a href="{{ route('admin.my-account') }}" class="header-profile" style="text-decoration: none;">
                     <div class="profile-avatar">
                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
