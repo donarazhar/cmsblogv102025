@@ -182,7 +182,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></svg>');
+            background: url("{{ asset('storage/img/background.svg') }}"); background-size: cover; background-position: center;
             opacity: 0.3;
         }
 
