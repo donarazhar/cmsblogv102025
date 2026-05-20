@@ -14,6 +14,8 @@ class DatabaseSeeder extends Seeder
             ProfileSeeder::class,
             ProgramSeeder::class,
             SliderSeeder::class,
+            PostSeeder::class,
+            DonationSeeder::class,
         ]);
     }
 }

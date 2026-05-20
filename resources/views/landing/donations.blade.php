@@ -375,39 +375,52 @@
             display: flex;
             gap: 8px;
         }
+        
+        .pagination {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-        .pagination-wrapper .page-link {
+        .pagination .page-item .page-link {
             display: flex;
             align-items: center;
             justify-content: center;
-            min-width: 40px;
-            height: 40px;
+            min-width: 42px;
+            height: 42px;
             padding: 0 12px;
             background: var(--white);
-            color: var(--text);
-            border: 1px solid var(--border);
+            color: var(--text-dark);
+            border: 2px solid var(--border, #e2e8f0);
             border-radius: 8px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: var(--transition);
             text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 0.9rem;
         }
 
-        .pagination-wrapper .page-link:hover {
-            background: var(--primary-light);
-            color: var(--primary);
+        .pagination .page-item .page-link:hover {
+            background: var(--primary);
+            color: var(--white);
             border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 83, 197, 0.3);
         }
 
-        .pagination-wrapper .page-item.active .page-link {
+        .pagination .page-item.active .page-link {
             background: var(--primary);
             color: var(--white);
             border-color: var(--primary);
         }
 
-        .pagination-wrapper .page-item.disabled .page-link {
-            opacity: 0.5;
+        .pagination .page-item.disabled .page-link {
+            background: var(--bg);
+            color: var(--text-light);
+            border-color: var(--bg);
             cursor: not-allowed;
+            pointer-events: none;
         }
 
         /* ===== EMPTY STATE ===== */
@@ -549,7 +562,7 @@
                 <!-- Pagination -->
                 @if ($donations->hasPages())
                     <div class="pagination-wrapper">
-                        {{ $donations->links() }}
+                        {{ $donations->links('vendor.pagination.simple') }}
                     </div>
                 @endif
             @else

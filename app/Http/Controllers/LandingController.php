@@ -128,7 +128,7 @@ class LandingController extends Controller
         $programs = Program::active()
             ->ordered()
             ->select('id', 'name', 'slug', 'description', 'image', 'type', 'frequency', 'location', 'start_time')
-            ->paginate(12);
+            ->paginate(9);
 
         return view('landing.programs', compact('programs'));
     }
@@ -322,7 +322,7 @@ class LandingController extends Controller
             ->ongoing()
             ->ordered()
             ->select('id', 'campaign_name', 'slug', 'description', 'image', 'category', 'target_amount', 'current_amount', 'donor_count', 'end_date')
-            ->paginate(12);
+            ->paginate(9);
 
         $cachedData = Cache::remember('donations_stats_v3', self::CACHE_SHORT, function () {
             return [

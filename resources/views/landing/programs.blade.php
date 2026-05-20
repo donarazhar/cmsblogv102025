@@ -137,7 +137,7 @@
             <!-- Modern Pagination -->
             @if ($programs->hasPages())
                 <div class="pagination-wrapper">
-                    {{ $programs->links() }}
+                    {{ $programs->links('vendor.pagination.simple') }}
                 </div>
             @endif
         </div>

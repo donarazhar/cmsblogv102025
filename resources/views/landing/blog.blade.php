@@ -16,123 +16,132 @@
     <!-- Blog Content -->
     <section class="blog-section">
         <div class="container">
-            <div class="blog-layout">
-                <!-- Main Content -->
-                <div class="main-content">
-                    <!-- Compact Search & Filter -->
-                    <div class="search-box" data-aos="fade-up">
-                        <form method="GET" action="{{ route('blog') }}">
-                            <div class="search-wrapper">
-                                <i class="fas fa-search search-icon"></i>
-                                <input type="text" name="search" placeholder="Cari artikel..."
-                                    value="{{ request('search') }}" class="search-input">
-                                <button type="submit" class="search-btn">
-                                    <span>Cari</span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- Posts Grid -->
-                    @if ($posts->count() > 0)
-                        <div class="posts-grid">
-                            @foreach ($posts as $post)
-                                <article class="post-card" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
-                                    <a href="{{ route('blog.detail', $post->slug) }}" class="post-image-wrapper">
-                                        <img src="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : asset('storage/img/placeholder.jpg') }}"
-                                            alt="{{ $post->title }}" class="post-image" loading="lazy">
-                                        <span class="post-category">{{ $post->category->name }}</span>
-                                    </a>
-
-                                    <div class="post-body">
-                                        <div class="post-meta">
-                                            <span><i class="far fa-calendar"></i>
-                                                {{ $post->published_at->format('d M Y') }}</span>
-                                            <span><i class="far fa-eye"></i> {{ number_format($post->views_count) }}</span>
-                                        </div>
-
-                                        <h2 class="post-title">
-                                            <a href="{{ route('blog.detail', $post->slug) }}">{{ $post->title }}</a>
-                                        </h2>
-
-                                        <p class="post-excerpt">{{ Str::limit(strip_tags($post->excerpt), 120) }}</p>
-
-                                        <div class="post-footer">
-                                            <div class="post-author">
-                                                <i class="far fa-user"></i>
-                                                <span>{{ $post->author->name }}</span>
-                                            </div>
-                                            <a href="{{ route('blog.detail', $post->slug) }}" class="read-more">
-                                                Baca <i class="fas fa-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </article>
-                            @endforeach
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Compact Search & Filter -->
+                <div class="search-box" data-aos="fade-up">
+                    <form method="GET" action="{{ route('blog') }}">
+                        <div class="search-wrapper">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" name="search" placeholder="Cari artikel..."
+                                value="{{ request('search') }}" class="search-input">
+                            <button type="submit" class="search-btn">
+                                <span>Cari</span>
+                            </button>
                         </div>
-
-                        <!-- Modern Pagination -->
-                        <div class="pagination-wrapper">
-                            {{ $posts->links('vendor.pagination.simple') }}
-                        </div>
-                    @else
-                        <div class="empty-state">
-                            <i class="far fa-folder-open"></i>
-                            <h3>Tidak Ada Artikel</h3>
-                            <p>Belum ada artikel yang dipublikasikan.</p>
-                        </div>
-                    @endif
+                    </form>
                 </div>
 
-                <!-- Compact Sidebar -->
-                <aside class="sidebar">
-                    <!-- Categories Widget -->
-                    <div class="widget" data-aos="fade-left">
-                        <h3 class="widget-title">Kategori</h3>
-                        <div class="category-list">
-                            @foreach ($categories as $category)
-                                <a href="{{ route('blog') }}?category={{ $category->slug }}" class="category-item">
-                                    <span class="category-name">{{ $category->name }}</span>
-                                    <span class="category-count">{{ $category->posts_count }}</span>
+                <!-- Posts Grid -->
+                @if ($posts->count() > 0)
+                    <div class="posts-grid">
+                        @foreach ($posts as $post)
+                            <article class="post-card" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
+                                <a href="{{ route('blog.detail', $post->slug) }}" class="post-image-wrapper">
+                                    <img src="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : asset('storage/img/placeholder.jpg') }}"
+                                        alt="{{ $post->title }}" class="post-image" loading="lazy">
+                                    <span class="post-category">{{ $post->category->name }}</span>
+                                </a>
+
+                                <div class="post-body">
+                                    <div class="post-meta">
+                                        <span><i class="far fa-calendar"></i>
+                                            {{ $post->published_at->format('d M Y') }}</span>
+                                        <span><i class="far fa-eye"></i> {{ number_format($post->views_count) }}</span>
+                                    </div>
+
+                                    <h2 class="post-title">
+                                        <a href="{{ route('blog.detail', $post->slug) }}">{{ $post->title }}</a>
+                                    </h2>
+
+                                    <p class="post-excerpt">{{ Str::limit(strip_tags($post->excerpt), 120) }}</p>
+
+                                    <div class="post-footer">
+                                        <div class="post-author">
+                                            <i class="far fa-user"></i>
+                                            <span>{{ $post->author->name }}</span>
+                                        </div>
+                                        <a href="{{ route('blog.detail', $post->slug) }}" class="read-more">
+                                            Baca <i class="fas fa-arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </article>
+                        @endforeach
+                    </div>
+
+                    <!-- Modern Pagination -->
+                    <div class="pagination-wrapper">
+                        {{ $posts->links('vendor.pagination.simple') }}
+                    </div>
+                @else
+                    <div class="empty-state">
+                        <i class="far fa-folder-open"></i>
+                        <h3>Tidak Ada Artikel</h3>
+                        <p>Belum ada artikel yang dipublikasikan.</p>
+                    </div>
+                @endif
+            </div>
+
+            <!-- Bottom Widgets (Moved from Sidebar) -->
+            <div class="bottom-widgets">
+                <!-- Terbaru Posts Widget -->
+                @php
+                    $latestPostsWidget = \App\Models\Post::published()->latest('published_at')->limit(4)->get();
+                @endphp
+                @if ($latestPostsWidget->count() > 0)
+                    <div class="widget" data-aos="fade-up">
+                        <h3 class="widget-title">Terbaru</h3>
+                        <div class="popular-list">
+                            @foreach ($latestPostsWidget as $latest)
+                                <a href="{{ route('blog.detail', $latest->slug) }}" class="popular-item">
+                                    <img src="{{ $latest->featured_image ? asset('storage/' . $latest->featured_image) : asset('storage/img/placeholder.jpg') }}"
+                                        alt="{{ $latest->title }}" loading="lazy">
+                                    <div class="popular-content">
+                                        <h4>{{ Str::limit($latest->title, 50) }}</h4>
+                                        <span class="popular-views">
+                                            <i class="far fa-calendar"></i> {{ $latest->published_at->format('d M Y') }}
+                                        </span>
+                                    </div>
                                 </a>
                             @endforeach
                         </div>
                     </div>
+                @endif
 
-                    <!-- Popular Posts Widget -->
-                    @if ($popularPosts->count() > 0)
-                        <div class="widget" data-aos="fade-left" data-aos-delay="100">
-                            <h3 class="widget-title">Trending</h3>
-                            <div class="popular-list">
-                                @foreach ($popularPosts as $popular)
-                                    <a href="{{ route('blog.detail', $popular->slug) }}" class="popular-item">
-                                        <img src="{{ $popular->featured_image ? asset('storage/' . $popular->featured_image) : asset('storage/img/placeholder.jpg') }}"
-                                            alt="{{ $popular->title }}" loading="lazy">
-                                        <div class="popular-content">
-                                            <h4>{{ Str::limit($popular->title, 50) }}</h4>
-                                            <span class="popular-views">
-                                                <i class="far fa-eye"></i> {{ number_format($popular->views_count) }}
-                                            </span>
-                                        </div>
-                                    </a>
-                                @endforeach
-                            </div>
+                <!-- Popular Posts Widget -->
+                @if ($popularPosts->count() > 0)
+                    <div class="widget" data-aos="fade-up" data-aos-delay="100">
+                        <h3 class="widget-title">Trending</h3>
+                        <div class="popular-list">
+                            @foreach ($popularPosts as $popular)
+                                <a href="{{ route('blog.detail', $popular->slug) }}" class="popular-item">
+                                    <img src="{{ $popular->featured_image ? asset('storage/' . $popular->featured_image) : asset('storage/img/placeholder.jpg') }}"
+                                        alt="{{ $popular->title }}" loading="lazy">
+                                    <div class="popular-content">
+                                        <h4>{{ Str::limit($popular->title, 50) }}</h4>
+                                        <span class="popular-views">
+                                            <i class="far fa-eye"></i> {{ number_format($popular->views_count) }}
+                                        </span>
+                                    </div>
+                                </a>
+                            @endforeach
                         </div>
-                    @endif
-
-                    <!-- Newsletter Widget -->
-                    <div class="widget widget-newsletter" data-aos="fade-left" data-aos-delay="200">
-                        <i class="far fa-envelope-open newsletter-icon"></i>
-                        <h3 class="widget-title">Newsletter</h3>
-                        <p>Dapatkan update artikel terbaru</p>
-                        <form>
-                            <input type="email" placeholder="Email Anda" required>
-                            <button type="submit">
-                                <i class="fas fa-paper-plane"></i> Berlangganan
-                            </button>
-                        </form>
                     </div>
-                </aside>
+                @endif
+
+                <!-- Categories Widget -->
+                <div class="widget" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="widget-title">Kategori</h3>
+                    <div class="category-list">
+                        @foreach ($categories as $category)
+                            <a href="{{ route('blog') }}?category={{ $category->slug }}" class="category-item">
+                                <span class="category-name">{{ $category->name }}</span>
+                                <span class="category-count">{{ $category->posts_count }}</span>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -205,16 +214,12 @@
             background: var(--gray-100);
         }
 
-        .blog-layout {
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 40px;
-            align-items: start;
-        }
-
         /* Compact Search Box */
         .search-box {
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .search-wrapper {
@@ -268,8 +273,8 @@
         /* Modern Posts Grid */
         .posts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
             margin-bottom: 40px;
         }
 
@@ -402,10 +407,67 @@
             gap: 10px;
         }
 
-        /* Compact Sidebar */
-        .sidebar {
-            position: sticky;
-            top: 100px;
+        /* Modern Pagination */
+        .pagination-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .pagination .page-item .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 42px;
+            height: 42px;
+            padding: 0 12px;
+            background: var(--white);
+            color: var(--gray-700);
+            border: 2px solid var(--gray-300);
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .pagination .page-item .page-link:hover {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 83, 197, 0.3);
+        }
+
+        .pagination .page-item.active .page-link {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        .pagination .page-item.disabled .page-link {
+            background: var(--gray-100);
+            color: var(--gray-300);
+            border-color: var(--gray-300);
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Bottom Widgets */
+        .bottom-widgets {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            padding-top: 60px;
+            border-top: 1px solid var(--gray-300);
         }
 
         .widget {
@@ -413,7 +475,7 @@
             padding: 25px;
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-sm);
-            margin-bottom: 25px;
+            height: 100%;
         }
 
         .widget-title {
@@ -528,6 +590,9 @@
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: var(--white);
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .newsletter-icon {
@@ -549,6 +614,10 @@
             margin-bottom: 20px;
             opacity: 0.95;
             font-size: 0.9rem;
+        }
+
+        .widget-newsletter form {
+            margin-top: auto;
         }
 
         .widget-newsletter input {
@@ -578,65 +647,13 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
-        /* Modern Pagination */
-        .pagination-wrapper {
-            display: flex;
-            justify-content: center;
-        }
-
-        .pagination {
-            display: flex;
-            gap: 8px;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .pagination .page-item .page-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 42px;
-            height: 42px;
-            padding: 0 12px;
-            background: var(--white);
-            color: var(--gray-700);
-            border: 2px solid var(--gray-300);
-            border-radius: var(--radius-sm);
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-            font-size: 0.9rem;
-        }
-
-        .pagination .page-item .page-link:hover {
-            background: var(--primary);
-            color: var(--white);
-            border-color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 83, 197, 0.3);
-        }
-
-        .pagination .page-item.active .page-link {
-            background: var(--primary);
-            color: var(--white);
-            border-color: var(--primary);
-        }
-
-        .pagination .page-item.disabled .page-link {
-            background: var(--gray-100);
-            color: var(--gray-300);
-            border-color: var(--gray-300);
-            cursor: not-allowed;
-            pointer-events: none;
-        }
-
         /* Empty State */
         .empty-state {
             text-align: center;
             padding: 80px 20px;
             background: var(--white);
             border-radius: var(--radius-lg);
+            margin-bottom: 40px;
         }
 
         .empty-state i {
@@ -657,19 +674,11 @@
 
         /* Responsive Design */
         @media (max-width: 1024px) {
-            .blog-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .sidebar {
-                position: static;
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                gap: 25px;
-            }
-
             .posts-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .bottom-widgets {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -695,7 +704,7 @@
                 gap: 20px;
             }
 
-            .sidebar {
+            .bottom-widgets {
                 grid-template-columns: 1fr;
             }
 
@@ -726,23 +735,6 @@
             .widget {
                 padding: 20px;
             }
-        }
-
-        /* Performance: Skeleton Loading */
-        @keyframes shimmer {
-            0% {
-                background-position: -1000px 0;
-            }
-
-            100% {
-                background-position: 1000px 0;
-            }
-        }
-
-        .skeleton {
-            animation: shimmer 2s infinite;
-            background: linear-gradient(to right, #f0f0f0 4%, #e0e0e0 25%, #f0f0f0 36%);
-            background-size: 1000px 100%;
         }
     </style>
 @endsection
