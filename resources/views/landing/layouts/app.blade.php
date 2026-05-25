@@ -188,7 +188,7 @@
             height: 48px;
             border-radius: var(--radius);
             object-fit: cover;
-            background: var(--primary-light);
+            background: transparent;
             transition: var(--transition);
         }
 
