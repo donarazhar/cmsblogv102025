@@ -80,10 +80,8 @@ class Donation extends Model
 
     public function scopeOngoing($query)
     {
-        return $query->where(function ($q) {
-            $q->whereNull('end_date')
-                ->orWhere('end_date', '>=', now()->toDateString());
-        });
+        // Donasi selalu berlangsung kecuali di-nonaktifkan secara manual oleh admin.
+        return $query;
     }
 
     public function scopeByCategory($query, $category)
