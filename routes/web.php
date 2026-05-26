@@ -191,6 +191,11 @@ Route::middleware('auth')->group(function () {
         Route::post('sliders/update-order', [SliderController::class, 'updateOrder'])
             ->name('sliders.update-order');
 
+        // Popup Ads Routes
+        Route::resource('popup-ads', \App\Http\Controllers\Admin\PopupAdController::class);
+        Route::post('popup-ads/{popupAd}/toggle', [\App\Http\Controllers\Admin\PopupAdController::class, 'toggleStatus'])
+            ->name('popup-ads.toggle');
+
         // Pages Routes
         Route::resource('pages', PageController::class);
         Route::post('pages/reorder', [PageController::class, 'reorder'])

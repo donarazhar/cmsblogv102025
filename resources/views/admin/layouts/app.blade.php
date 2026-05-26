@@ -775,6 +775,13 @@
                         <span class="menu-item-tooltip">Hero Banner</span>
                     </a>
 
+                    <a href="{{ route('admin.popup-ads.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.popup-ads.*') ? 'active' : '' }}">
+                        <i class="fas fa-bullhorn"></i>
+                        <span>Popup Iklan</span>
+                        <span class="menu-item-tooltip">Popup Iklan</span>
+                    </a>
+
                     <a href="{{ route('admin.announcements.index') }}"
                         class="menu-item {{ request()->routeIs('admin.announcements.*') ? 'active' : '' }}">
                         <i class="fas fa-bullhorn"></i>

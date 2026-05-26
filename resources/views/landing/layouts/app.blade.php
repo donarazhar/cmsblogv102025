@@ -1416,6 +1416,9 @@
         gtag('config', 'G-7NW9G4G7HM');
     </script>
 
+    {{-- Popup Iklan Khutbah --}}
+    @include('landing.partials.popup-khutbah')
+
     @stack('scripts')
 </body>
 
