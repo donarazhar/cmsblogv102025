@@ -79,7 +79,7 @@
                                                 {{ ucfirst($donation->category) }}
                                             </span>
                                             <span><i class="fas fa-calendar"></i>
-                                                {{ $donation->created_at->format('d M Y') }}</span>
+                                                {{ $donation->start_date ? $donation->start_date->format('d M Y') : $donation->created_at->format('d M Y') }}</span>
                                         </div>
                                     </div>
 
