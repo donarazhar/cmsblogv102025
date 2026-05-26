@@ -327,12 +327,8 @@
             closePopup();
         });
 
-        // Click outside to close
-        overlay.addEventListener('click', function(e) {
-            if (e.target === overlay) {
-                closePopup();
-            }
-        });
+        // (Fungsi 'Klik di luar untuk menutup' telah dihapus 
+        // agar pengunjung tidak sengaja menutup popup tanpa mengklik X)
 
         // Escape key to close
         document.addEventListener('keydown', function(e) {
