@@ -129,8 +129,6 @@
                                             <p>{{ Str::limit(strip_tags($donation->description), 160) }}</p>
                                             <div class="result-meta">
                                                 <span class="result-tag">Donasi</span>
-                                                <span><i class="fas fa-users"></i>
-                                                    {{ $donation->donor_count }} donatur</span>
                                             </div>
                                         </div>
                                         @if ($donation->image)

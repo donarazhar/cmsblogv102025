@@ -543,12 +543,7 @@
                                 <h3 class="donation-title">{{ $donation->campaign_name }}</h3>
                                 <p class="donation-desc">{{ Str::limit($donation->description, 80) }}</p>
 
-                                <div class="donation-meta">
-                                    <span class="meta-item">
-                                        <i class="fas fa-users"></i>
-                                        {{ number_format($donation->donor_count) }} Donatur
-                                    </span>
-                                </div>
+                                <!-- Removed donation-meta -->
 
                                 <a href="{{ route('donations.show', $donation->slug) }}" class="btn-donate">
                                     Donasi Sekarang
