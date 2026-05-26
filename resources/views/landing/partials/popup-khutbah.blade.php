@@ -119,7 +119,7 @@
     /* ===== BOTTOM BAR ===== */
     .popup-ad-bottom {
         padding: 16px 20px;
-        background: linear-gradient(135deg, #065f46 0%, #047857 50%, #059669 100%);
+        background: linear-gradient(135deg, #004099 0%, #0053c5 50%, #1a6bdc 100%);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -164,7 +164,7 @@
 
     .popup-ad-cta:hover {
         background: #ffffff;
-        color: #065f46;
+        color: #0053c5;
         border-color: #ffffff;
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
