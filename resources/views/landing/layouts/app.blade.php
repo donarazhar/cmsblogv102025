@@ -1225,13 +1225,10 @@
                     <div class="footer-simple-left">
                         <div class="footer-contact-inline">
                             <strong>Kontak:</strong> 
-                            <i class="fas fa-map-marker-alt" style="margin-left: 0;"></i> {{ setting('contact_address', 'Jakarta, Indonesia') }} | 
-                            <i class="fas fa-phone"></i> {{ setting('contact_phone', '(+62) 217397267') }} | 
-                            <i class="fas fa-envelope"></i> {{ setting('contact_email', 'masjidagungalazhar@gmail.com') }} | 
-                            <i class="fab fa-whatsapp"></i> {{ setting('contact_whatsapp', '0882-1211-4771') }}
+                            <i class="fas fa-map-marker-alt" style="margin-left: 0;"></i> {{ setting('contact_address') }} | 
+                            <i class="fas fa-envelope"></i> {{ setting('contact_email') }}
                             <br>
-                            <strong>Jam Operasional:</strong> 
-                            Senin - Sabtu: 08:00 - 15:00 | Ahad: Janji Temu | Jumat: 11:30 - 12:30 (Sholat Jumat)
+                            <strong>Jam Operasional:</strong> {{ setting('operational_weekday') }} | {{ setting('operational_sunday') }} | {{ setting('operational_friday') }}
                         </div>
                     </div>
 
