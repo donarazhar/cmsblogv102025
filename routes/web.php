@@ -196,6 +196,17 @@ Route::middleware('auth')->group(function () {
         Route::post('popup-ads/{popupAd}/toggle', [\App\Http\Controllers\Admin\PopupAdController::class, 'toggleStatus'])
             ->name('popup-ads.toggle');
 
+        // Ad Banners Routes
+        Route::resource('ad-banners', \App\Http\Controllers\Admin\AdBannerController::class);
+
+        // Social Embeds Routes
+        Route::get('social-embeds', [\App\Http\Controllers\Admin\SocialEmbedController::class, 'index'])->name('social-embeds.index');
+        Route::post('social-embeds', [\App\Http\Controllers\Admin\SocialEmbedController::class, 'update'])->name('social-embeds.update');
+        Route::post('ad-banners/{adBanner}/toggle', [\App\Http\Controllers\Admin\AdBannerController::class, 'toggleStatus'])
+            ->name('ad-banners.toggle');
+        Route::post('ad-banners/update-order', [\App\Http\Controllers\Admin\AdBannerController::class, 'updateOrder'])
+            ->name('ad-banners.update-order');
+
         // Pages Routes
         Route::resource('pages', PageController::class);
         Route::post('pages/reorder', [PageController::class, 'reorder'])

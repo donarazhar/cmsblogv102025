@@ -22,7 +22,7 @@
     <x-seo :title="$pageTitle ?? 'Home'" :description="$pageDescription ?? setting('seo_description')" :keywords="$pageKeywords ?? setting('seo_keywords')" :image="$pageImage ?? null" :breadcrumb="$breadcrumb ?? []" />
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -152,10 +152,11 @@
             background: var(--white);
             z-index: 1000;
             transition: var(--transition);
+            border-bottom: 1px solid var(--border);
         }
 
         .navbar.scrolled {
-            box-shadow: var(--shadow);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
         }
 
         .navbar-inner {
@@ -223,8 +224,8 @@
             align-items: center;
             gap: 6px;
             padding: 10px 18px;
-            font-size: 0.9rem;
-            font-weight: 500;
+            font-size: 0.95rem;
+            font-weight: 600;
             color: var(--text);
             border-radius: var(--radius);
             transition: var(--transition);
@@ -237,8 +238,35 @@
         }
 
         .nav-link.active {
-            color: var(--white);
+            color: var(--primary);
+            background: transparent;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .chat-admin-btn {
+            background: #25D366; /* WhatsApp Green */
+            color: var(--white) !important;
+            padding: 8px 16px !important;
+            border-radius: 50px !important;
+            margin-left: 10px;
+        }
+
+        .chat-admin-btn:hover {
+            background: #128C7E !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 18px;
+            right: 18px;
+            height: 2px;
             background: var(--primary);
+            border-radius: 2px;
         }
 
         .nav-link .dropdown-icon {
@@ -326,6 +354,15 @@
             display: contents;
         }
 
+        /* ===== MOBILE SPECIFIC DEFAULTS ===== */
+        .mobile-chat-admin {
+            display: none; /* Hidden on desktop */
+        }
+        
+        .hide-on-mobile {
+            display: flex; /* Show on desktop by default */
+        }
+
         /* ===== MOBILE MENU - SLIDE FROM LEFT ===== */
         @media (max-width: 991px) {
             :root {
@@ -333,7 +370,74 @@
             }
 
             .navbar-toggle {
+                display: none !important; /* Hide hamburger menu on mobile */
+            }
+
+            /* Mobile Bottom Navigation - Visible on Mobile */
+            .mobile-bottom-nav {
+                display: flex !important;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: linear-gradient(90deg, #003a8c 0%, #9333ea 100%); /* Al Azhar Corporate Blue to Purple */
+                box-shadow: 0 -2px 10px rgba(0,0,0,0.15);
+                z-index: 1000;
+                justify-content: space-around;
+                align-items: center;
+                height: 70px;
+                padding: 0 10px;
+                border-top-left-radius: 12px;
+                border-top-right-radius: 12px;
+            }
+
+            .mobile-bottom-nav .nav-item {
                 display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                color: rgba(255, 255, 255, 0.7); /* Whitish for unselected */
+                text-decoration: none;
+                font-size: 0.75rem;
+                gap: 5px;
+                flex: 1;
+                transition: color 0.3s;
+            }
+
+            .mobile-bottom-nav .nav-item.active,
+            .mobile-bottom-nav .nav-item:hover {
+                color: #ffffff; /* Solid white for active/hover */
+            }
+
+            .mobile-bottom-nav .nav-item i {
+                font-size: 1.25rem;
+            }
+
+            .mobile-bottom-nav .nav-item.center-btn {
+                position: relative;
+                top: -10px; /* Slight overlap */
+            }
+
+            .mobile-bottom-nav .nav-item.center-btn .center-btn-inner {
+                width: 54px;
+                height: 54px;
+                background: #ef4444; /* Red color matching reference */
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #ffffff;
+                box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
+                font-size: 1.6rem;
+                transition: transform 0.2s ease;
+            }
+            
+            .mobile-bottom-nav .nav-item.center-btn:active .center-btn-inner {
+                transform: scale(0.95);
+            }
+
+            body {
+                padding-bottom: 70px; /* Space for bottom nav */
             }
 
             /* Mobile Menu Wrapper */
@@ -361,38 +465,66 @@
             .mobile-menu-header {
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
-                padding: 0 20px;
-                height: 70px;
-                border-bottom: 1px solid var(--border);
+                justify-content: center;
+                padding: 20px;
+                height: 120px;
                 background: var(--white);
                 flex-shrink: 0;
+                position: relative;
             }
 
-            .mobile-menu-title {
-                font-weight: 700;
-                font-size: 1.1rem;
-                color: var(--text-dark);
+            .mobile-menu-logo {
+                text-align: center;
+            }
+
+            .mobile-menu-logo img {
+                max-height: 50px;
+                width: auto;
+                object-fit: contain;
             }
 
             .mobile-menu-close {
+                position: absolute;
+                top: 15px;
+                right: 15px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                width: 40px;
-                height: 40px;
-                background: var(--bg);
-                border-radius: var(--radius);
-                color: var(--text-dark);
-                font-size: 1.1rem;
+                width: 32px;
+                height: 32px;
+                background: #ff6b6b;
+                border-radius: 50%;
+                color: white;
+                font-size: 1rem;
                 transition: var(--transition);
                 cursor: pointer;
                 border: none;
             }
 
             .mobile-menu-close:hover {
-                background: var(--primary-light);
-                color: var(--primary);
+                background: #fa5252;
+            }
+
+            .mobile-chat-admin {
+                display: block;
+                width: 100%;
+                padding: 16px;
+                text-align: center;
+                background: #25D366; /* WhatsApp Green */
+                color: white;
+                font-weight: 600;
+                font-size: 1.1rem;
+                text-decoration: none;
+                flex-shrink: 0;
+            }
+            
+            .mobile-chat-admin:hover {
+                background: #128C7E;
+                color: white;
+            }
+
+            .hide-on-mobile {
+                display: none !important;
             }
 
             /* Menu List */
@@ -400,21 +532,25 @@
                 flex: 1;
                 flex-direction: column;
                 align-items: stretch;
-                gap: 5px;
-                padding: 20px;
+                gap: 0;
+                padding: 0;
                 overflow-y: auto;
             }
 
-            .nav-item {
+            .navbar-menu .nav-item {
                 width: 100%;
+                border-bottom: 1px solid var(--border);
             }
 
-            .nav-link {
-                padding: 14px 16px;
-                font-size: 1rem;
-                border-radius: var(--radius);
+            .navbar-menu .nav-link {
+                padding: 16px 20px;
+                font-size: 1.05rem;
+                border-radius: 0;
                 width: 100%;
                 justify-content: space-between;
+                font-weight: 400;
+                color: var(--text-dark);
+                background: transparent !important;
             }
 
             /* Mobile Dropdown */
@@ -474,7 +610,7 @@
 
         /* ===== FOOTER ===== */
         .footer {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: linear-gradient(135deg, #003a8c 0%, #0284c7 100%);
             color: var(--white);
             position: relative;
             overflow: hidden;
@@ -493,20 +629,60 @@
             padding: 60px 0 30px;
         }
 
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        .footer-simple-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             gap: 40px;
         }
 
-        .footer-brand {
-            max-width: 300px;
+        .footer-simple-left {
+            flex: 1;
         }
 
-        .footer-brand-name {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 12px;
+        .footer-simple-right {
+            text-align: right;
+            min-width: 300px;
+        }
+
+        .footer-contact-inline {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .footer-contact-inline i {
+            margin-right: 4px;
+            margin-left: 6px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-white-bar {
+            background-color: var(--white);
+            color: #6b7280;
+            text-align: center;
+            padding: 10px 15px;
+            font-size: 0.85rem;
+            width: 100%;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        @media (max-width: 1024px) {
+            .footer-simple-flex {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 30px;
+            }
+            .footer-simple-right {
+                text-align: left;
+            }
+            .social-links {
+                justify-content: flex-start !important;
+            }
+            .footer-simple-right .footer-widget-title {
+                text-align: left !important;
+            }
         }
 
         .footer-brand-desc {
@@ -864,6 +1040,11 @@
                 gap: 5px;
             }
         }
+        
+        /* Mobile Bottom Nav Default Hidden */
+        .mobile-bottom-nav {
+            display: none;
+        }
     </style>
 
     @stack('styles')
@@ -891,18 +1072,27 @@
                     <img src="{{ asset('storage/img/ypia.png') }}" alt="{{ setting('site_name', 'Al Azhar') }}"
                         class="brand-logo" width="48" height="48">
                 @endif
-                <span class="brand-text">{{ setting('site_name', 'Al Azhar') }}</span>
             </a>
 
             <!-- Menu -->
             <div class="navbar-menu-wrapper">
-                <!-- Mobile Menu Header - PINDAHKAN KE SINI -->
+                <!-- Mobile Menu Header -->
                 <div class="mobile-menu-header">
-                    <span class="mobile-menu-title">Menu</span>
+                    <div class="mobile-menu-logo">
+                        @if (setting('site_logo'))
+                            <img src="{{ asset('storage/' . setting('site_logo')) }}" alt="Logo" class="brand-logo">
+                        @else
+                            <img src="{{ asset('storage/img/ypia.png') }}" alt="Logo" class="brand-logo">
+                        @endif
+                    </div>
                     <button class="mobile-menu-close" id="mobileMenuClose" type="button">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
+                
+                <a href="https://wa.me/6288212114771" target="_blank" class="mobile-chat-admin">
+                    <i class="fab fa-whatsapp"></i> Chat Admin
+                </a>
 
                 <!-- Menu List -->
                 <ul class="navbar-menu" id="navbarMenu">
@@ -980,6 +1170,12 @@
                         </a>
                     </li>
 
+                    <li class="nav-item hide-on-mobile">
+                        <a href="https://wa.me/6288212114771" target="_blank" class="nav-link chat-admin-btn">
+                            <i class="fab fa-whatsapp"></i> Chat Admin
+                        </a>
+                    </li>
+
                 </ul>
             </div>
 
@@ -1025,14 +1221,29 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-main">
-                <div class="footer-grid">
-                    <!-- Brand -->
-                    <div class="footer-brand">
-                        <h3 class="footer-brand-name">{{ setting('site_name', 'Masjid Agung Al Azhar') }}</h3>
-                        <p class="footer-brand-desc">
-                            {{ setting('site_description', 'Pusat kegiatan keagamaan, pendidikan, dan dakwah Islam di Jakarta.') }}
-                        </p>
-                        <div class="social-links">
+                <div class="footer-simple-flex">
+                    <div class="footer-simple-left">
+                        <div class="footer-contact-inline">
+                            <strong>Kontak:</strong> 
+                            <i class="fas fa-map-marker-alt" style="margin-left: 0;"></i> {{ setting('contact_address', 'Jakarta, Indonesia') }} | 
+                            <i class="fas fa-phone"></i> {{ setting('contact_phone', '(+62) 217397267') }} | 
+                            <i class="fas fa-envelope"></i> {{ setting('contact_email', 'masjidagungalazhar@gmail.com') }} | 
+                            <i class="fab fa-whatsapp"></i> {{ setting('contact_whatsapp', '0882-1211-4771') }}
+                            <br>
+                            <strong>Jam Operasional:</strong> 
+                            Senin - Sabtu: 08:00 - 15:00 | Ahad: Janji Temu | Jumat: 11:30 - 12:30 (Sholat Jumat)
+                        </div>
+                    </div>
+
+                    <div class="footer-simple-right">
+                        <h4 class="footer-widget-title" style="border-bottom: none; margin-bottom: 10px; padding-bottom: 0;">Follow Media Kami</h4>
+                        <div class="social-links" style="justify-content: flex-end;">
+                            @if (setting('social_youtube'))
+                                <a href="{{ setting('social_youtube') }}" target="_blank" rel="noopener"
+                                    class="social-link" title="YouTube">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            @endif
                             @if (setting('social_facebook'))
                                 <a href="{{ setting('social_facebook') }}" target="_blank" rel="noopener"
                                     class="social-link" title="Facebook">
@@ -1051,12 +1262,6 @@
                                     <i class="fab fa-twitter"></i>
                                 </a>
                             @endif
-                            @if (setting('social_youtube'))
-                                <a href="{{ setting('social_youtube') }}" target="_blank" rel="noopener"
-                                    class="social-link" title="YouTube">
-                                    <i class="fab fa-youtube"></i>
-                                </a>
-                            @endif
                             @if (setting('social_tiktok'))
                                 <a href="{{ setting('social_tiktok') }}" target="_blank" rel="noopener"
                                     class="social-link" title="TikTok">
@@ -1065,85 +1270,17 @@
                             @endif
                         </div>
                     </div>
-
-                    <!-- Quick Links -->
-                    <div class="footer-widget">
-                        <h4 class="footer-widget-title">Menu Cepat</h4>
-                        <nav class="footer-links">
-                            <a href="{{ route('programs') }}" class="footer-link">
-                                <i class="fas fa-chevron-right"></i>
-                                Layanan Masjid
-                            </a>
-
-                            <a href="{{ route('blog') }}" class="footer-link">
-                                <i class="fas fa-chevron-right"></i>
-                                Berita & Artikel
-                            </a>
-                            <a href="{{ route('donations') }}" class="footer-link">
-                                <i class="fas fa-chevron-right"></i>
-                                Donasi
-                            </a>
-                            <a href="{{ route('contact') }}" class="footer-link">
-                                <i class="fas fa-chevron-right"></i>
-                                Kontak
-                            </a>
-                        </nav>
-                    </div>
-
-                    <!-- Contact -->
-                    <div class="footer-widget">
-                        <h4 class="footer-widget-title">Kontak</h4>
-                        <address class="contact-list" style="font-style: normal;">
-                            <div class="contact-item">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>{{ setting('contact_address', 'Jakarta, Indonesia') }}</span>
-                            </div>
-                            <div class="contact-item">
-                                <i class="fas fa-phone"></i>
-                                <span>{{ setting('contact_phone', '(+62) 217397267') }}</span>
-                            </div>
-                            <div class="contact-item">
-                                <i class="fas fa-envelope"></i>
-                                <span>{{ setting('contact_email', 'masjidagungalazhar@gmail.com') }}</span>
-                            </div>
-                            <div class="contact-item">
-                                <i class="fab fa-whatsapp"></i>
-                                <span>{{ setting('contact_whatsapp', '0882-1211-4771') }}</span>
-                            </div>
-                        </address>
-                    </div>
-
-                    <!-- Hours -->
-                    <div class="footer-widget">
-                        <h4 class="footer-widget-title">Jam Operasional</h4>
-                        <div class="contact-list">
-                            <div class="contact-item">
-                                <i class="fas fa-clock"></i>
-                                <span>Senin - Sabtu: 08:00 - 15:00</span>
-                            </div>
-                            <div class="contact-item">
-                                <i class="fas fa-clock"></i>
-                                <span>Ahad: Janji Temu</span>
-                            </div>
-                            <div class="contact-item">
-                                <i class="fas fa-mosque"></i>
-                                <span>Jumat: 11:30 - 12:30 (Sholat Jumat)</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p class="footer-copyright">
-                    &copy; {{ date('Y') }} {{ setting('site_name', 'Masjid Agung Al Azhar') }}. All rights
-                    reserved.
-                    | Developed with <i class="fas fa-heart heart"></i> by
-                    <a href="#">DAL ARMY</a>
-                </p>
             </div>
         </div>
     </footer>
+
+    <!-- Colorful Divider Line -->
+    <div style="height: 4px; width: 100%; background: linear-gradient(90deg, var(--primary) 0%, #10b981 33%, #f59e0b 66%, #ef4444 100%);"></div>
+
+    <div class="footer-white-bar">
+        Copyright &copy;{{ date('Y') }} | {{ setting('site_name', 'Masjid Agung Al Azhar') }} by <a href="https://www.instagram.com/donsiyos/" target="_blank" rel="noopener" style="color: inherit; text-decoration: none; font-weight: 600;">DAL Army</a>
+    </div>
 
     <!-- Scroll to Top -->
     <button class="scroll-top" id="scrollTop" type="button">
@@ -1210,11 +1347,22 @@
                 });
             }
 
-            // Toggle button click
-            navbarToggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                openMenu();
-            });
+            // Toggle button click (Desktop/Legacy)
+            if (navbarToggle) {
+                navbarToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openMenu();
+                });
+            }
+
+            // Bottom Nav Menu button
+            const bottomMenuBtn = document.getElementById('mobileBottomMenuBtn');
+            if (bottomMenuBtn) {
+                bottomMenuBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openMenu();
+                });
+            }
 
             // Close button click
             mobileMenuClose.addEventListener('click', function(e) {
@@ -1390,6 +1538,31 @@
             checkCurrentLang();
         });
     </script>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-bottom-nav"> <!-- Hidden on desktop via CSS, shown on mobile via media query -->
+        <a href="{{ route('home') }}" class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
+            <i class="fa-solid fa-house"></i>
+            <span>Beranda</span>
+        </a>
+        <a href="{{ route('blog') }}" class="nav-item {{ request()->routeIs('blog') || request()->routeIs('blog.*') ? 'active' : '' }}">
+            <i class="fa-solid fa-book-open"></i>
+            <span>Artikel</span>
+        </a>
+        <a href="#" class="nav-item center-btn">
+            <div class="center-btn-inner">
+                <i class="fa-solid fa-fire"></i>
+            </div>
+        </a>
+        <a href="{{ route('blog') }}?search=true" class="nav-item">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Cari</span>
+        </a>
+        <a href="#" class="nav-item" id="mobileBottomMenuBtn">
+            <i class="fa-solid fa-border-all"></i>
+            <span>Menu</span>
+        </a>
+    </div>
 
     <!-- Hidden Google Translate Element -->
     <div id="google_translate_element" style="display:none;"></div>

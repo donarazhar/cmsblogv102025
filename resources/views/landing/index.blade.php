@@ -79,116 +79,103 @@
             margin-bottom: -1px;
         }
 
-        /* ===== HERO SECTION ===== */
-        .hero {
+        /* ===== GRADIENT ACCENT BAR ===== */
+        .hero-accent-bar {
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, 
+                #22c55e 0%, 
+                #06b6d4 15%, 
+                #3b82f6 30%, 
+                #6366f1 45%, 
+                #a855f7 55%, 
+                #ec4899 70%, 
+                #f43f5e 80%, 
+                #f97316 90%, 
+                #eab308 100%);
             position: relative;
-            height: 92vh;
-            min-height: 580px;
-            max-height: 900px;
-            overflow: hidden;
+            z-index: 2;
         }
 
-        .hero-slide {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1);
-            background-size: cover;
-            background-position: center;
-            animation: kenBurns 25s ease-in-out infinite alternate;
-        }
-
-        @keyframes kenBurns {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.06); }
-        }
-
-        .hero-slide.active {
-            opacity: 1;
-        }
-
-        .hero-slide .hero-overlay {
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-        }
-
-        /* Extra cinematic gradient layer */
-        .hero-slide::after {
+        .hero-accent-bar::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(
-                180deg,
-                rgba(0, 20, 60, 0.15) 0%,
-                rgba(0, 20, 60, 0.05) 40%,
-                rgba(0, 20, 60, 0.3) 70%,
-                rgba(0, 20, 60, 0.65) 100%
-            );
-            z-index: 1;
-            pointer-events: none;
+            background: inherit;
+            filter: blur(8px);
+            opacity: 0.5;
         }
 
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            padding: 0 5%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        /* Text Position */
-        .hero-content.text-left {
-            justify-content: flex-start;
-        }
-
-        .hero-content.text-center {
-            justify-content: center;
+        /* ===== WELCOME SECTION ===== */
+        .welcome-section {
+            padding: 0 1rem;
             text-align: center;
-        }
-
-        .hero-content.text-right {
-            justify-content: flex-end;
-            text-align: right;
-        }
-
-        .hero-text {
-            max-width: 680px;
-        }
-
-        .hero-content.text-center .hero-text {
+            background: var(--white);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
         }
-
-        .hero-content.text-center .hero-buttons {
-            justify-content: center;
+        
+        .welcome-section .container {
+            margin-top: -5rem; /* Adjust slightly upwards to visually balance the layout */
         }
 
-        .hero-content.text-right .hero-buttons {
-            justify-content: flex-end;
+        .welcome-section::before {
+            content: none; /* Remove subtle gradient overlay */
         }
 
-        .hero-title {
-            font-size: clamp(2.2rem, 5.5vw, 3.8rem);
-            font-weight: 800;
-            color: var(--white);
-            line-height: 1.1;
-            margin-bottom: 1rem;
-            text-shadow: 0 2px 30px rgba(0, 0, 0, 0.25);
+        .welcome-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 900;
+            color: #1e293b;
+            line-height: 1.15;
+            margin-bottom: 2rem;
             letter-spacing: -0.03em;
-            animation: heroTextReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation: welcomeFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+            position: relative;
+            z-index: 1;
         }
 
-        @keyframes heroTextReveal {
+        .welcome-highlight {
+            display: inline-block;
+            background: linear-gradient(270deg, #003a8c, #9333ea, #003a8c);
+            background-size: 300% 300%;
+            color: var(--white);
+            padding: 0.1em 0.5em;
+            border-radius: 50px; /* Pill shape */
+            position: relative;
+            box-shadow: 0 4px 16px rgba(217, 70, 239, 0.25);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+            animation: gradientShift 6s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .welcome-subtitle {
+            font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+            color: var(--text-light);
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.7;
+            animation: welcomeFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes welcomeFadeIn {
             from {
                 opacity: 0;
-                transform: translateY(30px);
-                filter: blur(4px);
+                transform: translateY(20px);
+                filter: blur(3px);
             }
             to {
                 opacity: 1;
@@ -197,150 +184,252 @@
             }
         }
 
-        .hero-subtitle {
-            font-size: clamp(1rem, 2vw, 1.3rem);
-            color: rgba(255, 255, 255, 0.95);
-            margin-bottom: 0.75rem;
-            line-height: 1.6;
-            font-weight: 400;
-            animation: heroTextReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
-        }
-
-        .hero-description {
-            font-size: clamp(0.85rem, 1.5vw, 0.95rem);
-            color: rgba(255, 255, 255, 0.75);
-            margin-bottom: 2rem;
-            line-height: 1.7;
-            max-width: 550px;
-            animation: heroTextReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            animation: heroTextReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            padding: 0.95rem 2rem;
-            font-size: 0.95rem;
-            font-weight: 600;
-            border-radius: 50px;
-            text-decoration: none;
-            transition: var(--transition);
-            cursor: pointer;
-            border: none;
+        /* ===== TOP INFO SECTION ===== */
+        .top-info-section {
+            padding: 0 1rem 3rem;
+            background: var(--white);
             position: relative;
-            overflow: hidden;
-            letter-spacing: 0.01em;
+            z-index: 1;
         }
 
-        .btn::after {
+        .top-info-header {
+            text-align: center;
+            margin-bottom: 2.25rem;
+        }
+
+        .top-info-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--secondary);
+            position: relative;
+            display: inline-block;
+            letter-spacing: 0.01em;
+            padding-bottom: 0.5rem;
+        }
+
+        .top-info-title::after {
             content: '';
             position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .btn:hover::after {
-            opacity: 1;
-        }
-
-        .btn-primary {
-            background: var(--white);
-            color: var(--primary);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(255,255,255,0.2);
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-light);
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-outline {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            color: var(--white);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.18);
-            border-color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        /* Hero Controls */
-        .hero-controls {
-            position: absolute;
-            bottom: 2.5rem;
+            bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            display: flex;
-            gap: 0.6rem;
-            z-index: 10;
-        }
-
-        .hero-dot {
-            width: 10px;
-            height: 10px;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-vivid));
             border-radius: 50px;
-            background: rgba(255, 255, 255, 0.3);
-            border: none;
-            cursor: pointer;
+        }
+
+        /* ===== TOP INFO GRID ===== */
+        .top-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: stretch;
+        }
+
+        .top-info-card {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            display: block;
+            text-decoration: none;
             transition: var(--transition);
-            padding: 0;
+            box-shadow: var(--shadow-card);
         }
 
-        .hero-dot.active {
-            background: var(--white);
-            width: 36px;
-            box-shadow: 0 0 16px rgba(255, 255, 255, 0.5);
+        .top-info-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-card-hover);
         }
 
-        /* Scroll Indicator */
-        .hero-scroll-indicator {
+        .top-info-card-img {
+            width: 100%;
+            height: 100%;
+            min-height: 280px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .top-info-card:hover .top-info-card-img {
+            transform: scale(1.04);
+        }
+
+        /* Center card is taller */
+        .top-info-card.featured .top-info-card-img {
+            min-height: 360px;
+        }
+
+        /* Gradient overlay at bottom */
+        .top-info-card-overlay {
             position: absolute;
-            bottom: 2rem;
-            right: 5%;
-            z-index: 10;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0) 100%);
+            color: var(--white);
             display: flex;
             flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .top-info-card-categories {
+            display: flex;
+            gap: 0.4rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .top-info-card-cat {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .top-info-card-cat.alt {
+            background: #ef4444;
+        }
+
+        .top-info-card-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .top-info-card.featured .top-info-card-title {
+            font-size: 1.15rem;
+            -webkit-line-clamp: 3;
+        }
+
+        .top-info-card-meta {
+            display: flex;
             align-items: center;
+            flex-wrap: wrap;
             gap: 0.5rem;
-            color: rgba(255,255,255,0.6);
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .top-info-card-meta i {
+            color: var(--primary-vivid, #1a6dff);
             font-size: 0.7rem;
-            font-weight: 500;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            animation: floatUpDown 2s ease-in-out infinite;
         }
 
-        .hero-scroll-indicator i {
-            font-size: 1rem;
-            animation: scrollBounce 2s ease-in-out infinite;
+        .top-info-card-meta .author-verified {
+            color: #1da1f2;
         }
 
-        @keyframes floatUpDown {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+        .top-info-card-meta .dot-sep {
+            opacity: 0.5;
         }
 
-        @keyframes scrollBounce {
-            0%, 100% { transform: translateY(0); opacity: 1; }
-            50% { transform: translateY(6px); opacity: 0.5; }
+        /* ===== TOP INFO RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .top-info-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .top-info-card.featured {
+                grid-column: 1 / -1;
+            }
+
+            .top-info-card-img {
+                min-height: 220px;
+            }
+
+            .top-info-card.featured .top-info-card-img {
+                min-height: 300px;
+            }
         }
 
+        @media (max-width: 768px) {
+            .welcome-section {
+                padding: 3rem 1rem 2rem;
+            }
 
-        /* ===== ANNOUNCEMENT BAR ===== */
+            .welcome-title {
+                font-size: 1.6rem;
+            }
+
+            .welcome-subtitle {
+                font-size: 0.9rem;
+            }
+
+            .top-info-section {
+                padding: 0 0.75rem 2rem;
+            }
+
+            .top-info-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .top-info-card-img {
+                min-height: 200px;
+            }
+
+            .top-info-card.featured .top-info-card-img {
+                min-height: 240px;
+            }
+
+            .announcement-badge span {
+                display: none;
+            }
+
+            .hero-accent-bar {
+                height: 4px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .welcome-section {
+                padding: 2.5rem 1rem 1.5rem;
+            }
+
+            .welcome-title {
+                font-size: 1.35rem;
+            }
+
+            .welcome-highlight {
+                padding: 0.1em 0.45em;
+                border-radius: 8px;
+                font-size: 0.95em;
+            }
+
+            .top-info-card-img {
+                min-height: 180px;
+            }
+
+            .top-info-card.featured .top-info-card-img {
+                min-height: 200px;
+            }
+
+            .top-info-card-title {
+                font-size: 0.88rem;
+            }
+
+            .top-info-card.featured .top-info-card-title {
+                font-size: 1rem;
+            }
+
+            .hero-accent-bar {
+                height: 3px;
+            }
+        }
         .announcement-bar {
             background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
             padding: 0.75rem 0;
@@ -424,6 +513,7 @@
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
+
 
         /* ===== SECTION STYLES ===== */
         .section {
@@ -515,10 +605,10 @@
         .program-news-card {
             display: block;
             text-decoration: none;
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            border: 1px solid var(--border);
+            background: transparent;
+            border-radius: 0;
+            overflow: visible;
+            border: none;
             transition: var(--transition);
             position: relative;
         }
@@ -538,9 +628,7 @@
         }
 
         .program-news-card:hover {
-            box-shadow: var(--shadow-card-hover);
             transform: translateY(-6px);
-            border-color: rgba(0, 83, 197, 0.1);
         }
 
         .program-news-card:hover::before {
@@ -550,6 +638,7 @@
         .program-news-img-wrap {
             position: relative;
             overflow: hidden;
+            border-radius: var(--radius-lg);
         }
 
         .program-news-img {
@@ -570,7 +659,7 @@
         }
 
         .program-news-body {
-            padding: 1rem 1.15rem;
+            padding: 1rem 0;
         }
 
         .program-news-title {
@@ -724,20 +813,7 @@
             text-align: center;
         }
 
-        .program-sidebar-footer a {
-            color: var(--primary);
-            font-weight: 600;
-            font-size: 0.82rem;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            transition: var(--transition);
-        }
 
-        .program-sidebar-footer a:hover {
-            gap: 0.65rem;
-        }
 
         /* Responsive */
         @media (max-width: 1024px) {
@@ -775,12 +851,12 @@
         }
 
         .post-card {
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-card);
+            background: transparent;
+            border-radius: 0;
+            overflow: visible;
+            box-shadow: none;
             transition: var(--transition);
-            border: 1px solid var(--border);
+            border: none;
             position: relative;
         }
 
@@ -800,8 +876,6 @@
 
         .post-card:hover {
             transform: translateY(-8px);
-            box-shadow: var(--shadow-card-hover);
-            border-color: rgba(0, 83, 197, 0.08);
         }
 
         .post-card:hover::before {
@@ -811,6 +885,7 @@
         .post-img-wrap {
             position: relative;
             overflow: hidden;
+            border-radius: var(--radius-lg);
         }
 
         .post-img {
@@ -855,7 +930,7 @@
         }
 
         .post-body {
-            padding: 1.35rem;
+            padding: 1.35rem 0;
         }
 
         .post-meta {
@@ -925,19 +1000,17 @@
         .post-compact {
             display: flex;
             gap: 1rem;
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 1rem;
-            box-shadow: var(--shadow-card);
-            border: 1px solid var(--border);
+            background: transparent;
+            border-radius: 0;
+            padding: 1rem 0;
+            box-shadow: none;
+            border: none;
             transition: var(--transition);
             text-decoration: none;
         }
 
         .post-compact:hover {
             transform: translateX(5px);
-            box-shadow: var(--shadow-card-hover);
-            border-color: rgba(0, 83, 197, 0.08);
         }
 
         .post-compact-img {
@@ -1322,24 +1395,23 @@
         }
 
         .donation-card {
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-card);
+            background: transparent;
+            border-radius: 0;
+            overflow: visible;
+            box-shadow: none;
             transition: var(--transition);
-            border: 1px solid var(--border);
+            border: none;
             position: relative;
         }
 
         .donation-card:hover {
             transform: translateY(-8px);
-            box-shadow: var(--shadow-card-hover);
-            border-color: rgba(0, 83, 197, 0.1);
         }
 
         .donation-img-wrap {
             position: relative;
             overflow: hidden;
+            border-radius: var(--radius-lg);
         }
 
         .donation-img {
@@ -1378,7 +1450,7 @@
         }
 
         .donation-body {
-            padding: 1.35rem;
+            padding: 1.35rem 0;
         }
 
         .donation-category {
@@ -1486,7 +1558,7 @@
             gap: 0.5rem;
             width: 100%;
             padding: 0.95rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: linear-gradient(135deg, #003a8c 0%, #0284c7 100%);
             color: var(--white);
             border: none;
             border-radius: 50px;
@@ -1513,7 +1585,7 @@
         }
 
         .btn-donate:hover {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-deeper) 100%);
+            background: linear-gradient(135deg, #0284c7 0%, #003a8c 100%);
             transform: translateY(-3px);
             box-shadow: 0 8px 30px rgba(0, 83, 197, 0.35);
         }
@@ -1524,7 +1596,7 @@
 
         /* ===== CTA SECTION ===== */
         .cta-section {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 50%, var(--primary-deeper) 100%);
+            background: linear-gradient(135deg, #003a8c 0%, #0284c7 100%);
             padding: 6.5rem 1rem;
             text-align: center;
             position: relative;
@@ -1741,75 +1813,6 @@
                 padding: 3.5rem 1rem;
             }
 
-            .hero {
-                height: 65vh;
-                min-height: 420px;
-                max-height: 600px;
-            }
-
-            .hero-content {
-                padding: 0 1.25rem;
-                align-items: flex-end;
-                padding-bottom: 4rem;
-            }
-
-            .hero-text {
-                max-width: 100%;
-            }
-
-            .hero-title {
-                font-size: 1.6rem;
-                line-height: 1.2;
-                margin-bottom: 0.5rem;
-                word-wrap: break-word;
-                overflow-wrap: break-word;
-            }
-
-            .hero-subtitle {
-                font-size: 0.9rem;
-                line-height: 1.4;
-                margin-bottom: 0.5rem;
-            }
-
-            .hero-description {
-                font-size: 0.78rem;
-                line-height: 1.5;
-                margin-bottom: 1rem;
-                max-width: 100%;
-                display: -webkit-box;
-                -webkit-line-clamp: 3;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-            }
-
-            .hero-buttons {
-                flex-direction: row;
-                gap: 0.5rem;
-            }
-
-            .hero-buttons .btn {
-                padding: 0.65rem 1.1rem;
-                font-size: 0.8rem;
-            }
-
-            .hero-content.text-right {
-                text-align: left;
-                justify-content: flex-start;
-            }
-
-            .hero-content.text-right .hero-buttons {
-                justify-content: flex-start;
-            }
-
-            .hero-scroll-indicator {
-                display: none;
-            }
-
-
-            .announcement-badge span {
-                display: none;
-            }
-
             .schedule-grid {
                 grid-template-columns: 1fr;
             }
@@ -1828,44 +1831,6 @@
         }
 
         @media (max-width: 480px) {
-            .hero {
-                height: 60vh;
-                min-height: 360px;
-                max-height: 480px;
-            }
-
-            .hero-content {
-                padding: 0 1rem;
-                padding-bottom: 3.5rem;
-            }
-
-            .hero-title {
-                font-size: 1.35rem;
-            }
-
-            .hero-subtitle {
-                font-size: 0.82rem;
-            }
-
-            .hero-description {
-                font-size: 0.75rem;
-                -webkit-line-clamp: 2;
-            }
-
-            .hero-buttons .btn {
-                padding: 0.55rem 0.9rem;
-                font-size: 0.75rem;
-            }
-
-            .hero-controls {
-                bottom: 1rem;
-            }
-
-            .hero-dot {
-                width: 8px;
-                height: 8px;
-            }
-
             .quick-stats-inner {
                 grid-template-columns: repeat(2, 1fr);
                 border-radius: var(--radius);
@@ -1920,57 +1885,60 @@
     </style>
 @endpush
 @section('content')
-    <!-- Hero Section -->
-    <section class="hero">
-        @foreach ($sliders as $index => $slider)
-            @php
-                $overlayOpacity = ($slider->overlay_opacity ?? 50) / 100;
-                $textPos = $slider->text_position ?? 'left';
-            @endphp
-            <div class="hero-slide {{ $index === 0 ? 'active' : '' }} lazy-bg"
-                data-bg="{{ asset('storage/' . $slider->image) }}">
-                {{-- Dynamic Overlay (primary blue, opacity from admin) --}}
-                <div class="hero-overlay" style="background: linear-gradient(135deg, rgba(0,53,197,{{ $overlayOpacity }}) 0%, rgba(0,40,120,{{ $overlayOpacity * 0.6 }}) 100%);"></div>
-                <div class="hero-content text-{{ $textPos }}">
-                    <div class="hero-text">
-                        <h1 class="hero-title">{{ $slider->title }}</h1>
-                        @if ($slider->subtitle)
-                            <p class="hero-subtitle">{{ $slider->subtitle }}</p>
-                        @endif
-                        @if ($slider->description)
-                            <p class="hero-description">{{ Str::limit($slider->description, 200) }}</p>
-                        @endif
-                        <div class="hero-buttons">
-                            @if ($slider->button_text && $slider->button_link)
-                                <a href="{{ $slider->button_link }}" class="btn btn-primary">
-                                    {{ $slider->button_text }}
-                                    <i class="fas fa-arrow-right"></i>
-                                </a>
-                            @endif
-                            @if ($slider->button_text_2 && $slider->button_link_2)
-                                <a href="{{ $slider->button_link_2 }}" class="btn btn-outline">
-                                    {{ $slider->button_text_2 }}
-                                    <i class="fas fa-arrow-right"></i>
-                                </a>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-        @if ($sliders->count() > 1)
-            <div class="hero-controls">
-                @foreach ($sliders as $index => $slider)
-                    <button class="hero-dot {{ $index === 0 ? 'active' : '' }}" data-slide="{{ $index }}"></button>
-                @endforeach
-            </div>
-        @endif
-        <div class="hero-scroll-indicator">
-            <span>Scroll</span>
-            <i class="fas fa-chevron-down"></i>
+    <!-- Gradient Accent Bar -->
+    <div class="hero-accent-bar"></div>
+
+    <!-- Welcome Section -->
+    <section class="welcome-section">
+        <div class="container">
+            <h1 class="welcome-title">
+                Selamat Datang<br>
+                di Official Website<br>
+                <span class="welcome-highlight">{{ setting('site_name', 'Tarkam Banyumas') }}</span>
+            </h1>
+            <p class="welcome-subtitle">
+                {{ setting('site_description', 'Update Informasi Sepak Bola Tarkam Wilayah Banyumas dan Sekitarnya') }}
+            </p>
         </div>
     </section>
 
+    <!-- Top Info -->
+    @if ($sliders->count() > 0)
+        <section class="top-info-section">
+            <div class="top-info-header">
+                <h2 class="top-info-title">Banner Informasi</h2>
+            </div>
+            <div class="top-info-grid">
+                @foreach ($sliders->take(3) as $index => $slider)
+                    <a href="{{ $slider->button_link ?? '#' }}"
+                       class="top-info-card {{ $index === 1 ? 'featured' : '' }} fade-up">
+                        <img src="{{ $slider->image ? asset('storage/' . $slider->image) : asset('storage/img/placeholder.jpg') }}"
+                             alt="{{ $slider->title }}"
+                             class="top-info-card-img"
+                             loading="lazy"
+                             onerror="this.src='{{ asset('storage/img/placeholder.jpg') }}'">
+                        <div class="top-info-card-overlay">
+                            <div class="top-info-card-categories">
+                                @if($slider->button_text)
+                                    <span class="top-info-card-cat" style="background: #1d4ed8;">{{ $slider->button_text }}</span>
+                                @endif
+                                @if($slider->button_text_2)
+                                    <span class="top-info-card-cat" style="background: #dc2626;">{{ $slider->button_text_2 }}</span>
+                                @endif
+                            </div>
+                            <h3 class="top-info-card-title">{{ $slider->title }}</h3>
+                            <div class="top-info-card-meta">
+                                <i class="fas fa-check-circle author-verified" style="color: #3b82f6;"></i>
+                                <span>Redaksi Masjid Agung Al Azhar</span>
+                                <span class="dot-sep">•</span>
+                                <span>{{ $slider->created_at ? $slider->created_at->format('d/m/Y') : date('d/m/Y') }}</span>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </section>
+    @endif
 
     <!-- Announcements -->
     @if ($announcements->count() > 0)
@@ -1992,6 +1960,155 @@
                 </div>
             </div>
         </div>
+    @endif
+
+    <!-- Ad Banner Section -->
+    @if(isset($adBanners) && $adBanners->count() > 0)
+        <section class="ad-banner-section" style="background: var(--white); padding: 2.5rem 1rem 0; text-align: center;">
+            <div class="container" style="max-width: 1200px; margin: 0 auto; position: relative;">
+                <div class="ad-banner-carousel" id="adBannerCarousel" style="position: relative; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md);">
+                    @foreach($adBanners as $index => $banner)
+                        <a href="{{ $banner->url_link ?? '#' }}" {!! $banner->url_link ? 'target="_blank"' : 'style="pointer-events: none;"' !!} class="ad-banner-link" data-index="{{ $index }}" style="display: {{ $index === 0 ? 'block' : 'none' }}; transition: transform 0.3s ease; animation: fadeIn 0.5s ease-in-out;">
+                            <img src="{{ asset('storage/' . $banner->image) }}" alt="{{ $banner->title }}" style="width: 100%; height: auto; object-fit: cover; display: block;">
+                        </a>
+                    @endforeach
+
+                    @if($adBanners->count() > 1)
+                        <!-- Navigation Controls -->
+                        <button class="ad-nav-btn ad-prev" aria-label="Previous Banner">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="ad-nav-btn ad-next" aria-label="Next Banner">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+
+                        <!-- Progress Bar -->
+                        <div class="ad-progress-bar">
+                            <div class="ad-progress-fill"></div>
+                        </div>
+                    @endif
+                </div>
+                
+                <style>
+                    .ad-banner-carousel:hover .ad-banner-link {
+                        transform: translateY(-2px);
+                    }
+                    .ad-nav-btn {
+                        position: absolute;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        background: rgba(255, 255, 255, 0.8);
+                        color: var(--primary);
+                        border: none;
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        font-size: 1.2rem;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        opacity: 0;
+                        visibility: hidden;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        z-index: 10;
+                    }
+                    .ad-banner-carousel:hover .ad-nav-btn {
+                        opacity: 1;
+                        visibility: visible;
+                    }
+                    .ad-nav-btn:hover {
+                        background: var(--primary);
+                        color: white;
+                    }
+                    .ad-prev { left: 15px; }
+                    .ad-next { right: 15px; }
+                    
+                    .ad-progress-bar {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 4px;
+                        background: rgba(255, 255, 255, 0.3);
+                        z-index: 10;
+                    }
+                    .ad-progress-fill {
+                        height: 100%;
+                        width: 0%;
+                        background: var(--primary);
+                        transition: none; /* Controlled by JS/Animation */
+                    }
+
+                    @keyframes fadeIn {
+                        from { opacity: 0; }
+                        to { opacity: 1; }
+                    }
+                </style>
+                @if($adBanners->count() > 1)
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const banners = document.querySelectorAll('#adBannerCarousel .ad-banner-link');
+                        const progressFill = document.querySelector('.ad-progress-fill');
+                        const btnPrev = document.querySelector('.ad-prev');
+                        const btnNext = document.querySelector('.ad-next');
+                        let currentIndex = 0;
+                        const totalBanners = banners.length;
+                        const slideDuration = 15000; // 15 seconds
+                        let slideTimer;
+                        let progressAnimation;
+
+                        function resetProgress() {
+                            progressFill.style.transition = 'none';
+                            progressFill.style.width = '0%';
+                            // Force reflow
+                            void progressFill.offsetWidth;
+                            progressFill.style.transition = `width ${slideDuration}ms linear`;
+                            progressFill.style.width = '100%';
+                        }
+
+                        function showBanner(index) {
+                            banners.forEach(b => b.style.display = 'none');
+                            banners[index].style.display = 'block';
+                            resetProgress();
+                        }
+
+                        function nextBanner() {
+                            currentIndex = (currentIndex + 1) % totalBanners;
+                            showBanner(currentIndex);
+                            startTimer();
+                        }
+
+                        function prevBanner() {
+                            currentIndex = (currentIndex - 1 + totalBanners) % totalBanners;
+                            showBanner(currentIndex);
+                            startTimer();
+                        }
+
+                        function startTimer() {
+                            clearInterval(slideTimer);
+                            slideTimer = setInterval(nextBanner, slideDuration);
+                            resetProgress();
+                        }
+
+                        btnNext.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            nextBanner();
+                        });
+
+                        btnPrev.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            prevBanner();
+                        });
+
+                        // Start carousel
+                        startTimer();
+                    });
+                </script>
+                @endif
+            </div>
+        </section>
     @endif
 
     <!-- Wave Divider -->
@@ -2051,8 +2168,110 @@
             </div>
 
             <div class="text-center mt-4 fade-up">
-                <a href="{{ route('blog') }}" class="btn btn-primary"
-                    style="background: var(--primary); color: var(--white);">
+                <style>
+                    .btn-aesthetic {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 0.75rem;
+                        padding: 0.85rem 2.5rem;
+                        background: linear-gradient(135deg, var(--primary) 0%, #9333ea 100%);
+                        color: var(--white) !important;
+                        border-radius: 50px;
+                        font-weight: 600;
+                        font-size: 1rem;
+                        text-decoration: none;
+                        box-shadow: 0 10px 20px rgba(147, 51, 234, 0.2);
+                        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                        position: relative;
+                        overflow: hidden;
+                        z-index: 1;
+                    }
+                    .btn-aesthetic::before {
+                        content: '';
+                        position: absolute;
+                        top: 0; left: 0; right: 0; bottom: 0;
+                        background: linear-gradient(135deg, #9333ea 0%, var(--primary) 100%);
+                        z-index: -1;
+                        transition: opacity 0.4s ease;
+                        opacity: 0;
+                    }
+                    .btn-aesthetic:hover {
+                        transform: translateY(-4px);
+                        box-shadow: 0 15px 30px rgba(147, 51, 234, 0.35);
+                    }
+                    .btn-aesthetic:hover::before {
+                        opacity: 1;
+                    }
+                    .btn-aesthetic i {
+                        transition: transform 0.3s ease;
+                    }
+                    .btn-aesthetic:hover i {
+                        transform: translateX(6px);
+                    }
+                    
+                    /* Social Buttons Aesthetic */
+                    .btn-social {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 0.75rem;
+                        padding: 0.85rem 2.5rem;
+                        color: var(--white) !important;
+                        border-radius: 50px;
+                        font-weight: 600;
+                        font-size: 1rem;
+                        text-decoration: none;
+                        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                        position: relative;
+                        overflow: hidden;
+                        z-index: 1;
+                        border: none;
+                    }
+                    .btn-social::before {
+                        content: '';
+                        position: absolute;
+                        top: 0; left: 0; right: 0; bottom: 0;
+                        z-index: -1;
+                        transition: opacity 0.4s ease;
+                        opacity: 0;
+                    }
+                    .btn-social:hover {
+                        transform: translateY(-4px);
+                        color: var(--white);
+                    }
+                    .btn-social:hover::before {
+                        opacity: 1;
+                    }
+                    .btn-social i {
+                        font-size: 1.2rem;
+                        transition: transform 0.4s ease;
+                    }
+                    .btn-social:hover i {
+                        transform: scale(1.15) rotate(5deg);
+                    }
+
+                    .btn-ig {
+                        background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+                        box-shadow: 0 10px 20px rgba(220, 39, 67, 0.2);
+                    }
+                    .btn-ig::before {
+                        background: linear-gradient(45deg, #bc1888 0%, #cc2366 25%, #dc2743 50%, #e6683c 75%, #f09433 100%);
+                    }
+                    .btn-ig:hover {
+                        box-shadow: 0 15px 30px rgba(220, 39, 67, 0.35);
+                    }
+
+                    .btn-yt {
+                        background: linear-gradient(45deg, #ff0000 0%, #cc0000 100%);
+                        box-shadow: 0 10px 20px rgba(255, 0, 0, 0.2);
+                    }
+                    .btn-yt::before {
+                        background: linear-gradient(45deg, #cc0000 0%, #ff0000 100%);
+                    }
+                    .btn-yt:hover {
+                        box-shadow: 0 15px 30px rgba(255, 0, 0, 0.35);
+                    }
+                </style>
+                <a href="{{ route('blog') }}" class="btn-aesthetic">
                     Lihat Semua Berita <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
@@ -2141,8 +2360,8 @@
                             </a>
                         @endforeach
                     </div>
-                    <div class="program-sidebar-footer">
-                        <a href="{{ route('programs') }}">
+                    <div class="program-sidebar-footer" style="padding-top: 1.5rem; border-top: none;">
+                        <a href="{{ route('programs') }}" class="btn-aesthetic" style="width: 100%; justify-content: center; font-size: 0.9rem; padding: 0.75rem 1.5rem;">
                             Lihat Semua Layanan <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
@@ -2170,15 +2389,40 @@
                 <p>Ikuti kegiatan terbaru kami di Instagram <a href="https://instagram.com/masjidagungalazhar" target="_blank" style="color: var(--primary); font-weight: bold; text-decoration: none;">@masjidagungalazhar</a></p>
             </div>
 
-            <div class="fade-up social-embed-wrapper">
-                <!-- Elfsight Instagram Feed Widget -->
-                <script src="https://elfsightcdn.com/platform.js" async></script>
-                <div class="elfsight-app-2edc714a-36ba-4433-b2f5-40632f906ae2" data-elfsight-app-lazy></div>
+            <div class="fade-up">
+                <style>
+                    .instagram-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                        gap: 20px;
+                        justify-items: center;
+                    }
+                    .instagram-item {
+                        width: 100%;
+                        display: flex;
+                        justify-content: center;
+                    }
+                </style>
+                <div class="instagram-grid">
+                    <!-- Instagram Post 1 -->
+                    <div class="instagram-item">
+                        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/{{ setting('ig_post_1', 'C-v1M-LykbU') }}/" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:12px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:100%;"></blockquote >
+                    </div>
+                    <!-- Instagram Post 2 -->
+                    <div class="instagram-item">
+                        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/{{ setting('ig_post_2', 'C-v0_Z_S2c7') }}/" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:12px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:100%;"></blockquote >
+                    </div>
+                    <!-- Instagram Post 3 -->
+                    <div class="instagram-item">
+                        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/{{ setting('ig_post_3', 'C-v01qNSsL4') }}/" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:12px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:100%;"></blockquote >
+                    </div>
+                </div>
+                <!-- Script Resmi Instagram untuk render embed -->
+                <script async src="//www.instagram.com/embed.js"></script>
             </div>
 
             <div class="text-center mt-4 fade-up">
-                <a href="https://instagram.com/masjidagungalazhar" target="_blank" class="btn btn-primary"
-                    style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: var(--white); border: none;">
+                <a href="https://instagram.com/masjidagungalazhar" target="_blank" class="btn-social btn-ig">
                     <i class="fab fa-instagram"></i> Kunjungi Instagram Kami
                 </a>
             </div>
@@ -2201,19 +2445,104 @@
                 <p class="section-desc">Saksikan kajian, khutbah, dan kegiatan Masjid Agung Al-Azhar</p>
             </div>
 
-            <div class="fade-up social-embed-wrapper">
-                <!-- Elfsight YouTube Gallery Widget -->
-                <div class="elfsight-app-a0e07724-d5c6-4540-a51b-1d39d9a7436d" data-elfsight-app-lazy></div>
+            <div class="fade-up">
+                <style>
+                    .youtube-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                        gap: 20px;
+                    }
+                    .youtube-video-container {
+                        position: relative;
+                        padding-bottom: 56.25%; /* Aspek rasio 16:9 */
+                        height: 0;
+                        overflow: hidden;
+                        border-radius: 12px;
+                        box-shadow: var(--shadow-sm);
+                    }
+                    .youtube-video-container iframe {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        border: 0;
+                    }
+                </style>
+                <div class="youtube-grid">
+                    <!-- Video 1 -->
+                    <div class="youtube-video-container">
+                        <!-- Ganti src= dengan URL Embed YouTube Anda -->
+                        <iframe src="https://www.youtube.com/embed/{{ setting('yt_video_1', 'LXb3EKWsInQ') }}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <!-- Video 2 -->
+                    <div class="youtube-video-container">
+                        <iframe src="https://www.youtube.com/embed/{{ setting('yt_video_2', 'wXhTHyIgQ_U') }}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <!-- Video 3 -->
+                    <div class="youtube-video-container">
+                        <iframe src="https://www.youtube.com/embed/{{ setting('yt_video_3', 'jfKfPfyJRdk') }}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
             </div>
 
             <div class="text-center mt-4 fade-up">
-                <a href="https://www.youtube.com/@MasjidAgungAlAzhar" target="_blank" class="btn btn-primary"
-                    style="background: #FF0000; color: var(--white); border: none;">
+                <a href="https://www.youtube.com/@MasjidAgungAlAzhar" target="_blank" class="btn-social btn-yt">
                     <i class="fab fa-youtube"></i> Kunjungi Channel YouTube Kami
                 </a>
             </div>
         </div>
     </section>
+
+    <!-- Donations Section -->
+    @if ($donations->count() > 0)
+        <!-- Wave Divider -->
+        <div class="wave-divider flip" style="background: var(--bg);">
+            <svg viewBox="0 0 1200 50" preserveAspectRatio="none">
+                <path d="M0,25 C150,50 350,0 600,25 C850,50 1050,0 1200,25 L1200,50 L0,50 Z" fill="var(--white)"/>
+            </svg>
+        </div>
+        <section class="section">
+            <div class="container">
+                <div class="section-header fade-up">
+                    <span class="section-badge"><i class="fas fa-heart"></i> Donasi</span>
+                    <h2 class="section-title">Salurkan Donasi Anda</h2>
+                    <p class="section-desc">Mari berpartisipasi dalam program kebaikan untuk umat</p>
+                </div>
+                <div class="donations-grid">
+                    @foreach ($donations as $donation)
+                        <div class="donation-card fade-up">
+                            <div class="donation-img-wrap">
+                                @if ($donation->is_urgent ?? false)
+                                    <div class="donation-urgent"><i class="fas fa-exclamation-circle"></i> URGENT</div>
+                                @endif
+                                <div class="donation-img lazy-bg"
+                                    data-bg="{{ $donation->image ? asset('storage/' . $donation->image) : '' }}"></div>
+                            </div>
+                            <div class="donation-body">
+                                <span
+                                    class="donation-category">{{ ucfirst(str_replace('_', ' ', $donation->category)) }}</span>
+                                <h3 class="donation-title">{{ $donation->campaign_name }}</h3>
+                                <p class="donation-desc">{{ Str::limit($donation->description, 80) }}</p>
+
+
+
+                                <a href="{{ route('donations.show', $donation->slug) }}" class="btn-donate">
+                                    Donasi Sekarang <i class="fas fa-heart"></i>
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="text-center mt-4 fade-up">
+                    <a href="{{ route('donations') }}" class="btn-aesthetic">
+                        Lihat Semua Program Donasi <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    @endif
 
     <!-- Testimonials Section -->
     @if ($testimonials->count() > 0)
@@ -2263,74 +2592,6 @@
         </section>
     @endif
 
-    <!-- Donations Section -->
-    @if ($donations->count() > 0)
-        <!-- Wave Divider -->
-        <div class="wave-divider flip" style="background: var(--bg);">
-            <svg viewBox="0 0 1200 50" preserveAspectRatio="none">
-                <path d="M0,25 C150,50 350,0 600,25 C850,50 1050,0 1200,25 L1200,50 L0,50 Z" fill="var(--white)"/>
-            </svg>
-        </div>
-        <section class="section">
-            <div class="container">
-                <div class="section-header fade-up">
-                    <span class="section-badge"><i class="fas fa-heart"></i> Donasi</span>
-                    <h2 class="section-title">Salurkan Donasi Anda</h2>
-                    <p class="section-desc">Mari berpartisipasi dalam program kebaikan untuk umat</p>
-                </div>
-                <div class="donations-grid">
-                    @foreach ($donations as $donation)
-                        <div class="donation-card fade-up">
-                            <div class="donation-img-wrap">
-                                @if ($donation->is_urgent ?? false)
-                                    <div class="donation-urgent"><i class="fas fa-exclamation-circle"></i> URGENT</div>
-                                @endif
-                                <div class="donation-img lazy-bg"
-                                    data-bg="{{ $donation->image ? asset('storage/' . $donation->image) : '' }}"></div>
-                            </div>
-                            <div class="donation-body">
-                                <span
-                                    class="donation-category">{{ ucfirst(str_replace('_', ' ', $donation->category)) }}</span>
-                                <h3 class="donation-title">{{ $donation->campaign_name }}</h3>
-                                <p class="donation-desc">{{ Str::limit($donation->description, 80) }}</p>
-
-
-
-                                <a href="{{ route('donations.show', $donation->slug) }}" class="btn-donate">
-                                    Donasi Sekarang <i class="fas fa-heart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-
-                <div class="text-center mt-4 fade-up">
-                    <a href="{{ route('donations') }}" class="btn btn-outline"
-                        style="border: 2px solid var(--primary); color: var(--primary);">
-                        Lihat Semua Program Donasi <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-        </section>
-    @endif
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="cta-decoration"></div>
-        <div class="cta-content fade-up">
-            <h2 class="cta-title">Mari Bergabung Bersama Kami</h2>
-            <p class="cta-desc">Ikuti berbagai layanan dan kegiatan dakwah Islam di Masjid Agung Al Azhar. Bersama kita
-                membangun umat yang lebih baik.</p>
-            <div class="cta-buttons">
-                <a href="{{ route('programs') }}" class="btn-cta-primary">
-                    <i class="fas fa-calendar-check"></i> Lihat Layanan
-                </a>
-                <a href="{{ route('contact') }}" class="btn-cta-outline">
-                    <i class="fas fa-envelope"></i> Hubungi Kami
-                </a>
-            </div>
-        </div>
-    </section>
 
 @endsection
 @push('scripts')

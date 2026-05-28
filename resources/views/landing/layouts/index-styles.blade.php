@@ -83,13 +83,13 @@
     }
 
     .btn-primary {
-        background: var(--primary);
+        background: linear-gradient(135deg, #003a8c 0%, #0284c7 100%);
         color: white;
         box-shadow: 0 10px 30px rgba(0, 83, 197, 0.3);
     }
 
     .btn-primary:hover {
-        background: var(--primary-dark);
+        background: linear-gradient(135deg, #0284c7 0%, #003a8c 100%);
         transform: translateY(-3px);
         box-shadow: 0 15px 40px rgba(0, 83, 197, 0.4);
     }
@@ -305,18 +305,17 @@
 
 <style>
     .post-card {
-        background: white;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        background: transparent;
+        border-radius: 0;
+        overflow: visible;
+        box-shadow: none;
         transition: all 0.3s ease;
         display: flex;
         flex-direction: column;
     }
 
     .post-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        transform: translateY(-5px);
     }
 
     .post-card.featured {
@@ -329,6 +328,8 @@
         background-size: cover;
         background-position: center;
         position: relative;
+        border-radius: 20px;
+        overflow: hidden;
     }
 
     .post-badge {
@@ -357,7 +358,7 @@
     }
 
     .post-content {
-        padding: 25px;
+        padding: 20px 0;
         flex: 1;
         display: flex;
         flex-direction: column;
@@ -407,17 +408,16 @@
 
     /* Small Post Card */
     .post-card-small {
-        background: white;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        background: transparent;
+        border-radius: 0;
+        overflow: visible;
+        box-shadow: none;
         transition: all 0.3s ease;
         cursor: pointer;
     }
 
     .post-card-small:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
     }
 
     .post-image-small {
@@ -425,10 +425,12 @@
         height: 180px;
         background-size: cover;
         background-position: center;
+        border-radius: 16px;
+        overflow: hidden;
     }
 
     .post-content-small {
-        padding: 20px;
+        padding: 15px 0;
     }
 
     .post-category-small {
@@ -536,16 +538,15 @@
     /* Album Cards */
     .album-card {
         text-decoration: none;
-        background: white;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        background: transparent;
+        border-radius: 0;
+        overflow: visible;
+        box-shadow: none;
         transition: all 0.3s ease;
     }
 
     .album-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        transform: translateY(-5px);
     }
 
     .album-cover {
@@ -553,10 +554,12 @@
         height: 200px;
         background-size: cover;
         background-position: center;
+        border-radius: 15px;
+        overflow: hidden;
     }
 
     .album-info {
-        padding: 20px;
+        padding: 15px 0;
     }
 
     .album-title {
@@ -685,10 +688,10 @@
 
 <style>
     .schedule-box {
-        background: white;
-        padding: 35px;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        background: transparent;
+        padding: 35px 0;
+        border-radius: 0;
+        box-shadow: none;
     }
 
     .schedule-list {
@@ -792,17 +795,16 @@
 
     .testimonial-card {
         min-width: calc(33.333% - 20px);
-        background: white;
-        padding: 35px;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        background: transparent;
+        padding: 35px 0;
+        border-radius: 0;
+        box-shadow: none;
         position: relative;
         transition: all 0.3s ease;
     }
 
     .testimonial-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        transform: translateY(-5px);
     }
 
     .testimonial-rating {
@@ -930,17 +932,16 @@
 
 <style>
     .donation-card {
-        background: white;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        background: transparent;
+        border-radius: 0;
+        overflow: visible;
+        box-shadow: none;
         transition: all 0.3s ease;
         position: relative;
     }
 
     .donation-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        transform: translateY(-5px);
     }
 
     .donation-urgent {
@@ -974,10 +975,12 @@
         height: 220px;
         background-size: cover;
         background-position: center;
+        border-radius: 20px;
+        overflow: hidden;
     }
 
     .donation-content {
-        padding: 30px;
+        padding: 20px 0;
     }
 
     .donation-category {

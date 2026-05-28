@@ -782,6 +782,20 @@
                         <span class="menu-item-tooltip">Popup Iklan</span>
                     </a>
 
+                    <a href="{{ route('admin.ad-banners.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.ad-banners.*') ? 'active' : '' }}">
+                        <i class="fas fa-ad"></i>
+                        <span>Ads Banner</span>
+                        <span class="menu-item-tooltip">Ads Banner</span>
+                    </a>
+
+                    <a href="{{ route('admin.social-embeds.index') }}"
+                        class="menu-item {{ request()->routeIs('admin.social-embeds.*') ? 'active' : '' }}">
+                        <i class="fas fa-play-circle"></i>
+                        <span>Sosial Embed</span>
+                        <span class="menu-item-tooltip">Sosial Embed</span>
+                    </a>
+
                     <a href="{{ route('admin.announcements.index') }}"
                         class="menu-item {{ request()->routeIs('admin.announcements.*') ? 'active' : '' }}">
                         <i class="fas fa-bullhorn"></i>

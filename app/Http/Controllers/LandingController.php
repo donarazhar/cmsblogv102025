@@ -17,7 +17,8 @@ use App\Models\{
     Slider,
     Staff,
     Testimonial,
-    Setting // ✅ Tambahkan ini
+    Setting, // ✅ Tambahkan ini
+    AdBanner // ✅ Tambahkan ini
 };
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -39,7 +40,7 @@ class LandingController extends Controller
             return [
                 'sliders' => Slider::active()
                     ->ordered()
-                    ->select('id', 'title', 'subtitle', 'description', 'image', 'button_text', 'button_link', 'button_text_2', 'button_link_2', 'text_position', 'overlay_color', 'overlay_opacity')
+                    ->select('id', 'title', 'subtitle', 'description', 'image', 'button_text', 'button_link', 'button_text_2', 'button_link_2', 'text_position', 'overlay_color', 'overlay_opacity', 'created_at')
                     ->limit(4)
                     ->get(),
 
@@ -48,6 +49,11 @@ class LandingController extends Controller
                     ->byPriority()
                     ->select('id', 'title', 'content', 'type')
                     ->limit(3)
+                    ->get(),
+
+                'adBanners' => AdBanner::active()
+                    ->ordered()
+                    ->select('id', 'title', 'image', 'url_link')
                     ->get(),
 
                 'programs' => Program::active()
