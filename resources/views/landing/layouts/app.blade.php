@@ -616,13 +616,6 @@
             overflow: hidden;
         }
 
-        .footer::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url("{{ asset('storage/img/background.svg') }}"); background-size: cover; background-position: center;
-            pointer-events: none;
-        }
 
         .footer-main {
             position: relative;
@@ -1233,7 +1226,7 @@
                     </div>
 
                     <div class="footer-simple-right">
-                        <h4 class="footer-widget-title" style="border-bottom: none; margin-bottom: 10px; padding-bottom: 0;">Follow Media Kami</h4>
+                        <h4 class="footer-widget-title" style="border-bottom: none; margin-bottom: 10px; padding-bottom: 0;">Follow Media Sosial Kami:</h4>
                         <div class="social-links" style="justify-content: flex-end;">
                             @if (setting('social_youtube'))
                                 <a href="{{ setting('social_youtube') }}" target="_blank" rel="noopener"
