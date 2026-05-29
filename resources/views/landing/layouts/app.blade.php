@@ -159,6 +159,11 @@
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
         }
 
+        .navbar.navbar-subpage {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+        }
+
         .navbar-inner {
             display: flex;
             align-items: center;
@@ -1220,7 +1225,7 @@
     <div class="menu-overlay" id="menuOverlay"></div>
 
     <!-- Navbar -->
-    <nav class="navbar" id="navbar">
+    <nav class="navbar {{ !request()->routeIs('home') ? 'navbar-subpage' : '' }}" id="navbar">
         <div class="navbar-inner">
             <!-- Brand -->
             <a href="{{ route('home') }}" class="navbar-brand">
