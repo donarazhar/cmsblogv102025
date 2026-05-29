@@ -1018,52 +1018,49 @@
 @endpush
 
 @section('content')
-    <!-- Article Header -->
-    <header class="article-header">
-        <div class="container">
-            <div class="article-header-content">
-                <a href="{{ route('blog') }}" class="back-link">
-                    <i class="fas fa-arrow-left"></i>
-                    Kembali ke Blog
-                </a>
-
-                <a href="{{ route('blog') }}?category={{ $post->category->slug }}" class="article-category">
-                    {{ $post->category->name }}
-                </a>
-
-                <h1 class="article-title">{{ $post->title }}</h1>
-
-                <div class="article-meta">
-                    <span class="article-meta-item">
-                        <i class="fas fa-user"></i>
-                        {{ $post->author->name }}
-                    </span>
-                    <span class="article-meta-item">
-                        <i class="fas fa-calendar"></i>
-                        {{ $post->published_at->format('d F Y') }}
-                    </span>
-                    <span class="article-meta-item">
-                        <i class="fas fa-eye"></i>
-                        {{ number_format($post->views_count) }} views
-                    </span>
-                    @if ($post->reading_time)
-                        <span class="article-meta-item">
-                            <i class="fas fa-clock"></i>
-                            {{ $post->reading_time }} menit baca
-                        </span>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </header>
-
     <!-- Article Content -->
-    <section class="article-section">
+    <section class="article-section" style="padding-top: 30px;">
         <div class="container">
             <div class="article-layout">
                 <!-- Main Content -->
                 <main>
-                    <article class="article-card">
+                    <div style="margin-bottom: 25px;" data-aos="fade-up">
+                        <a href="{{ route('blog') }}" class="back-link" style="color: var(--primary); font-weight: 600; margin-bottom: 15px;">
+                            <i class="fas fa-arrow-left"></i>
+                            Kembali ke Blog
+                        </a>
+
+                        <div style="margin-bottom: 15px;">
+                            <a href="{{ route('blog') }}?category={{ $post->category->slug }}" class="article-category" style="background: var(--primary-light); color: var(--primary); margin-bottom: 0;">
+                                {{ $post->category->name }}
+                            </a>
+                        </div>
+
+                        <h1 class="article-title" style="color: var(--dark); margin-bottom: 15px;">{{ $post->title }}</h1>
+
+                        <div class="article-meta" style="color: #6b7280;">
+                            <span class="article-meta-item">
+                                <i class="fas fa-user"></i>
+                                {{ $post->author->name }}
+                            </span>
+                            <span class="article-meta-item">
+                                <i class="fas fa-calendar"></i>
+                                {{ $post->published_at->format('d F Y') }}
+                            </span>
+                            <span class="article-meta-item">
+                                <i class="fas fa-eye"></i>
+                                {{ number_format($post->views_count) }} views
+                            </span>
+                            @if ($post->reading_time)
+                                <span class="article-meta-item">
+                                    <i class="fas fa-clock"></i>
+                                    {{ $post->reading_time }} menit baca
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <article class="article-card" data-aos="fade-up" data-aos-delay="100">
                         @if ($post->featured_image)
                             <img src="{{ asset('storage/' . $post->featured_image) }}" alt="{{ $post->title }}"
                                 class="article-featured-image" loading="eager">

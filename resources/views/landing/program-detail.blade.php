@@ -3,36 +3,31 @@
 @section('title', $program->name . ' - ' . ($settings['site_name'] ?? 'Masjid Agung Al Azhar'))
 
 @section('content')
-    <!-- Page Header -->
-    <section
-        style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); padding: 100px 0 60px; color: white;">
-        <div class="container">
-            <div style="max-width: 800px; margin: 0 auto;" data-aos="fade-up">
-                <div style="margin-bottom: 15px;">
-                    <a href="{{ route('programs') }}"
-                        style="color: white; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; opacity: 0.9;">
-                        <i class="fas fa-arrow-left"></i> Kembali ke Program
-                    </a>
-                </div>
-                <div
-                    style="display: inline-block; background: rgba(255,255,255,0.2); padding: 6px 18px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; margin-bottom: 20px;">
-                    {{ ucfirst($program->type) }}
-                </div>
-                <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 15px;">{{ $program->name }}</h1>
-                <p style="font-size: 1.1rem; opacity: 0.95;">{{ $program->description }}</p>
-            </div>
-        </div>
-    </section>
-
     <!-- Program Content -->
-    <section class="section">
+    <section class="section" style="padding-top: 30px;">
         <div class="container">
             <div class="program-layout">
                 <!-- Main Content -->
                 <div class="main-content">
+                    <div style="margin-bottom: 20px;" data-aos="fade-up">
+                        <a href="{{ route('programs') }}"
+                            style="color: var(--primary); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-weight: 600;">
+                            <i class="fas fa-arrow-left"></i> Kembali ke Program
+                        </a>
+                    </div>
+                    
+                    <div style="margin-bottom: 25px;" data-aos="fade-up" data-aos-delay="50">
+                        <div
+                            style="display: inline-block; background: var(--primary-light); color: var(--primary); padding: 6px 18px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; margin-bottom: 15px;">
+                            {{ ucfirst($program->type) }}
+                        </div>
+                        <h1 style="font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; color: var(--dark); margin-bottom: 15px; line-height: 1.2;">{{ $program->name }}</h1>
+                        <p style="font-size: 1.1rem; color: #6b7280; line-height: 1.6;">{{ $program->description }}</p>
+                    </div>
+
                     @if ($program->image)
                         <img src="{{ asset('storage/' . $program->image) }}" alt="{{ $program->name }}"
-                            style="width: 100%; border-radius: 20px; margin-bottom: 30px;" data-aos="fade-up">
+                            style="width: 100%; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.08);" data-aos="fade-up" data-aos-delay="100">
                     @endif
 
                     <div class="content-box" data-aos="fade-up">
