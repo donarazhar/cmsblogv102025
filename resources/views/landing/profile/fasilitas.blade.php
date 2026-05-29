@@ -8,7 +8,7 @@
 
 @section('content')
     <!-- Fasilitas Content (Dynamic from Admin) -->
-    <section class="section section-light" style="padding-top: 120px;">
+    <section class="section section-light" style="padding-top: 80px;">
         <div class="container">
             <div class="section-header">
                 <span class="section-badge">Fasilitas</span>
@@ -80,22 +80,4 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2 class="cta-title">Kunjungi Masjid Kami</h2>
-                <p class="cta-text">Rasakan kenyamanan beribadah di Masjid Agung Al Azhar dengan fasilitas lengkap
-                    dan modern.</p>
-                <div class="cta-buttons">
-                    <a href="{{ route('contact') }}" class="btn-cta btn-cta-primary">
-                        <i class="fas fa-map-marker-alt"></i> Lokasi Kami
-                    </a>
-                    <a href="{{ route('programs') }}" class="btn-cta btn-cta-outline">
-                        <i class="fas fa-calendar-check"></i> Lihat Program
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
 @endsection

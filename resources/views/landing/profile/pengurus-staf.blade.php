@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-    <div style="padding-top: 120px;">
+    <div style="padding-top: 80px;">
         @include('landing.partials.struktur-organisasi', ['staff' => $staff])
     </div>
 @endsection

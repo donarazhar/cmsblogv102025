@@ -8,7 +8,7 @@
 
 @section('content')
     <!-- History Content (Dynamic from Admin) -->
-    <section class="section section-light" style="padding-top: 120px;">
+    <section class="section section-light" style="padding-top: 80px;">
         <div class="container">
             <div class="section-header">
                 <span class="section-badge">Sejarah</span>
@@ -50,22 +50,4 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2 class="cta-title">Mari Bergabung Bersama Kami</h2>
-                <p class="cta-text">Jadilah bagian dari perjalanan Masjid Agung Al Azhar dalam membangun umat yang
-                    lebih baik melalui ibadah, pendidikan, dan dakwah.</p>
-                <div class="cta-buttons">
-                    <a href="{{ route('programs') }}" class="btn-cta btn-cta-primary">
-                        <i class="fas fa-calendar-check"></i> Lihat Program
-                    </a>
-                    <a href="{{ route('contact') }}" class="btn-cta btn-cta-outline">
-                        <i class="fas fa-envelope"></i> Hubungi Kami
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
 @endsection

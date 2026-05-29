@@ -8,7 +8,7 @@
 
 @section('content')
     <!-- Visi Misi Content (Dynamic from Admin) -->
-    <section class="section section-light" style="padding-top: 120px;">
+    <section class="section section-light" style="padding-top: 80px;">
         <div class="container">
             <div class="section-header">
                 <span class="section-badge">Visi & Misi</span>
@@ -42,25 +42,6 @@
                             <strong>Tentang Kami → Visi & Misi</strong> di halaman Admin.
                         </p>
                     @endif
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2 class="cta-title">Wujudkan Visi Bersama</h2>
-                <p class="cta-text">Mari bergabung dalam misi kami membangun umat yang lebih baik melalui ibadah,
-                    pendidikan, dan pemberdayaan sosial.</p>
-                <div class="cta-buttons">
-                    <a href="{{ route('programs') }}" class="btn-cta btn-cta-primary">
-                        <i class="fas fa-calendar-check"></i> Lihat Program
-                    </a>
-                    <a href="{{ route('contact') }}" class="btn-cta btn-cta-outline">
-                        <i class="fas fa-envelope"></i> Hubungi Kami
-                    </a>
                 </div>
             </div>
         </div>

@@ -4,7 +4,7 @@
 
 @section('content')
     <!-- Search Results -->
-    <section class="search-results-section" style="padding-top: 120px;">
+    <section class="search-results-section" style="padding-top: 80px;">
         <div class="container">
             <!-- Search Form -->
             <div style="margin-bottom: 2rem;">

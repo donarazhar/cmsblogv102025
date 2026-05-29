@@ -8,7 +8,7 @@
 
 @section('content')
     <!-- Struktur Organisasi Content (Dynamic from Admin) -->
-    <section class="section section-light" style="padding-top: 120px;">
+    <section class="section section-light" style="padding-top: 80px;">
         <div class="container">
             <div class="section-header">
                 <span class="section-badge">Organisasi</span>
@@ -41,22 +41,4 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2 class="cta-title">Bergabung dengan Tim Kami</h2>
-                <p class="cta-text">Kami selalu terbuka untuk menerima relawan dan kontribusi dari jamaah yang ingin
-                    berpartisipasi dalam kemakmuran masjid.</p>
-                <div class="cta-buttons">
-                    <a href="{{ route('contact') }}" class="btn-cta btn-cta-primary">
-                        <i class="fas fa-envelope"></i> Hubungi Kami
-                    </a>
-                    <a href="{{ route('frontend.profile.pengurus-staf') }}" class="btn-cta btn-cta-outline">
-                        <i class="fas fa-users"></i> Lihat Pengurus
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
 @endsection
