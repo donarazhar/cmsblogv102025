@@ -1376,11 +1376,11 @@
         </div>
     </nav>
 
-    <!-- Targeted Ad Banner -->
-    @include('landing.partials.targeted-ad-banner')
-
     <!-- Main Content -->
     <main class="main-content">
+        <!-- Targeted Ad Banner -->
+        @include('landing.partials.targeted-ad-banner')
+
         @yield('content')
     </main>
 
