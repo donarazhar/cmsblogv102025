@@ -2672,9 +2672,14 @@
                 <style>
                     .instagram-grid {
                         display: grid;
-                        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                        grid-template-columns: repeat(3, 1fr);
                         gap: 20px;
                         justify-items: center;
+                    }
+                    @media (max-width: 768px) {
+                        .instagram-grid {
+                            grid-template-columns: 1fr;
+                        }
                     }
                     .instagram-item {
                         width: 100%;
@@ -2728,8 +2733,13 @@
                 <style>
                     .youtube-grid {
                         display: grid;
-                        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                        grid-template-columns: repeat(3, 1fr);
                         gap: 20px;
+                    }
+                    @media (max-width: 768px) {
+                        .youtube-grid {
+                            grid-template-columns: 1fr;
+                        }
                     }
                     .youtube-video-container {
                         position: relative;
