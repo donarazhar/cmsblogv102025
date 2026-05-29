@@ -60,14 +60,13 @@
             top: 0;
             width: var(--sidebar-width);
             height: calc(100vh / 0.9);
-            background: white;
-            color: var(--dark);
+            background: linear-gradient(180deg, #0a1628 0%, #0d2847 40%, #0f3060 100%);
+            color: #c8d6e5;
             overflow-y: auto;
             overflow-x: hidden;
             transition: all 0.3s ease;
             z-index: 1000;
-            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.03);
-            border-right: 1px solid var(--border);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
         }
 
         .sidebar.collapsed {
@@ -75,35 +74,43 @@
         }
 
         .sidebar::-webkit-scrollbar {
-            width: 6px;
+            width: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
         }
 
         .sidebar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
+            background: rgba(255, 255, 255, 0.15);
             border-radius: 10px;
         }
 
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
         .sidebar-header {
-            padding: 25px 20px;
-            border-bottom: 1px solid var(--border);
+            padding: 22px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 14px;
             position: relative;
         }
 
         .sidebar-logo {
-            width: 50px;
-            height: 50px;
-            background: var(--light);
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            color: var(--primary);
+            font-size: 1.3rem;
+            color: #60a5fa;
             flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(0, 83, 197, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .sidebar-title {
@@ -118,17 +125,21 @@
         }
 
         .sidebar-title h3 {
-            font-size: 1.2rem;
+            font-size: 1.05rem;
             font-weight: 700;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
             white-space: nowrap;
-            color: var(--dark);
+            color: #ffffff;
+            letter-spacing: -0.01em;
         }
 
         .sidebar-title p {
-            font-size: 0.8rem;
-            color: #64748b;
+            font-size: 0.72rem;
+            color: rgba(148, 163, 184, 0.8);
             white-space: nowrap;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            font-weight: 500;
         }
 
         /* Sidebar Toggle Button */
@@ -137,10 +148,10 @@
             right: -15px;
             top: 50%;
             transform: translateY(-50%);
-            width: 30px;
-            height: 30px;
-            background: white;
-            border: 1px solid var(--border);
+            width: 28px;
+            height: 28px;
+            background: #0d2847;
+            border: 1px solid rgba(96, 165, 250, 0.3);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -148,19 +159,18 @@
             cursor: pointer;
             transition: all 0.3s ease;
             z-index: 1001;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .sidebar-toggle:hover {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
+            background: #3b82f6;
+            border-color: #3b82f6;
             transform: translateY(-50%) scale(1.1);
         }
 
         .sidebar-toggle i {
-            font-size: 0.8rem;
-            color: #64748b;
+            font-size: 0.7rem;
+            color: #60a5fa;
             transition: all 0.3s ease;
         }
 
@@ -173,41 +183,44 @@
         }
 
         .sidebar-menu {
-            padding: 20px 0;
+            padding: 12px 0;
         }
 
         /* Menu Section with Accordion */
         .menu-section {
-            margin-bottom: 2px;
+            margin-bottom: 0;
         }
 
         .menu-section-header {
-            padding: 10px 20px;
+            padding: 12px 20px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
             user-select: none;
-            margin-top: 6px;
-            border-top: 1px solid var(--border);
+            margin-top: 2px;
         }
 
         .menu-section-header:hover {
-            background: var(--light);
+            background: rgba(255, 255, 255, 0.03);
         }
 
         .menu-section-title {
-            font-size: 0.68rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #94a3b8;
-            font-weight: 700;
+            letter-spacing: 1.8px;
+            color: rgba(148, 163, 184, 0.55);
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 8px;
             white-space: nowrap;
             overflow: hidden;
+        }
+
+        .menu-section-title i {
+            font-size: 0.6rem;
         }
 
         .sidebar.collapsed .menu-section-title {
@@ -220,8 +233,8 @@
         }
 
         .menu-section-icon {
-            font-size: 0.7rem;
-            color: #94a3b8;
+            font-size: 0.6rem;
+            color: rgba(148, 163, 184, 0.4);
             transition: transform 0.3s ease;
         }
 
@@ -252,25 +265,27 @@
         .menu-item {
             display: flex;
             align-items: center;
-            padding: 10px 20px 10px 44px;
-            color: #475569;
+            padding: 9px 16px 9px 20px;
+            margin: 1px 10px;
+            color: rgba(203, 213, 225, 0.75);
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
             position: relative;
-            font-size: 0.88rem;
-            font-weight: 500;
-            border-left: 3px solid transparent;
+            font-size: 0.85rem;
+            font-weight: 400;
+            border-radius: 8px;
+            letter-spacing: 0.01em;
         }
 
         .sidebar.collapsed .menu-item {
             padding: 12px 20px;
             justify-content: center;
+            margin: 1px 8px;
         }
 
         .menu-item:hover {
-            background: rgba(0, 83, 197, 0.04);
-            color: var(--primary);
-            padding-left: 48px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #ffffff;
         }
 
         .sidebar.collapsed .menu-item:hover {
@@ -278,10 +293,21 @@
         }
 
         .menu-item.active {
-            background: rgba(0, 83, 197, 0.08);
-            border-left-color: var(--primary);
-            color: var(--primary);
-            font-weight: 600;
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            font-weight: 500;
+        }
+
+        .menu-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 18px;
+            background: #3b82f6;
+            border-radius: 0 3px 3px 0;
         }
 
         .menu-item i {
@@ -289,12 +315,17 @@
             margin-right: 12px;
             text-align: center;
             flex-shrink: 0;
-            color: #94a3b8;
-            transition: color 0.3s ease;
+            font-size: 0.85rem;
+            color: rgba(148, 163, 184, 0.6);
+            transition: color 0.25s ease;
         }
-        
-        .menu-item:hover i, .menu-item.active i {
-            color: var(--primary);
+
+        .menu-item:hover i {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .menu-item.active i {
+            color: #60a5fa;
         }
 
         .sidebar.collapsed .menu-item i {
@@ -312,13 +343,13 @@
 
         .menu-badge {
             margin-left: auto;
-            background: #fef2f2;
-            color: var(--danger);
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
             padding: 2px 8px;
             border-radius: 10px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            border: 1px solid #fecaca;
+            font-size: 0.68rem;
+            font-weight: 600;
+            border: 1px solid rgba(239, 68, 68, 0.2);
         }
 
         .sidebar.collapsed .menu-badge {
@@ -326,23 +357,23 @@
         }
 
         .menu-dashboard {
-            padding: 12px 20px;
+            padding: 9px 16px 9px 20px;
+            margin: 1px 10px;
             display: flex;
             align-items: center;
-            color: #475569;
+            color: rgba(203, 213, 225, 0.75);
             text-decoration: none;
-            transition: all 0.3s ease;
-            margin-top: 6px;
-            border-top: 1px solid var(--border);
-            font-weight: 600;
-            border-left: 3px solid transparent;
+            transition: all 0.25s ease;
+            border-radius: 8px;
+            position: relative;
         }
 
         .menu-dashboard span {
-            font-size: 0.68rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+            font-size: 0.85rem;
+            font-weight: 400;
             white-space: nowrap;
+            text-transform: none;
+            letter-spacing: 0.01em;
         }
 
         .sidebar.collapsed .menu-dashboard {
@@ -350,32 +381,48 @@
         }
 
         .menu-dashboard:hover {
-            background: rgba(0, 83, 197, 0.04);
-            color: var(--primary);
-            padding-left: 25px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #ffffff;
         }
 
         .sidebar.collapsed .menu-dashboard:hover {
-            padding-left: 20px;
+            padding-left: 16px;
         }
 
         .menu-dashboard.active {
-            background: rgba(0, 83, 197, 0.08);
-            border-left-color: var(--primary);
-            color: var(--primary);
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            font-weight: 500;
+        }
+
+        .menu-dashboard.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 18px;
+            background: #3b82f6;
+            border-radius: 0 3px 3px 0;
         }
 
         .menu-dashboard i {
-            width: 25px;
+            width: 20px;
             margin-right: 12px;
             text-align: center;
             flex-shrink: 0;
-            color: #94a3b8;
-            transition: color 0.3s ease;
+            font-size: 0.85rem;
+            color: rgba(148, 163, 184, 0.6);
+            transition: color 0.25s ease;
         }
-        
-        .menu-dashboard:hover i, .menu-dashboard.active i {
-            color: var(--primary);
+
+        .menu-dashboard:hover i {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .menu-dashboard.active i {
+            color: #60a5fa;
         }
 
         .sidebar.collapsed .menu-dashboard i {
@@ -746,7 +793,7 @@
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <div class="sidebar-logo" @if(setting('site_favicon')) style="background: white; border-radius: 50%; padding: 4px;" @endif>
+            <div class="sidebar-logo" @if(setting('site_favicon')) style="background: rgba(255,255,255,0.12); border-radius: 50%; padding: 4px; border-color: rgba(255,255,255,0.1);" @endif>
                 @if(setting('site_favicon'))
                     <img src="{{ asset('storage/' . setting('site_favicon')) }}" alt="Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 50%;">
                 @else
@@ -984,7 +1031,7 @@
             @endif
 
             <!-- Preview Web -->
-            <a href="{{ url('/') }}" target="_blank" class="menu-dashboard" style="margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px;">
+            <a href="{{ url('/') }}" target="_blank" class="menu-dashboard" style="margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 14px;">
                 <i class="fas fa-external-link-alt"></i>
                 <span>Preview Web</span>
                 <span class="menu-item-tooltip">Preview Web</span>
