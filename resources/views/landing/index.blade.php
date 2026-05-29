@@ -2674,8 +2674,8 @@
                 <style>
                     .instagram-grid {
                         display: grid;
-                        grid-template-columns: repeat(3, 1fr);
-                        gap: 20px;
+                        grid-template-columns: repeat(3, minmax(0, 1fr));
+                        gap: 15px;
                         justify-items: center;
                     }
                     @media (max-width: 768px) {
@@ -2688,19 +2688,26 @@
                         display: flex;
                         justify-content: center;
                     }
+                    /* Force Instagram embeds to fit container and prevent horizontal scroll */
+                    .instagram-item iframe, 
+                    .instagram-item .instagram-media {
+                        min-width: 100% !important;
+                        max-width: 100% !important;
+                        width: 100% !important;
+                    }
                 </style>
                 <div class="instagram-grid">
                     <!-- Instagram Post 1 -->
                     <div class="instagram-item">
-                        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/{{ setting('ig_post_1', 'C-v1M-LykbU') }}/" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:12px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:100%;"></blockquote >
+                        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/{{ setting('ig_post_1', 'C-v1M-LykbU') }}/" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:12px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:100px; padding:0; width:100%;"></blockquote >
                     </div>
                     <!-- Instagram Post 2 -->
                     <div class="instagram-item">
-                        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/{{ setting('ig_post_2', 'C-v0_Z_S2c7') }}/" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:12px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:100%;"></blockquote >
+                        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/{{ setting('ig_post_2', 'C-v0_Z_S2c7') }}/" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:12px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:100px; padding:0; width:100%;"></blockquote >
                     </div>
                     <!-- Instagram Post 3 -->
                     <div class="instagram-item">
-                        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/{{ setting('ig_post_3', 'C-v01qNSsL4') }}/" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:12px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:100%;"></blockquote >
+                        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/{{ setting('ig_post_3', 'C-v01qNSsL4') }}/" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:12px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:100px; padding:0; width:100%;"></blockquote >
                     </div>
                 </div>
                 <!-- Script Resmi Instagram untuk render embed -->
@@ -2735,8 +2742,8 @@
                 <style>
                     .youtube-grid {
                         display: grid;
-                        grid-template-columns: repeat(3, 1fr);
-                        gap: 20px;
+                        grid-template-columns: repeat(3, minmax(0, 1fr));
+                        gap: 15px;
                     }
                     @media (max-width: 768px) {
                         .youtube-grid {
