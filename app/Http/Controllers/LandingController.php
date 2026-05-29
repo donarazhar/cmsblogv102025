@@ -242,7 +242,14 @@ class LandingController extends Controller
         $pageDescription = \Illuminate\Support\Str::limit(strip_tags($post->excerpt ?: $post->content), 160);
         $pageImage = $post->featured_image ? asset('storage/' . $post->featured_image) : null;
 
-        return view('landing.blog-detail', compact('post', 'relatedPosts', 'pageTitle', 'pageDescription', 'pageImage'));
+        $popularPosts = Cache::remember('popular_posts_v3', self::CACHE_LONG, function () {
+            return Post::published()
+                ->orderBy('views_count', 'desc')
+                ->limit(4)
+                ->get(['id', 'title', 'slug', 'featured_image', 'published_at']);
+        });
+
+        return view('landing.blog-detail', compact('post', 'relatedPosts', 'popularPosts', 'pageTitle', 'pageDescription', 'pageImage'));
     }
 
     public function blogCommentSubmit(Request $request, string $slug)

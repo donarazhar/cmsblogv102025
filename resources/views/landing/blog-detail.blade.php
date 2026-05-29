@@ -1302,6 +1302,26 @@
                         </div>
                     @endif
 
+                    <!-- Popular Posts -->
+                    @if (isset($popularPosts) && $popularPosts->count() > 0)
+                        <div class="sidebar-card">
+                            <h3 class="sidebar-title">Artikel Populer</h3>
+                            <div class="related-list">
+                                @foreach ($popularPosts as $popular)
+                                    <a href="{{ route('blog.detail', $popular->slug) }}" class="related-item">
+                                        <img src="{{ $popular->featured_image ? asset('storage/' . $popular->featured_image) : asset('storage/img/placeholder.jpg') }}"
+                                            alt="{{ $popular->title }}" class="related-image" loading="lazy">
+                                        <div class="related-content">
+                                            <h4 class="related-title">{{ Str::limit($popular->title, 55) }}</h4>
+                                            <span
+                                                class="related-date">{{ $popular->published_at->format('d M Y') }}</span>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
                     <!-- Newsletter -->
                     <div class="sidebar-card newsletter-card">
                         <h3 class="sidebar-title">Newsletter</h3>
