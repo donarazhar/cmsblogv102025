@@ -1285,7 +1285,7 @@
                     <!-- Related Posts -->
                     @if ($relatedPosts->count() > 0)
                         <div class="sidebar-card">
-                            <h3 class="sidebar-title">Artikel Terkait</h3>
+                            <h3 class="sidebar-title">Berita & Artikel Terkait</h3>
                             <div class="related-list">
                                 @foreach ($relatedPosts as $related)
                                     <a href="{{ route('blog.detail', $related->slug) }}" class="related-item">
@@ -1305,7 +1305,7 @@
                     <!-- Popular Posts -->
                     @if (isset($popularPosts) && $popularPosts->count() > 0)
                         <div class="sidebar-card">
-                            <h3 class="sidebar-title">Artikel Populer</h3>
+                            <h3 class="sidebar-title">Berita & Artikel Populer</h3>
                             <div class="related-list">
                                 @foreach ($popularPosts as $popular)
                                     <a href="{{ route('blog.detail', $popular->slug) }}" class="related-item">
