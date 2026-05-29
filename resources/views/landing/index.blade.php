@@ -1341,13 +1341,13 @@
         /* ===== TESTIMONIALS ===== */
         .testimonials-slider {
             position: relative;
-            overflow: hidden;
         }
 
         .testimonials-track {
             display: flex;
             gap: 1.5rem;
             transition: transform 0.5s ease;
+            flex-wrap: wrap;
         }
 
         .testimonial-card {
@@ -1862,10 +1862,6 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
-            .testimonial-card {
-                flex: 0 0 calc(50% - 0.75rem);
-            }
-
             .quick-stats-inner {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -1876,63 +1872,7 @@
             /* --- POSTS: Featured Articles --- */
             .posts-featured {
                 grid-template-columns: 1fr;
-                gap: 0;
-            }
-
-            .post-card {
-                display: flex;
-                flex-direction: row;
-                gap: 1rem;
-                padding: 1.25rem 0;
-                border-bottom: 1px solid var(--border);
-                border-radius: 0;
-            }
-
-            .post-card:hover {
-                transform: none;
-            }
-
-            .post-card::before {
-                display: none;
-            }
-
-            .post-card .post-img-wrap {
-                flex-shrink: 0;
-                width: 130px;
-                order: 2; /* Image on the right */
-            }
-
-            .post-card .post-img {
-                height: 100%;
-                min-height: 100px;
-                border-radius: var(--radius);
-            }
-
-            .post-card .post-body {
-                flex: 1;
-                padding: 0;
-                order: 1; /* Text on the left */
-                min-width: 0;
-            }
-
-            .post-card .post-title {
-                font-size: 1rem;
-                margin-bottom: 0.4rem;
-                -webkit-line-clamp: 3;
-            }
-
-            .post-card .post-excerpt {
-                display: none;
-            }
-
-            .post-card .post-link {
-                display: none;
-            }
-
-            .post-card .post-category,
-            .post-card .post-featured-badge {
-                position: static;
-                display: none;
+                gap: 1.5rem;
             }
 
             /* --- POSTS: Compact Grid --- */
@@ -2108,8 +2048,31 @@
                 grid-template-columns: 1fr;
             }
 
+            .testimonials-slider {
+                overflow: visible;
+                margin-left: -1rem;
+                margin-right: -1rem;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .testimonials-track {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                padding-bottom: 1rem;
+                scroll-padding-left: 1rem;
+            }
+
+            .testimonials-track::-webkit-scrollbar {
+                display: none;
+            }
+
             .testimonial-card {
-                flex: 0 0 100%;
+                flex: 0 0 85%;
+                scroll-snap-align: start;
             }
 
             .cta-buttons {
@@ -2121,7 +2084,6 @@
             }
 
             /* Smaller thumbnails on phone */
-            .post-card .post-img-wrap,
             .program-news-card .program-news-img-wrap,
             .donation-card .donation-img-wrap {
                 width: 110px;
@@ -2130,10 +2092,6 @@
             .post-compact-img {
                 width: 90px;
                 height: 70px;
-            }
-
-            .post-card .post-title {
-                font-size: 0.92rem;
             }
 
             .program-news-card .program-news-title {
