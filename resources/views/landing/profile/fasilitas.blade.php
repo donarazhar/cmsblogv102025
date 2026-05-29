@@ -7,25 +7,8 @@
 @endpush
 
 @section('content')
-    <!-- Page Header -->
-    <header class="page-header">
-        <div class="container">
-            <div class="page-header-content">
-                <h1 class="page-title">Fasilitas Masjid</h1>
-                <div class="breadcrumb justify-content-center text-white-50"
-                    style="color: rgba(255,255,255,0.8); display:flex; gap:10px; justify-content: center;">
-                    <a href="{{ route('home') }}" style="color: white; text-decoration: none;">Beranda</a>
-                    <span>/</span>
-                    <span>Profil</span>
-                    <span>/</span>
-                    <span>Fasilitas</span>
-                </div>
-            </div>
-        </div>
-    </header>
-
     <!-- Fasilitas Content (Dynamic from Admin) -->
-    <section class="section section-light">
+    <section class="section section-light" style="padding-top: 120px;">
         <div class="container">
             <div class="section-header">
                 <span class="section-badge">Fasilitas</span>

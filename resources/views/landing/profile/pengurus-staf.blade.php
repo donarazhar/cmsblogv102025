@@ -7,23 +7,9 @@
 @endpush
 
 @section('content')
-    <!-- Page Header -->
-    <header class="page-header">
-        <div class="container">
-            <div class="page-header-content">
-                <h1 class="page-title">Pengurus & Staf</h1>
-                <div class="breadcrumb justify-content-center text-white-50" style="color: rgba(255,255,255,0.8); display:flex; gap:10px; justify-content: center;">
-                    <a href="{{ route('home') }}" style="color: white; text-decoration: none;">Beranda</a>
-                    <span>/</span>
-                    <span>Profil</span>
-                    <span>/</span>
-                    <span>Pengurus & Staf</span>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    @include('landing.partials.struktur-organisasi', ['staff' => $staff])
+    <div style="padding-top: 120px;">
+        @include('landing.partials.struktur-organisasi', ['staff' => $staff])
+    </div>
 @endsection
 
 @push('scripts')
