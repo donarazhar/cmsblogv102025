@@ -2588,6 +2588,7 @@
                                 <i class="fas fa-calendar"></i>
                                 <span>{{ $program->frequency }}</span>
                             </div>
+                            <p class="program-news-desc" style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.5rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;">{{ Str::limit(strip_tags($program->description), 100) }}</p>
                         </div>
                     </a>
                 @endforeach
@@ -2608,6 +2609,7 @@
                                 <i class="fas fa-calendar"></i>
                                 <span>{{ $program->frequency }}</span>
                             </div>
+                            <p class="program-news-desc" style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.5rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;">{{ Str::limit(strip_tags($program->description), 100) }}</p>
                         </div>
                     </a>
                 @endforeach
