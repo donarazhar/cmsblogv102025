@@ -1127,16 +1127,6 @@
                                 </div>
                             </div>
 
-                            <!-- Author Box -->
-                            <div class="author-box">
-                                <div class="author-avatar">
-                                    {{ strtoupper(substr($post->author->name, 0, 1)) }}
-                                </div>
-                                <div class="author-info">
-                                    <h4>{{ $post->author->name }}</h4>
-                                    <p>Penulis & Kontributor</p>
-                                </div>
-                            </div>
                         </div>
                     </article>
 
@@ -1291,17 +1281,6 @@
                 </main>
                 <!-- Sidebar -->
                 <aside class="sidebar">
-                    <!-- About Author -->
-                    <div class="sidebar-card">
-                        <h3 class="sidebar-title">Tentang Penulis</h3>
-                        <div class="sidebar-author">
-                            <div class="sidebar-author-avatar">
-                                {{ strtoupper(substr($post->author->name, 0, 1)) }}
-                            </div>
-                            <div class="sidebar-author-name">{{ $post->author->name }}</div>
-                            <div class="sidebar-author-role">Penulis & Kontributor</div>
-                        </div>
-                    </div>
 
                     <!-- Related Posts -->
                     @if ($relatedPosts->count() > 0)
