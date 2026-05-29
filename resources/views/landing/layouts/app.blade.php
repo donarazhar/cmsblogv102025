@@ -1378,8 +1378,10 @@
 
     <!-- Main Content -->
     <main class="main-content">
-        <!-- Targeted Ad Banner -->
-        @include('landing.partials.targeted-ad-banner')
+        <!-- Targeted Ad Banner (For subpages, displayed at the top) -->
+        @if(!request()->is('/'))
+            @include('landing.partials.targeted-ad-banner')
+        @endif
 
         @yield('content')
     </main>

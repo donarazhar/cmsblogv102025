@@ -2241,6 +2241,9 @@
         </div>
     @endif
 
+    <!-- Targeted Ad Banner for Homepage -->
+    @include('landing.partials.targeted-ad-banner')
+
     <!-- Ad Banner Section -->
     @if(isset($adBanners) && $adBanners->count() > 0)
         <section class="ad-banner-section" style="background: var(--white); padding: 2.5rem 1rem 0; text-align: center;">
