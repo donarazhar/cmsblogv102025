@@ -179,28 +179,28 @@
                         <h3 class="info-title">Ikuti Kami</h3>
                         <div class="social-grid">
                             @if (isset($settings['social_facebook']))
-                                <a href="{{ $settings['social_facebook'] }}" target="_blank" class="social-link"
+                                <a href="{{ $settings['social_facebook'] }}" target="_blank" class="contact-social-link"
                                     style="--social-color: #1877f2;">
                                     <i class="fab fa-facebook-f"></i>
                                     <span>Facebook</span>
                                 </a>
                             @endif
                             @if (isset($settings['social_instagram']))
-                                <a href="{{ $settings['social_instagram'] }}" target="_blank" class="social-link"
+                                <a href="{{ $settings['social_instagram'] }}" target="_blank" class="contact-social-link"
                                     style="--social-color: #e4405f;">
                                     <i class="fab fa-instagram"></i>
                                     <span>Instagram</span>
                                 </a>
                             @endif
                             @if (isset($settings['social_twitter']))
-                                <a href="{{ $settings['social_twitter'] }}" target="_blank" class="social-link"
+                                <a href="{{ $settings['social_twitter'] }}" target="_blank" class="contact-social-link"
                                     style="--social-color: #1da1f2;">
                                     <i class="fab fa-twitter"></i>
                                     <span>Twitter</span>
                                 </a>
                             @endif
                             @if (isset($settings['social_youtube']))
-                                <a href="{{ $settings['social_youtube'] }}" target="_blank" class="social-link"
+                                <a href="{{ $settings['social_youtube'] }}" target="_blank" class="contact-social-link"
                                     style="--social-color: #ff0000;">
                                     <i class="fab fa-youtube"></i>
                                     <span>YouTube</span>
@@ -574,7 +574,7 @@
             gap: 12px;
         }
 
-        .social-link {
+        .contact-social-link {
             padding: 12px 15px;
             background: var(--gray-100);
             border-radius: var(--radius-md);
@@ -589,15 +589,20 @@
             border: 2px solid transparent;
         }
 
-        .social-link:hover {
+        .contact-social-link:hover {
             background: var(--social-color);
-            color: var(--white);
+            color: var(--white) !important;
             border-color: var(--social-color);
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
-        .social-link i {
+        .contact-social-link:hover i,
+        .contact-social-link:hover span {
+            color: var(--white) !important;
+        }
+
+        .contact-social-link i {
             font-size: 1.2rem;
         }
 
