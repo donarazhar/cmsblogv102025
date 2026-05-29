@@ -217,23 +217,31 @@
                     </div>
 
                     <!-- Office Hours Card -->
+                    @if (!empty(setting('operational_weekday')) || !empty(setting('operational_sunday')) || !empty(setting('operational_friday')))
                     <div class="info-card hours-card">
                         <h3 class="info-title">Jam Operasional</h3>
                         <div class="hours-list">
+                            @if (!empty(setting('operational_weekday')))
                             <div class="hours-item">
                                 <span class="day">Senin - Jumat</span>
-                                <span class="time">05:00 - 22:00</span>
+                                <span class="time">{{ setting('operational_weekday') }}</span>
                             </div>
+                            @endif
+                            @if (!empty(setting('operational_sunday')))
                             <div class="hours-item">
                                 <span class="day">Sabtu - Minggu</span>
-                                <span class="time">05:00 - 22:00</span>
+                                <span class="time">{{ setting('operational_sunday') }}</span>
                             </div>
+                            @endif
+                            @if (!empty(setting('operational_friday')))
                             <div class="hours-item highlight">
                                 <span class="day">Jumat (Sholat Jumat)</span>
-                                <span class="time">11:00 - 14:00</span>
+                                <span class="time">{{ setting('operational_friday') }}</span>
                             </div>
+                            @endif
                         </div>
                     </div>
+                    @endif
                 </aside>
             </div>
         </div>
