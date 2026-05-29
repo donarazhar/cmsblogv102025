@@ -131,46 +131,53 @@
                         <h3 class="info-title">Informasi Kontak</h3>
 
                         <div class="info-list">
+                            @if (!empty(setting('contact_address')))
                             <div class="info-item">
                                 <div class="info-icon">
                                     <i class="fas fa-map-marker-alt"></i>
                                 </div>
                                 <div class="info-content">
                                     <h4>Alamat</h4>
-                                    <p>{{ $settings['contact_address'] ?? 'Jl. Sisingamangaraja, Kebayoran Baru, Jakarta Selatan 12110' }}
-                                    </p>
+                                    <p>{{ setting('contact_address') }}</p>
                                 </div>
                             </div>
+                            @endif
 
+                            @if (!empty(setting('contact_phone')))
                             <div class="info-item">
                                 <div class="info-icon">
                                     <i class="fas fa-phone"></i>
                                 </div>
                                 <div class="info-content">
                                     <h4>Telepon</h4>
-                                    <p>{{ $settings['contact_phone'] ?? '(021) 7394-0923' }}</p>
+                                    <p>{{ setting('contact_phone') }}</p>
                                 </div>
                             </div>
+                            @endif
 
+                            @if (!empty(setting('contact_email')))
                             <div class="info-item">
                                 <div class="info-icon">
                                     <i class="far fa-envelope"></i>
                                 </div>
                                 <div class="info-content">
                                     <h4>Email</h4>
-                                    <p>{{ $settings['contact_email'] ?? 'info@alazhar.or.id' }}</p>
+                                    <p>{{ setting('contact_email') }}</p>
                                 </div>
                             </div>
+                            @endif
 
+                            @if (!empty(setting('contact_whatsapp')))
                             <div class="info-item">
                                 <div class="info-icon">
                                     <i class="fab fa-whatsapp"></i>
                                 </div>
                                 <div class="info-content">
                                     <h4>WhatsApp</h4>
-                                    <p>{{ $settings['contact_whatsapp'] ?? '081234567890' }}</p>
+                                    <p>{{ setting('contact_whatsapp') }}</p>
                                 </div>
                             </div>
+                            @endif
                         </div>
                     </div>
 
