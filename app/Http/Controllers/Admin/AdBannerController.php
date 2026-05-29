@@ -26,6 +26,7 @@ class AdBannerController extends Controller
             'title' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
             'url_link' => 'nullable|url|max:255',
+            'target_routes' => 'nullable|string',
             'order' => 'nullable|integer|min:0',
             'is_active' => 'boolean',
         ]);
@@ -57,6 +58,7 @@ class AdBannerController extends Controller
             'title' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'url_link' => 'nullable|url|max:255',
+            'target_routes' => 'nullable|string',
             'order' => 'nullable|integer|min:0',
             'is_active' => 'boolean',
         ]);

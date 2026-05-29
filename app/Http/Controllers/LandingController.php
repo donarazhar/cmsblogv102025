@@ -52,8 +52,12 @@ class LandingController extends Controller
                     ->get(),
 
                 'adBanners' => AdBanner::active()
+                    ->where(function ($q) {
+                        $q->whereNull('target_routes')
+                          ->orWhere('target_routes', '');
+                    })
                     ->ordered()
-                    ->select('id', 'title', 'image', 'url_link')
+                    ->select('id', 'title', 'image', 'url_link', 'target_routes')
                     ->get(),
 
                 'programs' => Program::active()

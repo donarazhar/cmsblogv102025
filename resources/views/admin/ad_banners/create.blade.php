@@ -40,6 +40,15 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="form-label" for="target_routes">Target Halaman Munculnya Iklan (Opsional)</label>
+                    <input type="text" class="form-control @error('target_routes') is-invalid @enderror" id="target_routes" name="target_routes" value="{{ old('target_routes') }}" placeholder="Contoh: blog/detail/judul-artikel">
+                    <small class="text-muted">Jika diisi, banner tidak akan muncul di slider beranda, tetapi akan muncul pada bagian atas halaman yang Anda tentukan. Kosongkan jika ingin menjadikannya slider di beranda. Pisahkan dengan koma jika lebih dari satu halaman.</small>
+                    @error('target_routes')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
                     <label class="form-label" for="image">Gambar Banner <span class="text-danger">*</span></label>
                     <div class="image-upload-wrapper">
                         <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/jpeg,image/png,image/webp" required onchange="previewImage(this)">

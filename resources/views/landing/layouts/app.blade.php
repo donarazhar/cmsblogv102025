@@ -1376,6 +1376,9 @@
         </div>
     </nav>
 
+    <!-- Targeted Ad Banner -->
+    @include('landing.partials.targeted-ad-banner')
+
     <!-- Main Content -->
     <main class="main-content">
         @yield('content')
