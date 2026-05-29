@@ -8,7 +8,7 @@
 
 @section('content')
     <!-- Fasilitas Content (Dynamic from Admin) -->
-    <section class="section section-light" style="padding-top: 80px;">
+    <section class="section section-light" style="padding-top: 40px;">
         <div class="container">
             <div class="section-header">
                 <span class="section-badge">Fasilitas</span>

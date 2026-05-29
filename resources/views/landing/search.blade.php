@@ -4,7 +4,7 @@
 
 @section('content')
     <!-- Search Results -->
-    <section class="search-results-section" style="padding-top: 80px;">
+    <section class="search-results-section" style="padding-top: 40px;">
         <div class="container">
             <!-- Search Form -->
             <div style="margin-bottom: 2rem;">
@@ -212,7 +212,7 @@
         /* Search Header */
         .search-header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            padding: 80px 0 60px;
+            padding: 40px 0 60px;
             color: var(--white);
             position: relative;
             overflow: hidden;

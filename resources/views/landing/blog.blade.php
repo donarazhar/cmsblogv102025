@@ -4,7 +4,7 @@
 
 @section('content')
     <!-- Blog Content -->
-    <section class="blog-section" style="padding-top: 80px;">
+    <section class="blog-section" style="padding-top: 40px;">
         <div class="container">
             <!-- Main Content -->
             <div class="main-content">
