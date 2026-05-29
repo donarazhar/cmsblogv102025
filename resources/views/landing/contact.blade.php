@@ -223,19 +223,19 @@
                         <div class="hours-list">
                             @if (!empty(setting('operational_weekday')))
                             <div class="hours-item">
-                                <span class="day">Senin - Jumat</span>
+                                <span class="day">Hari Kerja</span>
                                 <span class="time">{{ setting('operational_weekday') }}</span>
                             </div>
                             @endif
                             @if (!empty(setting('operational_sunday')))
                             <div class="hours-item">
-                                <span class="day">Sabtu - Minggu</span>
+                                <span class="day">Akhir Pekan</span>
                                 <span class="time">{{ setting('operational_sunday') }}</span>
                             </div>
                             @endif
                             @if (!empty(setting('operational_friday')))
                             <div class="hours-item highlight">
-                                <span class="day">Jumat (Sholat Jumat)</span>
+                                <span class="day">Jumat</span>
                                 <span class="time">{{ setting('operational_friday') }}</span>
                             </div>
                             @endif
