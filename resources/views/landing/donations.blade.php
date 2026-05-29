@@ -503,7 +503,7 @@
 
 @section('content')
     <!-- All Donations -->
-    <section class="section section-light" style="padding-top: 40px;">
+    <section class="section section-light" style="padding-top: 10px;">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Semua Program Donasi</h2>

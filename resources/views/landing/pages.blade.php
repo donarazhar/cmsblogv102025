@@ -5,7 +5,7 @@
 
 @section('content')
     <!-- Page Content -->
-    <section class="section" style="padding-top: 40px;">
+    <section class="section" style="padding-top: 10px;">
         <div class="container">
             <div style="max-width: 1000px; margin: 0 auto;">
                 @if ($page->featured_image)

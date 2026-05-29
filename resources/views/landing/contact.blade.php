@@ -4,7 +4,7 @@
 
 @section('content')
     <!-- Contact Section -->
-    <section class="contact-section" style="padding-top: 40px;">
+    <section class="contact-section" style="padding-top: 10px;">
         <div class="container">
             <div class="contact-layout">
                 <!-- Contact Form -->

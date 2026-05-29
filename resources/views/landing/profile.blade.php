@@ -3,7 +3,7 @@
 @section('title', $title)
 
 @section('content')
-<div class="container py-12" style="padding: 40px 0 60px;">
+<div class="container py-12" style="padding: 10px 0 60px;">
     <div class="row justify-content-center" style="display: flex; justify-content: center;">
         <div class="col-lg-10" style="width: 100%; max-width: 900px;">
             <div class="card shadow-sm border-0 rounded-4" style="background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); overflow: hidden;">

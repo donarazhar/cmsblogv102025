@@ -4,7 +4,7 @@
 
 @section('content')
     <!-- Programs Section -->
-    <section class="programs-section" style="padding-top: 40px;">
+    <section class="programs-section" style="padding-top: 10px;">
         <div class="container">
             <!-- Modern Filter Tabs -->
             <div class="filter-wrapper" data-aos="fade-up">

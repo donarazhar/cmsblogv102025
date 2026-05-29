@@ -8,7 +8,7 @@
 
 @section('content')
     <!-- Struktur Organisasi Content (Dynamic from Admin) -->
-    <section class="section section-light" style="padding-top: 40px;">
+    <section class="section section-light" style="padding-top: 10px;">
         <div class="container">
             <div class="section-header">
                 <span class="section-badge">Organisasi</span>
