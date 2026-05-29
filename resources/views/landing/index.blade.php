@@ -358,32 +358,84 @@
 
         @media (max-width: 768px) {
             .welcome-section {
-                padding: 3rem 1rem 2rem;
+                padding: 2rem 1rem 1rem; /* Reduced top padding significantly */
+                min-height: auto;
+            }
+
+            .welcome-section .container {
+                margin-top: 0;
             }
 
             .welcome-title {
-                font-size: 1.6rem;
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem; /* Tighter margin */
             }
 
             .welcome-subtitle {
                 font-size: 0.9rem;
+                line-height: 1.4; /* Tighter line height */
             }
 
             .top-info-section {
-                padding: 0 0.75rem 2rem;
+                padding: 0 0 2rem;
             }
 
+            /* Horizontal Slider on Mobile */
             .top-info-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                gap: 0.75rem;
+                padding: 0 1rem;
+                scrollbar-width: none; /* Firefox */
+                scroll-padding-left: 1rem;
+            }
+
+            .top-info-grid::-webkit-scrollbar {
+                display: none; /* Chrome, Safari */
+            }
+
+            .top-info-card {
+                flex: 0 0 82%;
+                scroll-snap-align: start;
+                min-width: 0;
+            }
+
+            .top-info-card.featured {
+                flex: 0 0 82%;
             }
 
             .top-info-card-img {
-                min-height: 200px;
+                min-height: 220px;
             }
 
             .top-info-card.featured .top-info-card-img {
-                min-height: 240px;
+                min-height: 220px;
+            }
+
+            /* Scroll Indicator Dots */
+            .top-info-dots {
+                display: flex !important;
+                justify-content: center;
+                gap: 6px;
+                margin-top: 1rem;
+                padding: 0 1rem;
+            }
+
+            .top-info-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: var(--border);
+                transition: all 0.3s ease;
+                cursor: pointer;
+            }
+
+            .top-info-dot.active {
+                background: var(--primary);
+                width: 24px;
+                border-radius: 4px;
             }
 
             .announcement-badge span {
@@ -395,13 +447,24 @@
             }
         }
 
+        /* Default: Hide dots on desktop/tablet */
+        .top-info-dots {
+            display: none;
+        }
+
         @media (max-width: 480px) {
             .welcome-section {
-                padding: 2.5rem 1rem 1.5rem;
+                padding: 1.5rem 1rem 0.5rem; /* Minimal padding */
+                min-height: auto;
+            }
+
+            .welcome-section .container {
+                margin-top: 0;
             }
 
             .welcome-title {
                 font-size: 1.35rem;
+                margin-bottom: 0.5rem;
             }
 
             .welcome-highlight {
@@ -1808,6 +1871,234 @@
             }
         }
 
+        /* ===== MOBILE/TABLET HORIZONTAL CARD LAYOUT (like tarkambanyumas.com) ===== */
+        @media (max-width: 991px) {
+            /* --- POSTS: Featured Articles --- */
+            .posts-featured {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .post-card {
+                display: flex;
+                flex-direction: row;
+                gap: 1rem;
+                padding: 1.25rem 0;
+                border-bottom: 1px solid var(--border);
+                border-radius: 0;
+            }
+
+            .post-card:hover {
+                transform: none;
+            }
+
+            .post-card::before {
+                display: none;
+            }
+
+            .post-card .post-img-wrap {
+                flex-shrink: 0;
+                width: 130px;
+                order: 2; /* Image on the right */
+            }
+
+            .post-card .post-img {
+                height: 100%;
+                min-height: 100px;
+                border-radius: var(--radius);
+            }
+
+            .post-card .post-body {
+                flex: 1;
+                padding: 0;
+                order: 1; /* Text on the left */
+                min-width: 0;
+            }
+
+            .post-card .post-title {
+                font-size: 1rem;
+                margin-bottom: 0.4rem;
+                -webkit-line-clamp: 3;
+            }
+
+            .post-card .post-excerpt {
+                display: none;
+            }
+
+            .post-card .post-link {
+                display: none;
+            }
+
+            .post-card .post-category,
+            .post-card .post-featured-badge {
+                position: static;
+                display: none;
+            }
+
+            /* --- POSTS: Compact Grid --- */
+            .posts-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .post-compact {
+                padding: 1rem 0;
+                border-bottom: 1px solid var(--border);
+                flex-direction: row;
+            }
+
+            .post-compact:hover {
+                transform: none;
+            }
+
+            .post-compact-img {
+                width: 110px;
+                height: 80px;
+                order: 2;
+                border-radius: var(--radius);
+            }
+
+            .post-compact-body {
+                order: 1;
+            }
+
+            /* --- PROGRAMS: Featured + Grid --- */
+            .programs-featured {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .programs-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .program-news-card {
+                display: flex;
+                flex-direction: row;
+                gap: 1rem;
+                padding: 1.25rem 0;
+                border-bottom: 1px solid var(--border);
+                border-radius: 0;
+            }
+
+            .program-news-card:hover {
+                transform: none;
+            }
+
+            .program-news-card::before {
+                display: none;
+            }
+
+            .program-news-card .program-news-img-wrap {
+                flex-shrink: 0;
+                width: 130px;
+                order: 2; /* Image on the right */
+            }
+
+            .program-news-card .program-news-img,
+            .program-news-card.program-news-featured .program-news-img {
+                height: 100%;
+                min-height: 90px;
+                max-height: 110px;
+                border-radius: var(--radius);
+            }
+
+            .program-news-card .program-news-body {
+                flex: 1;
+                padding: 0;
+                order: 1; /* Text on the left */
+                min-width: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .program-news-card .program-news-title,
+            .program-news-card.program-news-featured .program-news-title {
+                font-size: 0.95rem;
+            }
+
+            /* --- PROGRAM SIDEBAR on mobile --- */
+            .program-sidebar {
+                grid-column: auto;
+                grid-row: auto;
+                border-radius: var(--radius-lg);
+            }
+
+            /* --- DONATIONS --- */
+            .donations-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .donation-card {
+                display: flex;
+                flex-direction: row;
+                gap: 1rem;
+                padding: 1.25rem 0;
+                border-bottom: 1px solid var(--border);
+                border-radius: 0;
+            }
+
+            .donation-card:hover {
+                transform: none;
+            }
+
+            .donation-card .donation-img-wrap {
+                flex-shrink: 0;
+                width: 130px;
+                order: 2; /* Image on the right */
+            }
+
+            .donation-card .donation-img {
+                height: 100%;
+                min-height: 100px;
+                border-radius: var(--radius);
+            }
+
+            .donation-card .donation-urgent {
+                font-size: 0.55rem;
+                padding: 0.2rem 0.5rem;
+                top: 0.5rem;
+                left: 0.5rem;
+            }
+
+            .donation-card .donation-body {
+                flex: 1;
+                padding: 0;
+                order: 1; /* Text on the left */
+                min-width: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .donation-card .donation-title {
+                font-size: 0.95rem;
+                margin-bottom: 0.3rem;
+            }
+
+            .donation-card .donation-desc {
+                font-size: 0.82rem;
+                margin-bottom: 0.5rem;
+                -webkit-line-clamp: 2;
+            }
+
+            .donation-card .donation-progress,
+            .donation-card .donation-meta {
+                display: none; /* Hide progress bar on mobile for cleaner look */
+            }
+
+            .donation-card .btn-donate {
+                padding: 0.6rem 1rem;
+                font-size: 0.8rem;
+                border-radius: 8px;
+                width: auto;
+                display: inline-flex;
+            }
+        }
+
         @media (max-width: 768px) {
             .section {
                 padding: 3.5rem 1rem;
@@ -1827,6 +2118,30 @@
 
             .wave-divider svg {
                 height: 30px;
+            }
+
+            /* Smaller thumbnails on phone */
+            .post-card .post-img-wrap,
+            .program-news-card .program-news-img-wrap,
+            .donation-card .donation-img-wrap {
+                width: 110px;
+            }
+
+            .post-compact-img {
+                width: 90px;
+                height: 70px;
+            }
+
+            .post-card .post-title {
+                font-size: 0.92rem;
+            }
+
+            .program-news-card .program-news-title {
+                font-size: 0.88rem;
+            }
+
+            .donation-card .donation-title {
+                font-size: 0.88rem;
             }
         }
 
@@ -1908,7 +2223,7 @@
             <div class="top-info-header">
                 <h2 class="top-info-title">Banner Informasi</h2>
             </div>
-            <div class="top-info-grid">
+            <div class="top-info-grid" id="topInfoGrid">
                 @foreach ($sliders->take(3) as $index => $slider)
                     <a href="{{ $slider->button_link ?? '#' }}"
                        class="top-info-card {{ $index === 1 ? 'featured' : '' }} fade-up">
@@ -1935,6 +2250,12 @@
                             </div>
                         </div>
                     </a>
+                @endforeach
+            </div>
+            {{-- Mobile Scroll Indicator Dots --}}
+            <div class="top-info-dots" id="topInfoDots">
+                @foreach ($sliders->take(3) as $index => $slider)
+                    <span class="top-info-dot {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}"></span>
                 @endforeach
             </div>
         </section>
@@ -2678,6 +2999,49 @@
             if (e.key === 'ArrowRight') changeLightbox(1);
         });
 
+        // ===== TOP INFO MOBILE SLIDER DOTS =====
+        const topInfoGrid = document.getElementById('topInfoGrid');
+        const topInfoDots = document.querySelectorAll('.top-info-dot');
+        
+        if (topInfoGrid && topInfoDots.length > 0) {
+            // Update dots on scroll
+            let scrollTimeout;
+            topInfoGrid.addEventListener('scroll', function() {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(function() {
+                    const cards = topInfoGrid.querySelectorAll('.top-info-card');
+                    const gridLeft = topInfoGrid.scrollLeft;
+                    const gridWidth = topInfoGrid.offsetWidth;
+                    
+                    let activeIndex = 0;
+                    let minDistance = Infinity;
+                    
+                    cards.forEach(function(card, i) {
+                        const cardCenter = card.offsetLeft + card.offsetWidth / 2 - gridLeft;
+                        const distance = Math.abs(cardCenter - gridWidth / 2);
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            activeIndex = i;
+                        }
+                    });
+                    
+                    topInfoDots.forEach(function(dot, i) {
+                        dot.classList.toggle('active', i === activeIndex);
+                    });
+                }, 50);
+            });
+            
+            // Click dot to scroll to card
+            topInfoDots.forEach(function(dot) {
+                dot.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    const cards = topInfoGrid.querySelectorAll('.top-info-card');
+                    if (cards[index]) {
+                        cards[index].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+                    }
+                });
+            });
+        }
 
     </script>
 @endpush
