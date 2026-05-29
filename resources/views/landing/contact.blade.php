@@ -3,18 +3,8 @@
 @section('title', 'Hubungi Kami - ' . ($settings['site_name'] ?? 'Masjid Agung Al Azhar'))
 
 @section('content')
-    <!-- Compact Page Header -->
-    <section class="page-header">
-        <div class="container">
-            <div class="header-content" data-aos="fade-up">
-                <h1>Hubungi Kami</h1>
-                <p>Jangan ragu untuk menghubungi kami jika Anda memiliki pertanyaan atau ingin berpartisipasi</p>
-            </div>
-        </div>
-    </section>
-
     <!-- Contact Section -->
-    <section class="contact-section">
+    <section class="contact-section" style="padding-top: 120px;">
         <div class="container">
             <div class="contact-layout">
                 <!-- Contact Form -->

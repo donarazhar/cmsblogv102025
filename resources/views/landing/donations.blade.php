@@ -502,22 +502,8 @@
 @endpush
 
 @section('content')
-    <!-- Page Header -->
-    <section class="page-header">
-        <div class="container">
-            <div class="page-header-content">
-                <h1 class="page-title">Program Donasi</h1>
-                <p class="page-subtitle">Salurkan donasi Anda untuk berbagai program kegiatan dan bantuan sosial</p>
-            </div>
-        </div>
-    </section>
-
-
-
-
-
     <!-- All Donations -->
-    <section class="section section-light">
+    <section class="section section-light" style="padding-top: 120px;">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Semua Program Donasi</h2>

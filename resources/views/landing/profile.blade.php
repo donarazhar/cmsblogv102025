@@ -3,20 +3,7 @@
 @section('title', $title)
 
 @section('content')
-<div class="page-header bg-primary text-white py-12 text-center" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); padding: 60px 0;">
-    <div class="container">
-        <h1 class="text-4xl font-bold mb-4" style="font-size: 2.5rem; color: white;">{{ $title }}</h1>
-        <div class="breadcrumb text-white-50" style="color: rgba(255,255,255,0.8);">
-            <a href="{{ route('home') }}" style="color: white; text-decoration: none;">Beranda</a>
-            <span class="mx-2">/</span>
-            <span>Profil</span>
-            <span class="mx-2">/</span>
-            <span>{{ $title }}</span>
-        </div>
-    </div>
-</div>
-
-<div class="container py-12" style="padding: 60px 0;">
+<div class="container py-12" style="padding: 120px 0 60px;">
     <div class="row justify-content-center" style="display: flex; justify-content: center;">
         <div class="col-lg-10" style="width: 100%; max-width: 900px;">
             <div class="card shadow-sm border-0 rounded-4" style="background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); overflow: hidden;">

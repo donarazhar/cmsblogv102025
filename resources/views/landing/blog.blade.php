@@ -3,18 +3,8 @@
 @section('title', 'Berita & Artikel - ' . ($settings['site_name'] ?? 'Masjid Agung Al Azhar'))
 
 @section('content')
-    <!-- Compact Page Header -->
-    <section class="page-header">
-        <div class="container">
-            <div class="header-content" data-aos="fade-up">
-                <h1>Berita & Artikel</h1>
-                <p>Ikuti perkembangan dan kegiatan terbaru dari Masjid Al Azhar</p>
-            </div>
-        </div>
-    </section>
-
     <!-- Blog Content -->
-    <section class="blog-section">
+    <section class="blog-section" style="padding-top: 120px;">
         <div class="container">
             <!-- Main Content -->
             <div class="main-content">

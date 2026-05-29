@@ -4,28 +4,8 @@
 @section('meta_description', $page->meta_description)
 
 @section('content')
-    <!-- Page Header -->
-    <section
-        style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); padding: 100px 0 60px; color: white;">
-        <div class="container">
-            <div style="text-align: center; max-width: 800px; margin: 0 auto;" data-aos="fade-up">
-                @if ($page->icon)
-                    <div style="margin-bottom: 20px;">
-                        <i class="{{ $page->icon }}" style="font-size: 4rem; opacity: 0.9;"></i>
-                    </div>
-                @endif
-                <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 20px;">{{ $page->title }}</h1>
-                @if ($page->meta_description)
-                    <p style="font-size: 1.2rem; opacity: 0.95;">
-                        {{ $page->meta_description }}
-                    </p>
-                @endif
-            </div>
-        </div>
-    </section>
-
     <!-- Page Content -->
-    <section class="section">
+    <section class="section" style="padding-top: 120px;">
         <div class="container">
             <div style="max-width: 1000px; margin: 0 auto;">
                 @if ($page->featured_image)

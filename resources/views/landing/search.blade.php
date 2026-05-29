@@ -3,32 +3,22 @@
 @section('title', ($query ? 'Hasil Pencarian: ' . $query : 'Pencarian') . ' - ' . setting('site_name', 'Masjid Agung Al Azhar'))
 
 @section('content')
-    <!-- Compact Page Header -->
-    <section class="search-header">
+    <!-- Search Results -->
+    <section class="search-results-section" style="padding-top: 120px;">
         <div class="container">
-            <div class="header-content">
-                <h1><i class="fas fa-search"></i> Pencarian</h1>
-                <p>Temukan informasi, berita, layanan, dan kegiatan Masjid Agung Al Azhar</p>
-
-                <!-- Search Form -->
-                <form method="GET" action="{{ route('search') }}" class="search-form">
+            <!-- Search Form -->
+            <div style="margin-bottom: 2rem;">
+                <form method="GET" action="{{ route('search') }}" class="search-form" style="max-width: 600px; margin: 0 auto;">
                     <div class="search-wrapper">
                         <i class="fas fa-search search-icon"></i>
                         <input type="text" name="q" placeholder="Ketik kata kunci pencarian..."
                             value="{{ $query }}" class="search-input" autofocus id="searchInput">
                         <button type="submit" class="search-btn">
                             <span>Cari</span>
-                            <i class="fas fa-arrow-right"></i>
                         </button>
                     </div>
                 </form>
             </div>
-        </div>
-    </section>
-
-    <!-- Search Results -->
-    <section class="search-results-section">
-        <div class="container">
             @if ($query)
                 <!-- Results Summary -->
                 <div class="results-summary">

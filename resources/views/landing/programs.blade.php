@@ -3,18 +3,8 @@
 @section('title', 'Layanan & Kegiatan - ' . ($settings['site_name'] ?? 'Masjid Agung Al Azhar'))
 
 @section('content')
-    <!-- Compact Page Header -->
-    <section class="page-header">
-        <div class="container">
-            <div class="header-content" data-aos="fade-up">
-                <h1>Layanan & Kegiatan</h1>
-                <p>Ikuti berbagai layanan dan kegiatan keagamaan yang kami selenggarakan</p>
-            </div>
-        </div>
-    </section>
-
     <!-- Programs Section -->
-    <section class="programs-section">
+    <section class="programs-section" style="padding-top: 120px;">
         <div class="container">
             <!-- Modern Filter Tabs -->
             <div class="filter-wrapper" data-aos="fade-up">
