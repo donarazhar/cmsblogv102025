@@ -4,12 +4,12 @@
 
 @section('content')
     <!-- Blog Content -->
-    <section class="blog-section" style="padding-top: 0px !important; margin-top: 0 !important;">
-        <div class="container" style="margin-top: 0;">
+    <section class="blog-section" style="padding-top: 30px;">
+        <div class="container">
             <!-- Blog Content Wrapper -->
             <div class="blog-content-wrapper">
                 <!-- Compact Search & Filter -->
-                <div class="search-box" data-aos="fade-up" style="margin-top: 0 !important; padding-top: 0 !important;">
+                <div class="search-box" data-aos="fade-up">
                     <form method="GET" action="{{ route('blog') }}">
                         <div class="search-wrapper">
                             <i class="fas fa-search search-icon"></i>
