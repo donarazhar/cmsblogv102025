@@ -115,10 +115,11 @@
 
     <style>
         .program-layout {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 40px;
-            align-items: start;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            max-width: 900px;
+            margin: 0 auto;
         }
 
         .main-content {
@@ -220,23 +221,7 @@
             justify-content: center;
         }
 
-        @media (max-width: 1024px) {
-            .program-layout {
-                grid-template-columns: 1fr !important;
-            }
 
-            .sidebar-container {
-                margin-top: 20px;
-            }
-
-            .sidebar-box {
-                margin-bottom: 20px;
-            }
-
-            .sidebar-box.share-box {
-                margin-bottom: 0;
-            }
-        }
 
         @media (max-width: 480px) {
             .content-box {
