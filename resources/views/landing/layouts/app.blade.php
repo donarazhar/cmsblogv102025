@@ -1754,17 +1754,17 @@
             <span>Beranda</span>
         </a>
         <a href="{{ route('blog') }}" class="nav-item {{ request()->routeIs('blog') || request()->routeIs('blog.*') ? 'active' : '' }}">
-            <i class="fa-solid fa-book-open"></i>
-            <span>Artikel</span>
+            <i class="fa-solid fa-newspaper"></i>
+            <span>Berita</span>
         </a>
         <a href="#" class="nav-item center-btn">
             <div class="center-btn-inner">
-                <i class="fa-solid fa-fire"></i>
+                <img src="https://siap.al-azhar.id/upload/favicon.ico" alt="Logo" style="width: 26px; height: 26px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
             </div>
         </a>
-        <a href="{{ route('blog') }}?search=true" class="nav-item">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <span>Cari</span>
+        <a href="{{ route('programs') }}" class="nav-item {{ request()->routeIs('programs') || request()->routeIs('program.*') ? 'active' : '' }}">
+            <i class="fa-solid fa-calendar-day"></i>
+            <span>Kegiatan</span>
         </a>
         <a href="#" class="nav-item" id="mobileBottomMenuBtn">
             <i class="fa-solid fa-border-all"></i>
