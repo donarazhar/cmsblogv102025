@@ -41,7 +41,7 @@ class LandingController extends Controller
                 'sliders' => Slider::active()
                     ->ordered()
                     ->select('id', 'title', 'subtitle', 'description', 'image', 'button_text', 'button_link', 'button_text_2', 'button_link_2', 'text_position', 'overlay_color', 'overlay_opacity', 'created_at')
-                    ->limit(4)
+                    ->limit(10)
                     ->get(),
 
                 'announcements' => Announcement::active()

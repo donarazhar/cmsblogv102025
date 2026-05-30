@@ -208,7 +208,7 @@
             overflow: hidden;
             display: block;
             text-decoration: none;
-            transition: var(--transition);
+            transition: all 0.4s ease;
             box-shadow: var(--shadow-card);
         }
 
@@ -310,6 +310,40 @@
             opacity: 0.5;
         }
 
+        .top-info-card-meta .dot-sep {
+            opacity: 0.5;
+        }
+
+        /* Limit desktop/tablet to 3 items */
+        @media (min-width: 769px) {
+            .top-info-card:nth-child(n+4) {
+                display: none !important;
+            }
+        }
+
+        .top-info-btn {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--dark);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .top-info-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,83,197,0.2);
+        }
+
         /* ===== TOP INFO RESPONSIVE ===== */
         @media (max-width: 900px) {
             .top-info-grid {
@@ -394,6 +428,10 @@
                 gap: 6px;
                 margin-top: 1rem;
                 padding: 0 1rem;
+            }
+
+            .desktop-only {
+                display: none !important;
             }
 
             .top-info-dot {
@@ -2143,8 +2181,15 @@
             <div class="top-info-header">
                 <h2 class="top-info-title">Banner Informasi</h2>
             </div>
-            <div class="top-info-grid" id="topInfoGrid">
-                @foreach ($sliders->take(3) as $index => $slider)
+            
+            <div class="top-info-slider-wrapper" style="position: relative; max-width: 1200px; margin: 0 auto;">
+                <div class="top-info-nav desktop-only">
+                    <button class="top-info-btn prev-btn" style="position: absolute; left: -22px; top: 50%; transform: translateY(-50%); z-index: 10;"><i class="fas fa-chevron-left"></i></button>
+                    <button class="top-info-btn next-btn" style="position: absolute; right: -22px; top: 50%; transform: translateY(-50%); z-index: 10;"><i class="fas fa-chevron-right"></i></button>
+                </div>
+
+                <div class="top-info-grid" id="topInfoGrid">
+                @foreach ($sliders as $index => $slider)
                     <a href="{{ $slider->button_link ?? '#' }}"
                        class="top-info-card {{ $index === 1 ? 'featured' : '' }} fade-up">
                         <img src="{{ $slider->image ? asset('storage/' . $slider->image) : asset('storage/img/placeholder.jpg') }}"
@@ -2174,7 +2219,7 @@
             </div>
             {{-- Mobile Scroll Indicator Dots --}}
             <div class="top-info-dots" id="topInfoDots">
-                @foreach ($sliders->take(3) as $index => $slider)
+                @foreach ($sliders as $index => $slider)
                     <span class="top-info-dot {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}"></span>
                 @endforeach
             </div>
@@ -2982,6 +3027,64 @@
                         cards[index].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
                     }
                 });
+            });
+        }
+
+        // ===== TOP INFO DESKTOP SLIDER =====
+        const desktopPrevBtn = document.querySelector('.top-info-nav .prev-btn');
+        const desktopNextBtn = document.querySelector('.top-info-nav .next-btn');
+
+        if (topInfoGrid && desktopPrevBtn && desktopNextBtn) {
+            let isAnimating = false;
+
+            function rotateTopInfo(direction) {
+                if (window.innerWidth <= 768 || isAnimating) return;
+                isAnimating = true;
+
+                const cards = Array.from(topInfoGrid.querySelectorAll('.top-info-card'));
+                if (cards.length < 4) {
+                    isAnimating = false;
+                    return;
+                }
+
+                // Fade out
+                cards.forEach(card => card.style.opacity = '0');
+                
+                setTimeout(() => {
+                    // Reorder DOM
+                    if (direction === 'next') {
+                        topInfoGrid.appendChild(cards[0]);
+                    } else {
+                        topInfoGrid.prepend(cards[cards.length - 1]);
+                    }
+
+                    // Update featured class
+                    const newCards = Array.from(topInfoGrid.querySelectorAll('.top-info-card'));
+                    newCards.forEach(card => card.classList.remove('featured'));
+                    newCards[1].classList.add('featured');
+
+                    // Small delay to allow DOM to recalculate before fading in
+                    setTimeout(() => {
+                        newCards.forEach(card => card.style.opacity = '1');
+                        isAnimating = false;
+                    }, 50);
+                }, 400); // Wait for fade out (matches CSS transition)
+            }
+
+            desktopNextBtn.addEventListener('click', () => rotateTopInfo('next'));
+            desktopPrevBtn.addEventListener('click', () => rotateTopInfo('prev'));
+            
+            // Auto-play
+            let topInfoInterval = setInterval(() => {
+                rotateTopInfo('next');
+            }, 6000);
+
+            // Pause on hover
+            topInfoGrid.addEventListener('mouseenter', () => clearInterval(topInfoInterval));
+            topInfoGrid.addEventListener('mouseleave', () => {
+                topInfoInterval = setInterval(() => {
+                    rotateTopInfo('next');
+                }, 6000);
             });
         }
 
