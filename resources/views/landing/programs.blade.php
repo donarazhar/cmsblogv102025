@@ -18,7 +18,7 @@
                         <span>Regular</span>
                     </button>
                     <button class="filter-tab" data-filter="event">
-                        <i class="fas fa-calendar-star"></i>
+                        <i class="fas fa-calendar-check"></i>
                         <span>Event</span>
                     </button>
                     <button class="filter-tab" data-filter="course">
