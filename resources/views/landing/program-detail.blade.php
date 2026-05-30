@@ -131,10 +131,7 @@
         }
 
         .content-box {
-            background: white;
-            padding: 35px;
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            padding: 35px 0;
             margin-bottom: 30px;
         }
 
@@ -144,7 +141,6 @@
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             margin-bottom: 30px;
-            /* Spacing antar box */
         }
 
         /* Hapus semua sticky behavior */

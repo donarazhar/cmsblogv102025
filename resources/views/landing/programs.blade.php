@@ -200,7 +200,7 @@
         /* Programs Section */
         .programs-section {
             padding: 60px 0;
-            background: var(--gray-100);
+            background: var(--white);
         }
 
         /* Modern Filter Tabs */
@@ -260,12 +260,7 @@
             margin-bottom: 40px;
         }
 
-        /* Program Card */
         .program-card {
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
             transition: var(--transition);
             display: flex;
             flex-direction: column;
@@ -275,8 +270,7 @@
         }
 
         .program-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
         }
 
         /* Program Image */
@@ -286,6 +280,7 @@
             height: 200px;
             overflow: hidden;
             background: var(--gray-100);
+            border-radius: var(--radius-lg);
         }
 
         .program-image {
@@ -332,7 +327,7 @@
 
         /* Program Body */
         .program-body {
-            padding: 24px;
+            padding: 16px 0;
             display: flex;
             flex-direction: column;
             flex: 1;

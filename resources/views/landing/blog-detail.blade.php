@@ -102,9 +102,6 @@
 
         /* ===== ARTICLE CONTENT ===== */
         .article-card {
-            background: var(--white);
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 83, 197, 0.08);
             overflow: hidden;
         }
 

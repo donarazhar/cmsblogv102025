@@ -201,7 +201,7 @@
         /* Blog Section */
         .blog-section {
             padding: 60px 0;
-            background: var(--gray-100);
+            background: var(--white);
         }
 
         /* Compact Search Box */
@@ -269,10 +269,6 @@
         }
 
         .post-card {
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
             transition: var(--transition);
             display: flex;
             flex-direction: column;
@@ -280,8 +276,7 @@
         }
 
         .post-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
         }
 
         .post-image-wrapper {
@@ -289,6 +284,7 @@
             width: 100%;
             height: 220px;
             overflow: hidden;
+            border-radius: var(--radius-lg);
             display: block;
         }
 
@@ -319,7 +315,7 @@
         }
 
         .post-body {
-            padding: 20px;
+            padding: 16px 0;
             display: flex;
             flex-direction: column;
             flex: 1;
