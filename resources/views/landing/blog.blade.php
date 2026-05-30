@@ -6,8 +6,8 @@
     <!-- Blog Content -->
     <section class="blog-section" style="padding-top: 0px !important; margin-top: 0 !important;">
         <div class="container" style="margin-top: 0;">
-            <!-- Main Content -->
-            <div class="main-content">
+            <!-- Blog Content Wrapper -->
+            <div class="blog-content-wrapper">
                 <!-- Compact Search & Filter -->
                 <div class="search-box" data-aos="fade-up" style="margin-top: 0 !important; padding-top: 0 !important;">
                     <form method="GET" action="{{ route('blog') }}">

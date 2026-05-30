@@ -8,7 +8,7 @@
         <div class="container">
             <div class="program-layout">
                 <!-- Main Content -->
-                <div class="main-content">
+                <div class="program-main-content">
                     <div style="margin-bottom: 20px;" data-aos="fade-up">
                         <a href="{{ route('programs') }}"
                             style="color: var(--primary); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-weight: 600;">
@@ -122,7 +122,7 @@
             margin: 0 auto;
         }
 
-        .main-content {
+        .program-main-content {
             /* Main content area */
         }
 
