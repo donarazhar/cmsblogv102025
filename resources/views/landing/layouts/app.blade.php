@@ -1749,9 +1749,15 @@
 
     <!-- Mobile Bottom Navigation -->
     <div class="mobile-bottom-nav"> <!-- Hidden on desktop via CSS, shown on mobile via media query -->
-        <a href="{{ route('home') }}" class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-            <i class="fa-solid fa-house"></i>
-            <span>Beranda</span>
+        @php
+            $waNumber = preg_replace('/[^0-9]/', '', setting('contact_whatsapp', '6288212114771'));
+            if (str_starts_with($waNumber, '0')) {
+                $waNumber = '62' . substr($waNumber, 1);
+            }
+        @endphp
+        <a href="https://wa.me/{{ $waNumber }}" target="_blank" class="nav-item">
+            <i class="fa-brands fa-whatsapp" style="font-size: 1.3rem;"></i>
+            <span>Chat</span>
         </a>
         <a href="{{ route('blog') }}" class="nav-item {{ request()->routeIs('blog') || request()->routeIs('blog.*') ? 'active' : '' }}">
             <i class="fa-solid fa-newspaper"></i>
