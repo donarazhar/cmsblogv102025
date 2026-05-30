@@ -98,45 +98,6 @@
                     </div>
                 </div>
 
-
-
-                <!-- Statistics (Read Only) -->
-                @if ($program->current_participants > 0 || $program->max_participants)
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Statistik Peserta</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="stats-grid">
-                                <div class="stat-item">
-                                    <i class="fas fa-users"></i>
-                                    <div>
-                                        <div class="stat-value">{{ $program->current_participants }}</div>
-                                        <div class="stat-label">Peserta Terdaftar</div>
-                                    </div>
-                                </div>
-                                @if ($program->max_participants)
-                                    <div class="stat-item">
-                                        <i class="fas fa-chair"></i>
-                                        <div>
-                                            <div class="stat-value">{{ $program->available_slots ?? 0 }}</div>
-                                            <div class="stat-label">Slot Tersedia</div>
-                                        </div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <i class="fas fa-percentage"></i>
-                                        <div>
-                                            <div class="stat-value">
-                                                {{ $program->max_participants > 0 ? round(($program->current_participants / $program->max_participants) * 100) : 0 }}%
-                                            </div>
-                                            <div class="stat-label">Terisi</div>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                @endif
             </div>
 
             <!-- Right Column -->
