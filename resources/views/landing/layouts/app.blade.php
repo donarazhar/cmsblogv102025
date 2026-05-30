@@ -1757,7 +1757,7 @@
             <i class="fa-solid fa-newspaper"></i>
             <span>Berita</span>
         </a>
-        <a href="#" class="nav-item center-btn">
+        <a href="{{ route('home') }}" class="nav-item center-btn">
             <div class="center-btn-inner">
                 <img src="https://siap.al-azhar.id/upload/favicon.ico" alt="Logo" style="width: 26px; height: 26px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
             </div>
