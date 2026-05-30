@@ -1209,6 +1209,45 @@
         .mobile-bottom-nav {
             display: none;
         }
+
+        /* ===== GRADIENT ACCENT BAR ===== */
+        .hero-accent-bar {
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, 
+                #22c55e 0%, 
+                #06b6d4 15%, 
+                #3b82f6 30%, 
+                #6366f1 45%, 
+                #a855f7 55%, 
+                #ec4899 70%, 
+                #f43f5e 80%, 
+                #f97316 90%, 
+                #eab308 100%);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-accent-bar::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: inherit;
+            filter: blur(8px);
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .hero-accent-bar {
+                height: 4px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-accent-bar {
+                height: 3px;
+            }
+        }
     </style>
 
     @stack('styles')
@@ -1378,6 +1417,9 @@
 
     <!-- Main Content -->
     <main class="main-content">
+        <!-- Gradient Accent Bar -->
+        <div class="hero-accent-bar"></div>
+
         <!-- Targeted Ad Banner (For subpages, displayed at the top) -->
         @if(!request()->is('/'))
             @include('landing.partials.targeted-ad-banner')

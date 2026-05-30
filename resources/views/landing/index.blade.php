@@ -79,33 +79,6 @@
             margin-bottom: -1px;
         }
 
-        /* ===== GRADIENT ACCENT BAR ===== */
-        .hero-accent-bar {
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, 
-                #22c55e 0%, 
-                #06b6d4 15%, 
-                #3b82f6 30%, 
-                #6366f1 45%, 
-                #a855f7 55%, 
-                #ec4899 70%, 
-                #f43f5e 80%, 
-                #f97316 90%, 
-                #eab308 100%);
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero-accent-bar::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: inherit;
-            filter: blur(8px);
-            opacity: 0.5;
-        }
-
         /* ===== WELCOME SECTION ===== */
         .welcome-section {
             padding: 0 1rem;
@@ -441,10 +414,6 @@
             .announcement-badge span {
                 display: none;
             }
-
-            .hero-accent-bar {
-                height: 4px;
-            }
         }
 
         /* Default: Hide dots on desktop/tablet */
@@ -487,10 +456,6 @@
 
             .top-info-card.featured .top-info-card-title {
                 font-size: 1rem;
-            }
-
-            .hero-accent-bar {
-                height: 3px;
             }
         }
         .announcement-bar {
@@ -2158,9 +2123,6 @@
     </style>
 @endpush
 @section('content')
-    <!-- Gradient Accent Bar -->
-    <div class="hero-accent-bar"></div>
-
     <!-- Welcome Section -->
     <section class="welcome-section">
         <div class="container">
