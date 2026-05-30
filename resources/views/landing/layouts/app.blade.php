@@ -589,13 +589,13 @@
             .mobile-bottom-nav .nav-item.center-btn .center-btn-inner {
                 width: 54px;
                 height: 54px;
-                background: #ef4444;
+                background: var(--primary);
                 border-radius: 50%;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 color: #ffffff;
-                box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
+                box-shadow: 0 4px 10px rgba(0, 83, 197, 0.4);
                 font-size: 1.6rem;
                 transition: transform 0.2s ease;
             }
