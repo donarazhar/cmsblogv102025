@@ -22,3 +22,5 @@ Route::get('/programs/{slug}', [ProgramController::class, 'show']);
 // YouTube API Routes
 Route::get('/youtube', [\App\Http\Controllers\Api\YoutubeController::class, 'index']);
 
+// Slider/Hero Banner API Routes
+Route::get('/sliders', [\App\Http\Controllers\Api\SliderController::class, 'index']);
